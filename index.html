@@ -3,7 +3,63 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- ═══ SEO: Primary ═══ -->
 <title>aslide — Turn Any Document Into Beautiful Slides</title>
+<meta name="description" content="Custom presentation design service. I turn annual reports, research papers, whitepapers, and any document into beautiful, professional slides. Email your document, receive a stunning deck.">
+<meta name="keywords" content="presentation design, slide design, document to slides, annual report design, research paper slides, whitepaper presentation, custom slide deck, PowerPoint design, Keynote design">
+<meta name="author" content="aslide.xyz">
+<link rel="canonical" href="https://aslide.xyz/">
+<meta name="robots" content="index, follow">
+
+<!-- ═══ SEO: Open Graph (Facebook, LinkedIn, WeChat) ═══ -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://aslide.xyz/">
+<meta property="og:title" content="aslide — Turn Any Document Into Beautiful Slides">
+<meta property="og:description" content="Annual reports. Research papers. Whitepapers. I turn any document into slides people actually want to read. Email your document, receive a stunning deck.">
+<meta property="og:image" content="https://aslide.xyz/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="aslide — Document to Slides Design Service">
+<meta property="og:site_name" content="aslide">
+<meta property="og:locale" content="en_US">
+
+<!-- ═══ SEO: Twitter / X Card ═══ -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="https://aslide.xyz/">
+<meta name="twitter:title" content="aslide — Turn Any Document Into Beautiful Slides">
+<meta name="twitter:description" content="Annual reports. Research papers. Whitepapers. I turn any document into slides people actually want to read.">
+<meta name="twitter:image" content="https://aslide.xyz/og-image.png">
+<meta name="twitter:image:alt" content="aslide — Document to Slides Design Service">
+
+<!-- ═══ SEO: JSON-LD Structured Data ═══ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "aslide",
+  "url": "https://aslide.xyz",
+  "description": "Custom presentation design service that transforms documents, annual reports, and research papers into beautiful, professional slide decks.",
+  "email": "hello@aslide.xyz",
+  "serviceType": "Presentation Design",
+  "areaServed": "Worldwide",
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Slide Design Services",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Document to Slides",
+          "description": "Transform any document — annual reports, research papers, whitepapers — into professional, beautiful slide decks delivered as PowerPoint, Keynote, or PDF."
+        }
+      }
+    ]
+  }
+}
+</script>
+
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -76,38 +132,21 @@ nav {
 /* HERO VISUAL */
 .hero-visual { margin-top: 72px; width: 100%; max-width: 900px; }
 .before-after { display: grid; grid-template-columns: 1fr 80px 1fr; align-items: center; }
-
-.doc-card {
-  background: var(--surface); border-radius: 12px; padding: 26px;
-  box-shadow: var(--shadow); text-align: left;
-}
+.doc-card { background: var(--surface); border-radius: 12px; padding: 26px; box-shadow: var(--shadow); text-align: left; }
 .doc-label { font-size: 10px; font-weight: 600; letter-spacing: 0.5px; color: rgba(255,255,255,0.28); text-transform: uppercase; margin-bottom: 16px; }
 .dl { height: 8px; border-radius: 3px; background: rgba(255,255,255,0.12); margin-bottom: 7px; }
 .dl.h { height: 13px; background: rgba(255,255,255,0.2); margin-bottom: 11px; }
 .dl.s { width: 65%; }
 .dl.xs { width: 42%; }
 .dl.t { height: 6px; background: rgba(255,255,255,0.06); }
-
 .arrow-col { display: flex; flex-direction: column; align-items: center; gap: 8px; }
-.arrow-ring {
-  width: 46px; height: 46px; border-radius: 50%; background: var(--blue);
-  display: flex; align-items: center; justify-content: center; font-size: 22px;
-}
+.arrow-ring { width: 46px; height: 46px; border-radius: 50%; background: var(--blue); display: flex; align-items: center; justify-content: center; font-size: 22px; }
 .arrow-lbl { font-size: 9px; font-weight: 600; color: rgba(255,255,255,0.28); letter-spacing: 0.5px; text-transform: uppercase; }
-
 .slide-card { background: var(--surface); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); aspect-ratio: 16/9; }
-.slide-inner {
-  width: 100%; height: 100%; background: #090d15;
-  display: grid; grid-template-columns: 1fr 1fr;
-  padding: 28px; position: relative;
-}
+.slide-inner { width: 100%; height: 100%; background: #090d15; display: grid; grid-template-columns: 1fr 1fr; padding: 28px; position: relative; }
 .slide-left { display: flex; flex-direction: column; justify-content: center; gap: 8px; }
 .slide-right { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; position: relative; }
-.slide-right::before {
-  content: ''; position: absolute; inset: -28px;
-  background: radial-gradient(ellipse at center, rgba(0,113,227,0.15), transparent 70%);
-  pointer-events: none;
-}
+.slide-right::before { content: ''; position: absolute; inset: -28px; background: radial-gradient(ellipse at center, rgba(0,113,227,0.15), transparent 70%); pointer-events: none; }
 .sdivider { width: 1px; height: 60%; background: rgba(255,255,255,0.07); position: absolute; left: 0; top: 50%; transform: translateY(-50%); }
 .stag { font-size: 9px; letter-spacing: 2px; color: var(--blue-bright); text-transform: uppercase; }
 .sh1 { font-size: 22px; font-weight: 600; line-height: 1.1; color: #fff; }
@@ -136,22 +175,11 @@ nav {
 
 /* GALLERY */
 .gallery { display: grid; grid-template-columns: repeat(2,1fr); gap: 24px; max-width: 980px; margin: 0 auto; }
-
-/* Real work cards — full width featured */
-.gc-real {
-  grid-column: 1 / -1;
-  background: var(--surface); border-radius: 12px; overflow: hidden;
-  box-shadow: var(--shadow); cursor: pointer; text-decoration: none; display: block;
-  transition: transform 0.3s cubic-bezier(0.2,0,0,1);
-  border: 1px solid rgba(255,255,255,0.06);
-}
+.gc-real { grid-column: 1 / -1; background: var(--surface); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); cursor: pointer; text-decoration: none; display: block; transition: transform 0.3s cubic-bezier(0.2,0,0,1); border: 1px solid rgba(255,255,255,0.06); }
 .gc-real:hover { transform: translateY(-4px); border-color: rgba(41,151,255,0.3); }
 .gc-real:hover .gc-preview-wrap { opacity: 0.88; }
 .gc-real-inner { display: grid; grid-template-columns: 1fr 1fr; min-height: 220px; }
-.gc-preview-wrap {
-  display: flex; align-items: center; justify-content: center;
-  padding: 24px; transition: opacity 0.3s; position: relative; overflow: hidden;
-}
+.gc-preview-wrap { display: flex; align-items: center; justify-content: center; padding: 24px; transition: opacity 0.3s; position: relative; overflow: hidden; }
 .slide-thumb { width: 100%; aspect-ratio: 16/9; border-radius: 8px; overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.6); position: relative; z-index: 1; }
 .gc-real-info { padding: 36px; display: flex; flex-direction: column; justify-content: center; gap: 12px; border-left: 1px solid rgba(255,255,255,0.06); }
 .gc-real-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(41,151,255,0.1); border: 1px solid rgba(41,151,255,0.25); border-radius: 980px; padding: 3px 12px; font-size: 11px; font-weight: 600; color: var(--blue-bright); }
@@ -159,14 +187,7 @@ nav {
 .gc-real-title { font-family: var(--font); font-size: 28px; font-weight: 600; line-height: 1.1; letter-spacing: -0.28px; color: var(--white); }
 .gc-real-desc { font-family: var(--font-text); font-size: 14px; line-height: 1.5; letter-spacing: -0.224px; color: rgba(255,255,255,0.5); }
 .gc-real-cta { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: var(--blue-bright); letter-spacing: -0.224px; margin-top: 4px; }
-
-/* Tesla bg */
-.bg-tesla {
-  background: #0a0a0f;
-  background-image: linear-gradient(rgba(232,32,42,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(232,32,42,0.04) 1px, transparent 1px);
-  background-size: 40px 40px;
-}
-/* Frontend design article bg */
+.bg-tesla { background: #0a0a0f; background-image: linear-gradient(rgba(232,32,42,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(232,32,42,0.04) 1px, transparent 1px); background-size: 40px 40px; }
 .bg-editorial { background: #faf8f5; }
 
 /* TAGS */
@@ -203,9 +224,8 @@ footer { background: #111; padding: 20px 24px; border-top: 1px solid rgba(255,25
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
-  <a href="#" class="nav-logo">a<span>slide</span>.xyz</a>
+<nav aria-label="Main navigation">
+  <a href="/" class="nav-logo">a<span>slide</span>.xyz</a>
   <ul class="nav-links">
     <li><a href="#works">Works</a></li>
     <li><a href="#how">How it works</a></li>
@@ -213,8 +233,10 @@ footer { background: #111; padding: 20px 24px; border-top: 1px solid rgba(255,25
   </ul>
 </nav>
 
+<main>
+
 <!-- HERO -->
-<section class="hero">
+<section class="hero" aria-label="Hero">
   <p class="hero-eyebrow">Document → Slides, beautifully.</p>
   <h1 class="hero-title">Your report,<br>transformed.</h1>
   <p class="hero-sub">Annual reports. Research papers. Whitepapers. I turn any document into slides people actually want to read.</p>
@@ -223,7 +245,7 @@ footer { background: #111; padding: 20px 24px; border-top: 1px solid rgba(255,25
     <a href="#works" class="btn-ghost">See examples</a>
   </div>
 
-  <div class="hero-visual">
+  <div class="hero-visual" aria-hidden="true">
     <div class="before-after">
       <div class="doc-card">
         <div class="doc-label">Your document</div>
@@ -236,12 +258,10 @@ footer { background: #111; padding: 20px 24px; border-top: 1px solid rgba(255,25
         <div class="dl h" style="width:80%"></div>
         <div class="dl t"></div><div class="dl t xs"></div><div class="dl t"></div><div class="dl t s"></div>
       </div>
-
       <div class="arrow-col">
         <div class="arrow-ring">→</div>
         <div class="arrow-lbl">aslide</div>
       </div>
-
       <div class="slide-card">
         <div class="slide-inner">
           <div class="slide-left">
@@ -260,41 +280,40 @@ footer { background: #111; padding: 20px 24px; border-top: 1px solid rgba(255,25
   </div>
 </section>
 
-<!-- HOW IT WORKS (light) -->
-<section class="sl" id="how">
-  <h2 class="st">Ridiculously simple.</h2>
+<!-- HOW IT WORKS -->
+<section class="sl" id="how" aria-labelledby="how-title">
+  <h2 class="st" id="how-title">Ridiculously simple.</h2>
   <p class="sb">No briefs. No back-and-forth. Just send your document and get back slides ready to present.</p>
   <div class="steps">
     <div class="step">
       <div class="sn">01</div>
-      <div class="stitle">Send your doc</div>
-      <div class="sdesc">PDF, Word, research paper, annual report, whitepaper — email it directly. No form to fill out.</div>
+      <h3 class="stitle">Send your doc</h3>
+      <p class="sdesc">PDF, Word, research paper, annual report, whitepaper — email it directly. No form to fill out.</p>
     </div>
     <div class="step">
       <div class="sn">02</div>
-      <div class="stitle">I read & design</div>
-      <div class="sdesc">I distill your content into clear, visual slides. Each one designed to communicate — not just display — information.</div>
+      <h3 class="stitle">I read & design</h3>
+      <p class="sdesc">I distill your content into clear, visual slides. Each one designed to communicate — not just display — information.</p>
     </div>
     <div class="step">
       <div class="sn">03</div>
-      <div class="stitle">You receive slides</div>
-      <div class="sdesc">Delivered as PowerPoint, Keynote, or PDF. Ready to present, share, or publish.</div>
+      <h3 class="stitle">You receive slides</h3>
+      <p class="sdesc">Delivered as PowerPoint, Keynote, or PDF. Ready to present, share, or publish.</p>
     </div>
   </div>
 </section>
 
-<!-- WORKS (dark) -->
-<section class="sd" id="works">
-  <h2 class="st w">What I've made.</h2>
+<!-- WORKS -->
+<section class="sd" id="works" aria-labelledby="works-title">
+  <h2 class="st w" id="works-title">What I've made.</h2>
   <p class="sb w">Real documents, turned into slides worth sharing. Click any card to open the full deck.</p>
   <div class="gallery">
 
-    <!-- Tesla Spring 2026 -->
-    <a class="gc-real" href="tesla-spring-2026.html" target="_blank">
+    <a class="gc-real" href="tesla-spring-2026.html" target="_blank" rel="noopener" aria-label="View Tesla Spring Update 2026 slide deck">
       <div class="gc-real-inner">
         <div class="gc-preview-wrap bg-tesla">
           <div class="slide-thumb">
-            <svg width="100%" height="100%" viewBox="0 0 560 315" xmlns="http://www.w3.org/2000/svg">
+            <svg width="100%" height="100%" viewBox="0 0 560 315" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Tesla Spring Update 2026 slide preview">
               <rect width="560" height="315" fill="#080810"/>
               <defs>
                 <radialGradient id="rg1" cx="50%" cy="100%" r="70%">
@@ -324,27 +343,22 @@ footer { background: #111; padding: 20px 24px; border-top: 1px solid rgba(255,25
       </div>
     </a>
 
-    <!-- Frontend Design Article -->
-    <a class="gc-real" href="frontend-design-article.html" target="_blank">
+    <a class="gc-real" href="frontend-design-article.html" target="_blank" rel="noopener" aria-label="View Frontend Design article">
       <div class="gc-real-inner">
         <div class="gc-preview-wrap bg-editorial">
           <div class="slide-thumb">
-            <svg width="100%" height="100%" viewBox="0 0 560 315" xmlns="http://www.w3.org/2000/svg">
+            <svg width="100%" height="100%" viewBox="0 0 560 315" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Frontend Design article preview">
               <rect width="560" height="315" fill="#faf8f5"/>
               <rect x="0" y="0" width="560" height="1" fill="#1a1814"/>
-              <!-- Masthead -->
               <text x="28" y="26" font-family="Georgia,serif" font-size="9" fill="#8a8580" letter-spacing="2">Frontend Design · Anthropic Plugin</text>
               <line x1="0" y1="36" x2="560" y2="36" stroke="#1a1814" stroke-width="0.5"/>
-              <!-- Hero text -->
               <text x="28" y="72" font-family="Georgia,serif" font-size="22" fill="#1a1814" font-weight="400">告别"AI 审美"，</text>
               <text x="28" y="100" font-family="Georgia,serif" font-size="22" fill="#8b5e3c" font-style="italic">真正有主张</text>
               <text x="152" y="100" font-family="Georgia,serif" font-size="22" fill="#1a1814">的界面</text>
-              <!-- Lead bar -->
               <rect x="28" y="116" width="2" height="48" fill="#c8a96e"/>
               <text x="38" y="132" font-family="Georgia,serif" font-size="10" fill="#4a4540">Frontend Design Plugin 是 Anthropic 官方</text>
               <text x="38" y="148" font-family="Georgia,serif" font-size="10" fill="#4a4540">出品的前端设计增强工具，核心使命只有</text>
               <text x="38" y="164" font-family="Georgia,serif" font-size="10" fill="#4a4540">一件事：让 Claude 生成的界面不再千篇一律。</text>
-              <!-- Demo previews row -->
               <rect x="28" y="188" width="155" height="90" fill="#0a0a0a" rx="3"/>
               <text x="106" y="222" font-family="monospace" font-size="20" fill="#e8ff47" text-anchor="middle" font-weight="700">BRUTAL</text>
               <text x="106" y="242" font-family="monospace" font-size="9" fill="#555" text-anchor="middle" letter-spacing="1">IST</text>
@@ -371,37 +385,38 @@ footer { background: #111; padding: 20px 24px; border-top: 1px solid rgba(255,25
   <a href="#contact" class="lm w">Have a document to transform? Let's talk ›</a>
 </section>
 
-<!-- ANY DOCUMENT (light) -->
-<section class="sl">
-  <h2 class="st">Any document.<br>Any industry.</h2>
+<!-- ANY DOCUMENT -->
+<section class="sl" aria-labelledby="docs-title">
+  <h2 class="st" id="docs-title">Any document.<br>Any industry.</h2>
   <p class="sb">If it has pages, I can make it into slides.</p>
-  <div class="tags">
-    <span class="tag">Annual Reports</span>
-    <span class="tag">Research Papers</span>
-    <span class="tag">Whitepapers</span>
-    <span class="tag">Strategy Documents</span>
-    <span class="tag">Financial Reports</span>
-    <span class="tag">Clinical Studies</span>
-    <span class="tag">ESG Reports</span>
-    <span class="tag">Market Analysis</span>
-    <span class="tag">Policy Documents</span>
-    <span class="tag">Conference Papers</span>
-    <span class="tag">Product Roadmaps</span>
-    <span class="tag">Earnings Reports</span>
+  <div class="tags" role="list">
+    <span class="tag" role="listitem">Annual Reports</span>
+    <span class="tag" role="listitem">Research Papers</span>
+    <span class="tag" role="listitem">Whitepapers</span>
+    <span class="tag" role="listitem">Strategy Documents</span>
+    <span class="tag" role="listitem">Financial Reports</span>
+    <span class="tag" role="listitem">Clinical Studies</span>
+    <span class="tag" role="listitem">ESG Reports</span>
+    <span class="tag" role="listitem">Market Analysis</span>
+    <span class="tag" role="listitem">Policy Documents</span>
+    <span class="tag" role="listitem">Conference Papers</span>
+    <span class="tag" role="listitem">Product Roadmaps</span>
+    <span class="tag" role="listitem">Earnings Reports</span>
   </div>
 </section>
 
-<!-- CONTACT (dark) -->
-<section class="ct" id="contact">
+<!-- CONTACT -->
+<section class="ct" id="contact" aria-labelledby="contact-title">
   <p class="ct-pre">Ready to transform your document?</p>
-  <h2 class="ct-h">Send it over.</h2>
+  <h2 class="ct-h" id="contact-title">Send it over.</h2>
   <a href="mailto:hello@aslide.xyz" class="ct-email">hello@aslide.xyz</a>
   <p class="ct-note">Attach your document · I'll reply within 24 hours</p>
 </section>
 
-<!-- FOOTER -->
+</main>
+
 <footer>
-  <a href="#" class="fl">aslide.xyz</a>
+  <a href="/" class="fl">aslide.xyz</a>
   <span class="fc">© 2025 aslide.xyz</span>
 </footer>
 
