@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frontend Design Plugin — 让 AI 生成真正有设计感的界面</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;700&family=Noto+Sans+SC:wght@300;400;500&family=Space+Grotesk:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;1,300&family=IBM+Plex+Mono:wght@400;700&family=Bebas+Neue&family=Jost:wght@300;400&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #1a1814;
+    --ink-2: #4a4540;
+    --ink-3: #8a8580;
+    --rule: #e0dbd4;
+    --bg: #faf8f5;
+    --accent: #c8a96e;
+    --accent-2: #8b5e3c;
+    --serif: 'Noto Serif SC', serif;
+    --sans: 'Noto Sans SC', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.8;
+    font-size: 16px;
+    font-weight: 300;
+  }
+
+  .masthead {
+    border-bottom: 1px solid var(--ink);
+    padding: 24px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .masthead-pub { font-family: var(--serif); font-size: 13px; letter-spacing: 0.2em; color: var(--ink-3); }
+  .masthead-date { font-size: 12px; letter-spacing: 0.15em; color: var(--ink-3); font-weight: 300; }
+
+  .hero { max-width: 800px; margin: 0 auto; padding: 72px 48px 48px; border-bottom: 1px solid var(--rule); }
+  .hero-kicker { font-size: 11px; letter-spacing: 0.35em; text-transform: uppercase; color: var(--accent-2); font-weight: 400; margin-bottom: 20px; }
+  .hero h1 { font-family: var(--serif); font-size: clamp(32px, 5vw, 52px); font-weight: 400; line-height: 1.25; letter-spacing: -0.01em; margin-bottom: 24px; }
+  .hero h1 em { font-style: italic; color: var(--accent-2); }
+  .hero-lead { font-size: 18px; line-height: 1.75; color: var(--ink-2); font-weight: 300; max-width: 640px; border-left: 2px solid var(--accent); padding-left: 20px; margin-top: 32px; }
+  .hero-meta { display: flex; gap: 32px; margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--rule); font-size: 12px; color: var(--ink-3); letter-spacing: 0.08em; }
+
+  .container { max-width: 800px; margin: 0 auto; padding: 0 48px; }
+
+  .prose { padding: 48px 0; }
+  .prose p { font-size: 16px; line-height: 1.85; color: var(--ink-2); margin-bottom: 1.5em; font-weight: 300; }
+  .prose p:last-child { margin-bottom: 0; }
+  .prose strong { font-weight: 500; color: var(--ink); }
+
+  .section-header { padding: 64px 0 0; }
+  .section-number { font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); font-weight: 400; margin-bottom: 12px; display: block; }
+  .section-header h2 { font-family: var(--serif); font-size: 28px; font-weight: 400; line-height: 1.3; margin-bottom: 6px; }
+  .section-header p { font-size: 14px; color: var(--ink-3); font-weight: 300; letter-spacing: 0.05em; }
+
+  .rule { height: 1px; background: var(--rule); margin: 48px 0; }
+
+  .demo-wrapper { margin: 40px 0; border: 1px solid var(--rule); border-radius: 4px; overflow: hidden; }
+  .demo-label { display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; background: var(--ink); border-bottom: 1px solid #333; }
+  .demo-label-text { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #888; font-family: 'IBM Plex Mono', monospace; }
+  .demo-label-style { font-size: 11px; letter-spacing: 0.1em; color: #e8ff47; font-family: 'IBM Plex Mono', monospace; }
+  .demo-label-style.luxury-tag { color: #c9b882; }
+  .demo-label-style.retro-tag { color: #ffb347; }
+  .demo-inner { background: #fff; }
+
+  .insight { background: #f0ece4; border-left: 3px solid var(--accent); padding: 20px 24px; margin: 32px 0; border-radius: 0 4px 4px 0; }
+  .insight-label { font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent-2); font-weight: 500; margin-bottom: 8px; }
+  .insight p { font-size: 14px; line-height: 1.7; color: var(--ink-2); font-weight: 300; }
+
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; margin: 32px 0; }
+  .compare th { text-align: left; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-3); padding: 10px 16px; border-bottom: 1px solid var(--ink); font-weight: 500; }
+  .compare td { padding: 12px 16px; border-bottom: 1px solid var(--rule); color: var(--ink-2); font-weight: 300; vertical-align: top; }
+  .compare tr:hover td { background: #f5f1ea; }
+  .compare td:first-child { font-weight: 500; color: var(--ink); }
+
+  .pullquote { font-family: var(--serif); font-size: clamp(18px, 2.5vw, 24px); font-weight: 300; font-style: italic; line-height: 1.6; color: var(--ink); padding: 40px 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); margin: 48px 0; }
+  .pullquote::before { content: '"'; font-size: 64px; line-height: 0.5; display: block; color: var(--accent); margin-bottom: 16px; font-style: normal; }
+
+  .footer { border-top: 2px solid var(--ink); padding: 32px 48px; margin-top: 80px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--ink-3); letter-spacing: 0.1em; }
+  .footer-brand { font-family: var(--serif); font-size: 14px; color: var(--ink); font-weight: 400; }
+
+  /* BRUTALIST */
+  .bru * { box-sizing: border-box; margin: 0; padding: 0; }
+  .bru { font-family: 'Space Grotesk', sans-serif; background: #0a0a0a; color: #f0ede6; min-height: 420px; padding: 24px; border: 3px solid #f0ede6; }
+  .bru-header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 3px solid #f0ede6; padding-bottom: 16px; margin-bottom: 20px; }
+  .bru-title { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #888; }
+  .bru-now { font-size: 32px; font-weight: 700; line-height: 1.1; max-width: 380px; }
+  .bru-tag { background: #e8ff47; color: #0a0a0a; font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; padding: 4px 10px; border: 2px solid #e8ff47; }
+  .bru-artist { font-size: 13px; color: #888; margin-top: 6px; letter-spacing: 0.05em; }
+  .bru-time { text-align: right; }
+  .bru-elapsed { font-size: 48px; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; }
+  .bru-total { font-size: 12px; color: #555; letter-spacing: 0.1em; }
+  .bru-waveform { display: flex; align-items: flex-end; gap: 2px; height: 60px; margin: 16px 0; overflow: hidden; }
+  .bru-bar { background: #333; flex: 1; border-radius: 1px; }
+  .bru-bar.played { background: #e8ff47; }
+  .bru-bar.active { background: #fff; }
+  .bru-progress { height: 3px; background: #222; margin: 8px 0 20px; }
+  .bru-progress-fill { height: 100%; background: #e8ff47; width: 38%; }
+  .bru-controls { display: flex; align-items: center; gap: 0; border: 2px solid #333; }
+  .bru-ctrl { background: none; border: none; border-right: 2px solid #333; color: #f0ede6; font-size: 13px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 10px 18px; cursor: pointer; font-family: inherit; }
+  .bru-ctrl:last-child { border-right: none; }
+  .bru-ctrl:hover { background: #f0ede6; color: #0a0a0a; }
+  .bru-ctrl.play { background: #e8ff47; color: #0a0a0a; }
+  .bru-queue { margin-top: 20px; border-top: 2px solid #222; padding-top: 16px; }
+  .bru-queue-label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #555; margin-bottom: 10px; }
+  .bru-queue-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #1a1a1a; font-size: 13px; cursor: pointer; }
+  .bru-queue-item:hover { color: #e8ff47; }
+  .bru-queue-num { color: #444; width: 24px; font-variant-numeric: tabular-nums; }
+  .bru-queue-dur { color: #555; }
+
+  /* LUXURY */
+  .lux * { box-sizing: border-box; margin: 0; padding: 0; }
+  .lux { font-family: 'Jost', sans-serif; background: #f7f4ef; color: #1c1a16; }
+  .lux-hero-section { background: #2c3a2e; padding: 40px 32px 32px; }
+  .lux-eyebrow { font-size: 10px; letter-spacing: 0.35em; text-transform: uppercase; color: #8fa68e; font-weight: 300; margin-bottom: 12px; }
+  .lux-headline { font-family: 'Cormorant Garamond', serif; font-size: 38px; font-weight: 300; color: #f0ebe2; line-height: 1.15; }
+  .lux-headline em { font-style: italic; color: #c9b882; }
+  .lux-sub { font-size: 12px; color: #7a9178; margin-top: 10px; letter-spacing: 0.1em; font-weight: 300; }
+  .lux-badge-el { display: inline-block; border: 0.5px solid #5a7058; color: #8fa68e; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; padding: 5px 12px; margin-top: 20px; font-weight: 300; }
+  .lux-divider-el { width: 32px; height: 0.5px; background: #c9b882; margin: 24px 0 0; }
+  .lux-body-section { padding: 28px 32px; }
+  .lux-section-label { font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: #9a9080; margin-bottom: 16px; }
+  .lux-properties { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 28px; }
+  .lux-prop { background: #fff; border: 0.5px solid #e0d9ce; padding: 16px; cursor: pointer; }
+  .lux-prop:hover { border-color: #c9b882; }
+  .lux-prop.selected { border-color: #2c3a2e; border-width: 1px; }
+  .prop-name { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 300; color: #1c1a16; margin-bottom: 4px; }
+  .prop-loc { font-size: 11px; color: #9a9080; letter-spacing: 0.08em; }
+  .prop-price { font-size: 12px; color: #2c3a2e; margin-top: 12px; }
+  .prop-price span { font-family: 'Cormorant Garamond', serif; font-size: 20px; }
+  .prop-nights { font-size: 10px; color: #b0a898; margin-top: 2px; }
+  .lux-dates { display: flex; gap: 12px; margin-bottom: 24px; }
+  .lux-date-field { flex: 1; background: #fff; border: 0.5px solid #e0d9ce; padding: 12px 14px; }
+  .lux-date-label { font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: #b0a898; margin-bottom: 4px; }
+  .lux-date-val { font-size: 14px; color: #1c1a16; font-weight: 300; }
+  .lux-cta { width: 100%; background: #2c3a2e; border: none; color: #f0ebe2; font-family: 'Jost', sans-serif; font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; padding: 16px; cursor: pointer; }
+  .lux-cta:hover { background: #1c2820; }
+  .lux-footer-section { display: flex; justify-content: space-between; padding: 0 32px 24px; margin-top: 8px; }
+  .lux-amenity { font-size: 10px; color: #b0a898; letter-spacing: 0.1em; text-align: center; }
+  .lux-amenity strong { display: block; font-size: 11px; color: #7a9178; font-weight: 400; margin-bottom: 2px; }
+
+  /* RETRO */
+  .retro * { box-sizing: border-box; margin: 0; padding: 0; }
+  .retro { font-family: 'IBM Plex Mono', monospace; background: #1a0a00; color: #ff6b1a; border: 4px solid #ff6b1a; position: relative; overflow: hidden; }
+  .r-top { border-bottom: 2px solid #ff6b1a; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; }
+  .r-league { font-size: 10px; letter-spacing: 0.3em; opacity: 0.5; }
+  .r-live { font-size: 10px; letter-spacing: 0.2em; animation: blink 1.2s step-end infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.1} }
+  .r-main { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 24px 20px; gap: 8px; }
+  .r-team { text-align: center; }
+  .r-teamname { font-family: 'Bebas Neue', sans-serif; font-size: 30px; letter-spacing: 0.05em; line-height: 1; }
+  .r-record { font-size: 10px; opacity: 0.4; margin-top: 4px; letter-spacing: 0.15em; }
+  .r-digits { font-family: 'Bebas Neue', sans-serif; font-size: 72px; line-height: 1; color: #ffb347; }
+  .r-sep { font-family: 'Bebas Neue', sans-serif; font-size: 56px; opacity: 0.3; }
+  .r-period { font-size: 10px; letter-spacing: 0.2em; opacity: 0.5; margin-top: 4px; text-align: center; }
+  .r-clock { border-top: 2px solid #ff6b1a; border-bottom: 2px solid #ff6b1a; padding: 12px 20px; display: flex; justify-content: center; align-items: center; gap: 32px; }
+  .r-clock-val { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 0.1em; color: #ffb347; }
+  .r-clock-label { font-size: 9px; letter-spacing: 0.25em; opacity: 0.4; display: block; margin-top: 2px; text-align: center; }
+  .r-stats { display: grid; grid-template-columns: 1fr 1fr; }
+  .r-stat-col { padding: 16px 20px; }
+  .r-stat-col:first-child { border-right: 1px solid #331a00; }
+  .r-stat-row { display: flex; justify-content: space-between; font-size: 11px; padding: 5px 0; border-bottom: 1px solid #1f0d00; }
+  .r-stat-label { opacity: 0.4; letter-spacing: 0.1em; }
+  .r-stat-val { color: #ffb347; font-weight: 700; }
+  .r-bottom { border-top: 2px solid #ff6b1a; padding: 10px 20px; display: flex; justify-content: space-between; font-size: 10px; opacity: 0.4; letter-spacing: 0.15em; }
+  .r-player { padding: 8px 20px; border-top: 1px solid #1f0d00; display: flex; justify-content: space-between; align-items: center; font-size: 11px; }
+  .r-player-badge { font-size: 9px; letter-spacing: 0.2em; border: 1px solid #ff6b1a; padding: 2px 6px; opacity: 0.5; }
+  .r-player-stat { color: #ffb347; }
+
+  @media (max-width: 600px) {
+    .masthead, .hero, .container, .footer { padding-left: 24px; padding-right: 24px; }
+    .bru-header { flex-direction: column; gap: 12px; }
+    .bru-elapsed { font-size: 36px; }
+    .lux-properties { grid-template-columns: 1fr; }
+    .r-teamname { font-size: 22px; }
+    .r-digits { font-size: 52px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <span class="masthead-pub">Frontend Design · Anthropic Plugin</span>
+  <span class="masthead-date">March 2026</span>
+</header>
+
+<section class="hero">
+  <div class="hero-kicker">Plugin 深度介绍</div>
+  <h1>告别"AI 审美"，<br>设计一个<em>真正有主张</em>的界面</h1>
+  <p class="hero-lead">Frontend Design Plugin 是 Anthropic 官方出品的前端设计增强工具，它的核心使命只有一件事：让 Claude 生成的界面不再千篇一律。</p>
+  <div class="hero-meta">
+    <span>Anthropic Verified</span>
+    <span>324,030 次安装</span>
+    <span>适用于 Claude Code</span>
+  </div>
+</section>
+
+<div class="container">
+  <div class="prose">
+    <p>打开任意一个 AI 生成的落地页，你大概率会看到：深紫色渐变背景、Inter 字体、整整齐齐的三列卡片、一个蓝色的 CTA 按钮。这套组合出现的频率高到有了专属称谓——"AI Slop"，AI 浆糊。</p>
+    <p>这不是模型的失误，而是训练数据的必然结果。AI 学习了互联网上数百万个网页的公约数，因此它的"默认风格"就是这些网页的最大公约数——安全、通用、无记忆点。</p>
+    <p><strong>Frontend Design Plugin 的出现，正是为了打破这个局面。</strong>它在 Claude 动手写代码之前强制插入一个设计思维阶段：这个界面是给谁用的？应该传达什么情绪？用什么字体、什么色调，能让它被记住？</p>
+  </div>
+  <div class="rule"></div>
+  <div class="section-header">
+    <span class="section-number">示例一</span>
+    <h2>Brutalist 粗野主义 × 音乐播放器</h2>
+    <p>高对比、粗边框、无装饰、信息优先</p>
+  </div>
+</div>
+
+<div class="container">
+  <div class="demo-wrapper">
+    <div class="demo-label">
+      <span class="demo-label-text">Live Demo</span>
+      <span class="demo-label-style">Brutalist / Dark</span>
+    </div>
+    <div class="demo-inner">
+      <div class="bru">
+        <div class="bru-header">
+          <div>
+            <div class="bru-title">Now playing</div>
+            <div class="bru-now">Neon Cathedral</div>
+            <div class="bru-artist">Massive Attack · Mezzanine</div>
+          </div>
+          <div class="bru-time">
+            <div class="bru-tag">LOSSLESS</div>
+            <div class="bru-elapsed" style="margin-top:10px">02:14</div>
+            <div class="bru-total">/ 05:51</div>
+          </div>
+        </div>
+        <div class="bru-waveform" id="waveform1"></div>
+        <div class="bru-progress"><div class="bru-progress-fill"></div></div>
+        <div class="bru-controls">
+          <button class="bru-ctrl">⏮ Prev</button>
+          <button class="bru-ctrl play">▶ Play</button>
+          <button class="bru-ctrl">⏭ Next</button>
+          <button class="bru-ctrl">↻ Loop</button>
+          <button class="bru-ctrl" style="margin-left:auto">≡ Queue</button>
+        </div>
+        <div class="bru-queue">
+          <div class="bru-queue-label">Up next</div>
+          <div class="bru-queue-item"><span class="bru-queue-num">01</span><span>Angel</span><span class="bru-queue-dur">06:12</span></div>
+          <div class="bru-queue-item"><span class="bru-queue-num">02</span><span>Teardrop</span><span class="bru-queue-dur">05:29</span></div>
+          <div class="bru-queue-item"><span class="bru-queue-num">03</span><span>Safe from Harm</span><span class="bru-queue-dur">05:18</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="insight">
+    <div class="insight-label">设计解析</div>
+    <p>粗野主义（Brutalism）脱胎于建筑领域，将结构直接暴露为美学。这个播放器刻意使用 3px 实线边框、全大写标签、等宽数字，拒绝任何圆角和阴影。柠檬黄（#e8ff47）是整个界面唯一的彩色——一个"按钮是按钮"的宣言。适合独立音乐平台、创意工具、艺术项目。</p>
+  </div>
+  <div class="rule"></div>
+  <div class="section-header">
+    <span class="section-number">示例二</span>
+    <h2>Luxury 奢华主义 × 精品旅宿预订</h2>
+    <p>衬线字体、克制留白、金绿配色、无一赘笔</p>
+  </div>
+</div>
+
+<div class="container">
+  <div class="demo-wrapper">
+    <div class="demo-label">
+      <span class="demo-label-text">Live Demo</span>
+      <span class="demo-label-style luxury-tag">Luxury / Warm</span>
+    </div>
+    <div class="demo-inner">
+      <div class="lux">
+        <div class="lux-hero-section">
+          <div class="lux-eyebrow">Private Collection · Member Access</div>
+          <div class="lux-headline">Where <em>stillness</em><br>meets the horizon</div>
+          <div class="lux-sub">Curated estates · Kyoto, Santorini, Marrakech</div>
+          <div class="lux-badge-el">Seven nights · From ¥380,000</div>
+          <div class="lux-divider-el"></div>
+        </div>
+        <div class="lux-body-section">
+          <div class="lux-section-label">Select residence</div>
+          <div class="lux-properties">
+            <div class="lux-prop selected" onclick="luxSelect(this)"><div class="prop-name">Ryokan Shizen</div><div class="prop-loc">Higashiyama · Kyoto</div><div class="prop-price"><span>¥54,000</span> / night</div><div class="prop-nights">3-night minimum</div></div>
+            <div class="lux-prop" onclick="luxSelect(this)"><div class="prop-name">Villa Kairó</div><div class="prop-loc">Oia Cliffside · Santorini</div><div class="prop-price"><span>¥68,000</span> / night</div><div class="prop-nights">5-night minimum</div></div>
+            <div class="lux-prop" onclick="luxSelect(this)"><div class="prop-name">Riad Al-Nour</div><div class="prop-loc">Medina Quarter · Marrakech</div><div class="prop-price"><span>¥42,000</span> / night</div><div class="prop-nights">2-night minimum</div></div>
+            <div class="lux-prop" onclick="luxSelect(this)"><div class="prop-name">Mas Provençal</div><div class="prop-loc">Luberon Valley · Provence</div><div class="prop-price"><span>¥61,000</span> / night</div><div class="prop-nights">4-night minimum</div></div>
+          </div>
+          <div class="lux-section-label">Travel window</div>
+          <div class="lux-dates">
+            <div class="lux-date-field"><div class="lux-date-label">Arrival</div><div class="lux-date-val">May 12, 2026</div></div>
+            <div class="lux-date-field"><div class="lux-date-label">Departure</div><div class="lux-date-val">May 19, 2026</div></div>
+            <div class="lux-date-field"><div class="lux-date-label">Guests</div><div class="lux-date-val">2 adults</div></div>
+          </div>
+          <button class="lux-cta">Request to Reserve</button>
+        </div>
+        <div class="lux-footer-section">
+          <div class="lux-amenity"><strong>Private transfer</strong>included</div>
+          <div class="lux-amenity"><strong>Concierge</strong>24 / 7</div>
+          <div class="lux-amenity"><strong>Chef service</strong>on request</div>
+          <div class="lux-amenity"><strong>Free cancel</strong>48 hrs prior</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="insight">
+    <div class="insight-label">设计解析</div>
+    <p>奢华风格的核心是"克制即权力"。Cormorant Garamond 衬线字体带来印刷质感，森林绿（#2c3a2e）与香槟金（#c9b882）传达出有机与精致的对话。所有边框细至 0.5px，CTA 按钮没有圆角，没有阴影。设计在说：我们不需要讨好你。适合高端酒旅、精品零售、会员制服务。</p>
+  </div>
+  <div class="rule"></div>
+  <div class="section-header">
+    <span class="section-number">示例三</span>
+    <h2>Retro Futuristic 复古未来 × 体育记分板</h2>
+    <p>CRT 扫描线、荧光橙、等宽字体、电子管美学</p>
+  </div>
+</div>
+
+<div class="container">
+  <div class="demo-wrapper">
+    <div class="demo-label">
+      <span class="demo-label-text">Live Demo</span>
+      <span class="demo-label-style retro-tag">Retro Futuristic / Dark</span>
+    </div>
+    <div class="demo-inner">
+      <div class="retro">
+        <div class="r-top">
+          <span class="r-league">J1 LEAGUE · MATCHDAY 12</span>
+          <span class="r-live">● LIVE</span>
+          <span class="r-league">NISSAN STADIUM</span>
+        </div>
+        <div class="r-main">
+          <div class="r-team"><div class="r-teamname">Yokohama</div><div class="r-teamname" style="font-size:22px;opacity:.6">F. Marinos</div><div class="r-record">8W · 2D · 1L</div></div>
+          <div style="text-align:center">
+            <div style="display:flex;align-items:center;gap:4px"><div class="r-digits">3</div><div class="r-sep">:</div><div class="r-digits">1</div></div>
+            <div class="r-period">2ND HALF</div>
+          </div>
+          <div class="r-team"><div class="r-teamname">Urawa</div><div class="r-teamname" style="font-size:22px;opacity:.6">Red Diamonds</div><div class="r-record">6W · 3D · 2L</div></div>
+        </div>
+        <div class="r-clock">
+          <div><div class="r-clock-val">67'</div><span class="r-clock-label">ELAPSED</span></div>
+          <div style="width:1px;height:32px;background:#331a00"></div>
+          <div><div class="r-clock-val">23'</div><span class="r-clock-label">REMAINING</span></div>
+          <div style="width:1px;height:32px;background:#331a00"></div>
+          <div><div class="r-clock-val">+3'</div><span class="r-clock-label">ADDED TIME</span></div>
+        </div>
+        <div class="r-stats">
+          <div class="r-stat-col">
+            <div class="r-stat-row"><span class="r-stat-label">SHOTS</span><span class="r-stat-val">14</span></div>
+            <div class="r-stat-row"><span class="r-stat-label">ON TARGET</span><span class="r-stat-val">7</span></div>
+            <div class="r-stat-row"><span class="r-stat-label">POSSESSION</span><span class="r-stat-val">58%</span></div>
+            <div class="r-stat-row"><span class="r-stat-label">CORNERS</span><span class="r-stat-val">6</span></div>
+          </div>
+          <div class="r-stat-col">
+            <div class="r-stat-row"><span class="r-stat-label">SHOTS</span><span class="r-stat-val">9</span></div>
+            <div class="r-stat-row"><span class="r-stat-label">ON TARGET</span><span class="r-stat-val">3</span></div>
+            <div class="r-stat-row"><span class="r-stat-label">POSSESSION</span><span class="r-stat-val">42%</span></div>
+            <div class="r-stat-row"><span class="r-stat-label">CORNERS</span><span class="r-stat-val">2</span></div>
+          </div>
+        </div>
+        <div class="r-player"><span>ANDERSON · 23'  45'  61'</span><span class="r-player-badge">HAT TRICK</span><span class="r-player-stat">3G</span></div>
+        <div class="r-player"><span>KOIKE · 38'</span><span class="r-player-badge">ASSIST ×2</span><span class="r-player-stat">1G 2A</span></div>
+        <div class="r-bottom"><span>SAT 28 MAR 2026</span><span>KICKOFF 19:00</span><span>ATT: 42,180</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="insight">
+    <div class="insight-label">设计解析</div>
+    <p>复古未来主义（Retro Futurism）借用了1970–80年代电子显示设备的视觉语言：橙色荧光、IBM Plex Mono 等宽字体、Bebas Neue 大字重数字、CRT 扫描线纹理。配色只有深棕黑底 + 橙红 + 琥珀色数字，没有任何多余颜色介入。适合体育直播、电竞、游戏、机械控仪表盘。</p>
+  </div>
+
+  <div class="pullquote">
+    设计的本质是做选择。Frontend Design Plugin 的价值不在于它会做什么，而在于它会拒绝什么——它拒绝了"差不多就行"。
+  </div>
+
+  <div class="rule"></div>
+  <div class="section-header">
+    <span class="section-number">总结对比</span>
+    <h2>三种风格，一个工具</h2>
+    <p>Plugin 内置的设计框架决定了它能驾驭的美学跨度</p>
+  </div>
+
+  <div class="prose" style="padding-top:24px">
+    <table class="compare">
+      <thead>
+        <tr><th>风格方向</th><th>核心语言</th><th>代表色彩</th><th>典型场景</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Brutalist 粗野主义</td><td>暴露结构、拒绝装饰、信息优先</td><td>黑底 × 柠檬黄</td><td>音乐、媒体、创意工具</td></tr>
+        <tr><td>Luxury 奢华主义</td><td>衬线字体、极细边框、克制留白</td><td>森林绿 × 香槟金</td><td>酒旅、精品零售、会员</td></tr>
+        <tr><td>Retro Futuristic 复古未来</td><td>等宽字体、荧光色、电子管美学</td><td>深棕黑 × 荧光橙</td><td>体育、游戏、电竞、仪表</td></tr>
+      </tbody>
+    </table>
+    <p>这三个示例只是冰山一角。Plugin 文档中列举的风格方向还包括：Maximalist 极繁主义、Organic/Natural 有机自然、Editorial/Magazine 杂志编辑、Art Deco 装饰艺术、Soft/Pastel 柔和粉彩、Industrial/Utilitarian 工业实用……每一种都有对应的字体选择逻辑、配色策略、和排版语法。</p>
+    <p><strong>Frontend Design Plugin 的安装方式</strong>：在 Claude Code 中直接使用，或在 claude.com/plugins/frontend-design 页面点击安装。安装后，每当你要求 Claude 构建界面组件、落地页、仪表盘，或任何视觉输出时，Plugin 会自动激活——你不需要每次都提醒它"请注意设计质量"。</p>
+  </div>
+</div>
+
+<footer class="footer">
+  <span class="footer-brand">Frontend Design</span>
+  <span>Anthropic · claude.com/plugins/frontend-design</span>
+  <span>324,030 installs</span>
+</footer>
+
+<script>
+  const wv = document.getElementById('waveform1');
+  const total = 72, played = 27;
+  for (let i = 0; i < total; i++) {
+    const d = document.createElement('div');
+    const h = 8 + Math.round(Math.abs(Math.sin(i * 0.43 + 1.2) * 44) + (i % 3) * 4);
+    d.className = 'bru-bar' + (i < played ? ' played' : i === played ? ' active' : '');
+    d.style.height = h + 'px';
+    wv.appendChild(d);
+  }
+  function luxSelect(el) {
+    document.querySelectorAll('.lux-prop').forEach(p => p.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+</script>
+</body>
+</html>

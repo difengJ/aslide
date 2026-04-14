@@ -6,188 +6,253 @@
 <title>aslide — Turn Any Document Into Beautiful Slides</title>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-:root {
-  --blue: #0071e3; --blue-b: #2997ff; --link: #0066cc;
-  --black: #000; --nb: #1d1d1f; --lg: #f5f5f7; --white: #fff;
-  --bl: rgba(0,0,0,0.8); --cap: rgba(0,0,0,0.48);
-  --surf: #272729; --surf2: #1e1e1e;
-  --shad: rgba(0,0,0,0.22) 3px 5px 30px 0px;
-  --f: "SF Pro Display","Helvetica Neue",Helvetica,Arial,sans-serif;
-  --ft: "SF Pro Text","Helvetica Neue",Helvetica,Arial,sans-serif;
-}
-html { scroll-behavior: smooth; }
-body { font-family: var(--ft); background: var(--black); color: #fff; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
 
+:root {
+  --blue: #0071e3;
+  --blue-bright: #2997ff;
+  --link: #0066cc;
+  --black: #000000;
+  --near-black: #1d1d1f;
+  --gray: #f5f5f7;
+  --white: #ffffff;
+  --muted-light: rgba(0,0,0,0.8);
+  --caption: rgba(0,0,0,0.48);
+  --surface: #272729;
+  --shadow: rgba(0,0,0,0.22) 3px 5px 30px 0px;
+  --font: "SF Pro Display","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --font-text: "SF Pro Text","Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+body { font-family: var(--font-text); background: var(--black); color: var(--white); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+
+/* NAV */
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 200; height: 48px;
-  background: rgba(0,0,0,0.8); backdrop-filter: saturate(180%) blur(20px);
+  background: rgba(0,0,0,0.8);
+  backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   display: flex; align-items: center; justify-content: space-between; padding: 0 24px;
 }
-.nl { font-family: var(--f); font-size: 18px; font-weight: 600; color: #fff; text-decoration: none; letter-spacing: -0.28px; }
-.nl span { color: var(--blue-b); }
-.nls { display: flex; gap: 28px; list-style: none; }
-.nls a { font-size: 12px; color: rgba(255,255,255,0.8); text-decoration: none; transition: color .2s; }
-.nls a:hover { color: #fff; }
-.nc { color: var(--blue-b) !important; }
+.nav-logo { font-family: var(--font); font-size: 18px; font-weight: 600; color: var(--white); text-decoration: none; letter-spacing: -0.28px; }
+.nav-logo span { color: var(--blue-bright); }
+.nav-links { display: flex; gap: 28px; list-style: none; }
+.nav-links a { font-size: 12px; color: rgba(255,255,255,0.8); text-decoration: none; letter-spacing: -0.12px; transition: color 0.2s; }
+.nav-links a:hover { color: var(--white); }
+.nav-cta { color: var(--blue-bright) !important; }
 
+/* HERO */
 .hero {
   background: var(--black); min-height: 100vh;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   text-align: center; padding: 120px 24px 80px;
 }
-.hey { font-size: 17px; color: var(--blue-b); letter-spacing: -0.374px; margin-bottom: 14px; }
-.ht {
-  font-family: var(--f); font-size: clamp(44px,7vw,72px); font-weight: 600;
-  line-height: 1.05; letter-spacing: -0.28px; color: #fff; margin-bottom: 18px; max-width: 860px;
+.hero-eyebrow { font-family: var(--font-text); font-size: 17px; color: var(--blue-bright); letter-spacing: -0.374px; margin-bottom: 14px; }
+.hero-title {
+  font-family: var(--font); font-size: 72px; font-weight: 600;
+  line-height: 1.05; letter-spacing: -0.5px;
+  color: var(--white); margin-bottom: 20px; max-width: 900px;
 }
-.hs {
-  font-family: var(--f); font-size: clamp(18px,2.5vw,24px); font-weight: 400;
-  line-height: 1.25; color: rgba(255,255,255,0.65); margin-bottom: 40px; max-width: 600px;
+.hero-sub {
+  font-family: var(--font); font-size: 21px; font-weight: 400;
+  line-height: 1.19; letter-spacing: 0.231px;
+  color: rgba(255,255,255,0.65); margin-bottom: 40px; max-width: 560px;
 }
-.hbtns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-.bb { background: var(--blue); color: #fff; font-size: 17px; padding: 10px 22px; border-radius: 8px; text-decoration: none; transition: background .2s; display: inline-block; }
-.bb:hover { background: #0077ed; }
-.bg { color: var(--blue-b); background: transparent; font-size: 17px; padding: 10px 22px; border-radius: 980px; border: 1px solid rgba(255,255,255,0.25); text-decoration: none; transition: border-color .2s; display: inline-block; }
-.bg:hover { border-color: rgba(255,255,255,0.5); }
+.hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.btn-blue {
+  background: var(--blue); color: var(--white);
+  font-family: var(--font-text); font-size: 17px; padding: 8px 20px;
+  border-radius: 8px; border: none; text-decoration: none; transition: background 0.2s; display: inline-block;
+}
+.btn-blue:hover { background: #0077ed; }
+.btn-ghost {
+  color: var(--blue-bright); background: transparent;
+  font-family: var(--font-text); font-size: 17px; padding: 8px 20px;
+  border-radius: 980px; border: 1px solid rgba(255,255,255,0.25);
+  text-decoration: none; transition: border-color 0.2s; display: inline-block;
+}
+.btn-ghost:hover { border-color: rgba(255,255,255,0.5); }
 
-.hv { margin-top: 72px; width: 100%; max-width: 920px; }
-.baw { display: grid; grid-template-columns: 1fr 80px 1fr; align-items: center; }
+/* HERO VISUAL */
+.hero-visual { margin-top: 72px; width: 100%; max-width: 900px; }
+.before-after { display: grid; grid-template-columns: 1fr 80px 1fr; align-items: center; }
 
-.dm { background: var(--surf); border-radius: 14px; padding: 28px 24px; box-shadow: var(--shad); text-align: left; }
-.dlbl { font-size: 9px; font-weight: 600; letter-spacing: .5px; color: rgba(255,255,255,0.25); text-transform: uppercase; margin-bottom: 18px; }
-.dl { height: 8px; border-radius: 3px; background: rgba(255,255,255,0.12); margin-bottom: 8px; }
-.dl.h { height: 13px; background: rgba(255,255,255,0.2); margin-bottom: 12px; }
-.dl.s { width: 65%; } .dl.xs { width: 42%; }
+.doc-card {
+  background: var(--surface); border-radius: 12px; padding: 26px;
+  box-shadow: var(--shadow); text-align: left;
+}
+.doc-label { font-size: 10px; font-weight: 600; letter-spacing: 0.5px; color: rgba(255,255,255,0.28); text-transform: uppercase; margin-bottom: 16px; }
+.dl { height: 8px; border-radius: 3px; background: rgba(255,255,255,0.12); margin-bottom: 7px; }
+.dl.h { height: 13px; background: rgba(255,255,255,0.2); margin-bottom: 11px; }
+.dl.s { width: 65%; }
+.dl.xs { width: 42%; }
 .dl.t { height: 6px; background: rgba(255,255,255,0.06); }
-.dl.g { height: 0; margin-bottom: 16px; }
 
-.baa { display: flex; flex-direction: column; align-items: center; gap: 8px; }
-.ar { width: 46px; height: 46px; border-radius: 50%; background: var(--blue); display: flex; align-items: center; justify-content: center; font-size: 20px; color: #fff; }
-.al { font-size: 9px; font-weight: 600; color: rgba(255,255,255,0.25); letter-spacing: .5px; text-transform: uppercase; text-align: center; }
-
-.sm { background: var(--surf); border-radius: 14px; overflow: hidden; box-shadow: var(--shad); aspect-ratio: 16/9; }
-.smi {
-  width: 100%; height: 100%; background: #090d16;
-  display: grid; grid-template-columns: 1fr 150px; grid-template-rows: auto 1fr auto;
-  padding: 24px 22px 20px; position: relative; overflow: hidden;
+.arrow-col { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.arrow-ring {
+  width: 46px; height: 46px; border-radius: 50%; background: var(--blue);
+  display: flex; align-items: center; justify-content: center; font-size: 22px;
 }
-.smi::before {
-  content: ''; position: absolute; top: 0; right: 0; width: 40%; height: 100%;
-  background: radial-gradient(ellipse at right center, rgba(0,113,227,0.18), transparent 70%);
+.arrow-lbl { font-size: 9px; font-weight: 600; color: rgba(255,255,255,0.28); letter-spacing: 0.5px; text-transform: uppercase; }
+
+.slide-card { background: var(--surface); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); aspect-ratio: 16/9; }
+.slide-inner {
+  width: 100%; height: 100%; background: #090d15;
+  display: grid; grid-template-columns: 1fr 1fr;
+  padding: 28px; position: relative;
+}
+.slide-left { display: flex; flex-direction: column; justify-content: center; gap: 8px; }
+.slide-right { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; position: relative; }
+.slide-right::before {
+  content: ''; position: absolute; inset: -28px;
+  background: radial-gradient(ellipse at center, rgba(0,113,227,0.15), transparent 70%);
   pointer-events: none;
 }
-.stag { grid-column:1; grid-row:1; font-size: 8px; letter-spacing: 2px; color: var(--blue-b); text-transform: uppercase; margin-bottom: 8px; }
-.sh { grid-column:1; grid-row:2; font-family: var(--f); font-size: clamp(15px,2.8vw,22px); font-weight: 600; line-height: 1.15; color: #fff; align-self: center; }
-.sh em { color: var(--blue-b); font-style: normal; }
-.sbod { grid-column:1; grid-row:3; font-size: 8px; color: rgba(255,255,255,0.4); line-height: 1.7; align-self: end; }
-.sst { grid-column:2; grid-row:1/4; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; position: relative; z-index: 1; }
-.sn { font-family: var(--f); font-size: clamp(22px,3.5vw,36px); font-weight: 600; color: var(--blue-b); line-height: 1; }
-.sl2 { font-size: 7px; color: rgba(255,255,255,0.3); letter-spacing: 1px; text-transform: uppercase; margin-top: 5px; }
+.sdivider { width: 1px; height: 60%; background: rgba(255,255,255,0.07); position: absolute; left: 0; top: 50%; transform: translateY(-50%); }
+.stag { font-size: 9px; letter-spacing: 2px; color: var(--blue-bright); text-transform: uppercase; }
+.sh1 { font-size: 22px; font-weight: 600; line-height: 1.1; color: #fff; }
+.sh1 em { color: var(--blue-bright); font-style: normal; }
+.sbody { font-size: 8.5px; color: rgba(255,255,255,0.4); line-height: 1.7; }
+.snum { font-size: 42px; font-weight: 600; color: var(--blue-bright); line-height: 1; z-index: 1; }
+.slbl { font-size: 8px; color: rgba(255,255,255,0.35); letter-spacing: 1px; text-transform: uppercase; z-index: 1; }
 
-.secl { background: var(--lg); padding: 110px 24px; text-align: center; }
-.secd { background: var(--black); padding: 110px 24px; text-align: center; }
-.sh2 { font-family: var(--f); font-size: clamp(36px,5vw,56px); font-weight: 600; line-height: 1.07; letter-spacing: -0.28px; margin-bottom: 18px; color: var(--nb); }
-.sh2.w { color: #fff; }
-.sp { font-size: 17px; line-height: 1.47; letter-spacing: -0.374px; color: var(--bl); max-width: 580px; margin: 0 auto 52px; }
-.sp.w { color: rgba(255,255,255,0.65); }
-.lm { font-size: 14px; color: var(--link); text-decoration: none; }
-.lm.w { color: var(--blue-b); } .lm:hover { text-decoration: underline; }
+/* SECTIONS */
+.sl { background: var(--gray); padding: 100px 24px; text-align: center; }
+.sd { background: var(--black); padding: 100px 24px; text-align: center; }
+.st { font-family: var(--font); font-size: 48px; font-weight: 600; line-height: 1.08; letter-spacing: -0.28px; margin-bottom: 16px; color: var(--near-black); }
+.st.w { color: var(--white); }
+.sb { font-family: var(--font-text); font-size: 17px; line-height: 1.47; letter-spacing: -0.374px; color: var(--muted-light); max-width: 560px; margin: 0 auto 52px; }
+.sb.w { color: rgba(255,255,255,0.65); }
+.lm { font-family: var(--font-text); font-size: 14px; color: var(--link); text-decoration: none; letter-spacing: -0.224px; }
+.lm.w { color: var(--blue-bright); }
+.lm:hover { text-decoration: underline; }
 
+/* HOW IT WORKS */
 .steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: rgba(0,0,0,0.08); max-width: 960px; margin: 0 auto; border-radius: 12px; overflow: hidden; }
-.step { background: #fff; padding: 42px 32px; text-align: left; }
-.stn { font-family: var(--f); font-size: 28px; font-weight: 400; color: var(--blue); line-height: 1.14; margin-bottom: 18px; }
-.stt { font-family: var(--f); font-size: 21px; font-weight: 700; line-height: 1.19; letter-spacing: .231px; color: var(--nb); margin-bottom: 10px; }
-.std { font-size: 14px; line-height: 1.43; letter-spacing: -.224px; color: var(--bl); }
+.step { background: var(--white); padding: 40px 30px; text-align: left; }
+.sn { font-family: var(--font); font-size: 28px; font-weight: 400; color: var(--blue); line-height: 1.14; margin-bottom: 16px; }
+.stitle { font-family: var(--font); font-size: 21px; font-weight: 700; line-height: 1.19; letter-spacing: 0.231px; color: var(--near-black); margin-bottom: 8px; }
+.sdesc { font-family: var(--font-text); font-size: 14px; line-height: 1.43; letter-spacing: -0.224px; color: var(--muted-light); }
 
+/* GALLERY */
 .gallery { display: grid; grid-template-columns: repeat(2,1fr); gap: 24px; max-width: 980px; margin: 0 auto; }
-.gc { background: var(--surf); border-radius: 12px; overflow: hidden; box-shadow: var(--shad); transition: transform .35s cubic-bezier(.2,0,0,1); text-decoration: none; display: block; }
-.gc:hover { transform: scale(1.018); }
-.gs { aspect-ratio: 16/9; display: block; }
-.gi { padding: 18px 22px; }
-.gtp { font-size: 12px; font-weight: 600; color: var(--blue-b); margin-bottom: 5px; }
-.gti { font-family: var(--f); font-size: 19px; font-weight: 400; line-height: 1.19; color: #fff; letter-spacing: -0.28px; margin-bottom: 5px; }
-.gd { font-size: 12px; color: rgba(255,255,255,0.38); line-height: 1.5; }
 
-.fw { max-width: 980px; margin: 32px auto 0; }
-.fwc {
-  background: var(--surf2); border-radius: 12px; overflow: hidden; box-shadow: var(--shad);
-  display: grid; grid-template-columns: 1fr 1fr; text-decoration: none;
-  transition: transform .35s cubic-bezier(.2,0,0,1);
+/* Real work cards — full width featured */
+.gc-real {
+  grid-column: 1 / -1;
+  background: var(--surface); border-radius: 12px; overflow: hidden;
+  box-shadow: var(--shadow); cursor: pointer; text-decoration: none; display: block;
+  transition: transform 0.3s cubic-bezier(0.2,0,0,1);
+  border: 1px solid rgba(255,255,255,0.06);
 }
-.fwc:hover { transform: scale(1.01); }
-.fwp { aspect-ratio: 16/9; }
-.fwi { padding: 40px 36px; display: flex; flex-direction: column; justify-content: center; gap: 14px; }
-.fwbdg { display: inline-block; background: rgba(227,25,55,0.15); border: 1px solid rgba(227,25,55,0.4); color: #e31937; font-size: 11px; font-weight: 600; letter-spacing: 1px; padding: 4px 12px; border-radius: 980px; text-transform: uppercase; width: fit-content; }
-.fwt { font-family: var(--f); font-size: 28px; font-weight: 600; line-height: 1.1; color: #fff; letter-spacing: -0.28px; }
-.fwd { font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.6; letter-spacing: -.224px; }
-.fwlk { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: var(--blue-b); }
+.gc-real:hover { transform: translateY(-4px); border-color: rgba(41,151,255,0.3); }
+.gc-real:hover .gc-preview-wrap { opacity: 0.88; }
+.gc-real-inner { display: grid; grid-template-columns: 1fr 1fr; min-height: 220px; }
+.gc-preview-wrap {
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px; transition: opacity 0.3s; position: relative; overflow: hidden;
+}
+.slide-thumb { width: 100%; aspect-ratio: 16/9; border-radius: 8px; overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.6); position: relative; z-index: 1; }
+.gc-real-info { padding: 36px; display: flex; flex-direction: column; justify-content: center; gap: 12px; border-left: 1px solid rgba(255,255,255,0.06); }
+.gc-real-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(41,151,255,0.1); border: 1px solid rgba(41,151,255,0.25); border-radius: 980px; padding: 3px 12px; font-size: 11px; font-weight: 600; color: var(--blue-bright); }
+.gc-real-badge::before { content: '●'; font-size: 7px; }
+.gc-real-title { font-family: var(--font); font-size: 28px; font-weight: 600; line-height: 1.1; letter-spacing: -0.28px; color: var(--white); }
+.gc-real-desc { font-family: var(--font-text); font-size: 14px; line-height: 1.5; letter-spacing: -0.224px; color: rgba(255,255,255,0.5); }
+.gc-real-cta { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: var(--blue-bright); letter-spacing: -0.224px; margin-top: 4px; }
 
+/* Tesla bg */
+.bg-tesla {
+  background: #0a0a0f;
+  background-image: linear-gradient(rgba(232,32,42,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(232,32,42,0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+/* Frontend design article bg */
+.bg-editorial { background: #faf8f5; }
+
+/* TAGS */
 .tags { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; max-width: 720px; margin: 0 auto; }
-.tag { font-size: 14px; color: var(--nb); background: #fff; padding: 8px 18px; border-radius: 980px; box-shadow: var(--shad); letter-spacing: -.224px; }
+.tag { font-size: 14px; color: var(--near-black); background: var(--white); padding: 8px 18px; border-radius: 980px; box-shadow: var(--shadow); letter-spacing: -0.224px; }
 
-.contact { background: var(--black); padding: 130px 24px; text-align: center; }
-.ctp { font-size: 17px; color: rgba(255,255,255,0.45); margin-bottom: 22px; letter-spacing: -.374px; }
-.cth { font-family: var(--f); font-size: clamp(42px,7vw,72px); font-weight: 600; line-height: 1.05; letter-spacing: -0.28px; margin-bottom: 36px; }
-.cte { font-family: var(--f); font-size: clamp(22px,4vw,40px); font-weight: 600; color: var(--blue-b); text-decoration: none; letter-spacing: -0.28px; display: inline-block; margin-bottom: 14px; transition: opacity .2s; }
-.cte:hover { opacity: .75; }
-.ctn { font-size: 14px; color: rgba(255,255,255,0.35); letter-spacing: -.224px; }
+/* CONTACT */
+.ct { background: var(--black); padding: 120px 24px; text-align: center; }
+.ct-pre { font-size: 17px; color: rgba(255,255,255,0.45); margin-bottom: 24px; letter-spacing: -0.374px; }
+.ct-h { font-family: var(--font); font-size: 72px; font-weight: 600; line-height: 1.05; letter-spacing: -0.5px; margin-bottom: 32px; }
+.ct-email { font-family: var(--font); font-size: 28px; font-weight: 400; color: var(--blue-bright); text-decoration: none; letter-spacing: -0.28px; display: inline-block; margin-bottom: 14px; transition: opacity 0.2s; border-bottom: 1px solid rgba(41,151,255,0.3); padding-bottom: 4px; }
+.ct-email:hover { opacity: 0.75; }
+.ct-note { font-size: 14px; color: rgba(255,255,255,0.35); letter-spacing: -0.224px; }
 
-footer { background: #111; padding: 20px 24px; border-top: 1px solid rgba(255,255,255,0.07); display: flex; align-items: center; justify-content: space-between; }
-.fll { font-family: var(--f); font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.4); text-decoration: none; }
-.fco { font-size: 12px; color: rgba(255,255,255,0.25); }
+/* FOOTER */
+footer { background: #111; padding: 20px 24px; border-top: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: space-between; }
+.fl { font-family: var(--font); font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.45); text-decoration: none; }
+.fc { font-size: 12px; color: rgba(255,255,255,0.28); letter-spacing: -0.12px; }
 
-@media(max-width:768px){
-  .baw,.fwc{grid-template-columns:1fr;gap:16px}
-  .baa{flex-direction:row;justify-content:center}
-  .steps,.gallery{grid-template-columns:1fr}
-  .nls{display:none}
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .hero-title, .ct-h { font-size: 40px; }
+  .hero-sub { font-size: 17px; }
+  .before-after { grid-template-columns: 1fr; gap: 14px; }
+  .arrow-col { flex-direction: row; justify-content: center; }
+  .steps { grid-template-columns: 1fr; }
+  .gallery { grid-template-columns: 1fr; }
+  .gc-real-inner { grid-template-columns: 1fr; }
+  .gc-real-info { border-left: none; border-top: 1px solid rgba(255,255,255,0.06); padding: 28px; }
+  .st { font-size: 32px; }
+  .nav-links { display: none; }
 }
 </style>
 </head>
 <body>
+
+<!-- NAV -->
 <nav>
-  <a href="#" class="nl">a<span>slide</span>.xyz</a>
-  <ul class="nls">
+  <a href="#" class="nav-logo">a<span>slide</span>.xyz</a>
+  <ul class="nav-links">
     <li><a href="#works">Works</a></li>
     <li><a href="#how">How it works</a></li>
-    <li><a href="#contact" class="nc">Get in touch ›</a></li>
+    <li><a href="#contact" class="nav-cta">Get in touch ›</a></li>
   </ul>
 </nav>
 
+<!-- HERO -->
 <section class="hero">
-  <p class="hey">Document → Slides, beautifully.</p>
-  <h1 class="ht">Your report,<br>transformed.</h1>
-  <p class="hs">Annual reports. Research papers. Whitepapers. I turn any document into slides people actually want to read.</p>
-  <div class="hbtns">
-    <a href="#contact" class="bb">Send your document</a>
-    <a href="#works" class="bg">See examples</a>
+  <p class="hero-eyebrow">Document → Slides, beautifully.</p>
+  <h1 class="hero-title">Your report,<br>transformed.</h1>
+  <p class="hero-sub">Annual reports. Research papers. Whitepapers. I turn any document into slides people actually want to read.</p>
+  <div class="hero-actions">
+    <a href="#contact" class="btn-blue">Send your document</a>
+    <a href="#works" class="btn-ghost">See examples</a>
   </div>
-  <div class="hv">
-    <div class="baw">
-      <div class="dm">
-        <div class="dlbl">Your document</div>
+
+  <div class="hero-visual">
+    <div class="before-after">
+      <div class="doc-card">
+        <div class="doc-label">Your document</div>
         <div class="dl h"></div>
         <div class="dl t"></div><div class="dl t s"></div><div class="dl t"></div><div class="dl t xs"></div><div class="dl t"></div>
-        <div class="dl g"></div>
+        <div style="height:10px"></div>
         <div class="dl h" style="width:72%"></div>
         <div class="dl t"></div><div class="dl t s"></div><div class="dl t"></div>
-        <div class="dl g"></div>
-        <div class="dl h" style="width:85%"></div>
+        <div style="height:10px"></div>
+        <div class="dl h" style="width:80%"></div>
         <div class="dl t"></div><div class="dl t xs"></div><div class="dl t"></div><div class="dl t s"></div>
       </div>
-      <div class="baa">
-        <div class="ar">→</div>
-        <div class="al">aslide</div>
+
+      <div class="arrow-col">
+        <div class="arrow-ring">→</div>
+        <div class="arrow-lbl">aslide</div>
       </div>
-      <div class="sm">
-        <div class="smi">
-          <div class="stag">Key Findings · 2024</div>
-          <div class="sh">Revenue grew<br><em>+147%</em> YoY</div>
-          <div class="sbod">Driven by enterprise expansion<br>and improved retention.</div>
-          <div class="sst">
-            <div class="sn">$8.2M</div>
-            <div class="sl2">Total Revenue</div>
+
+      <div class="slide-card">
+        <div class="slide-inner">
+          <div class="slide-left">
+            <div class="stag">Key Findings · 2024</div>
+            <div class="sh1">Revenue<br>grew <em>+147%</em><br>YoY</div>
+            <div class="sbody">Driven by enterprise expansion<br>and improved retention.</div>
+          </div>
+          <div class="slide-right">
+            <div class="sdivider"></div>
+            <div class="snum">$8.2M</div>
+            <div class="slbl">Total Revenue</div>
           </div>
         </div>
       </div>
@@ -195,165 +260,162 @@ footer { background: #111; padding: 20px 24px; border-top: 1px solid rgba(255,25
   </div>
 </section>
 
-<section class="secl" id="how">
-  <h2 class="sh2">Ridiculously simple.</h2>
-  <p class="sp">No briefs. No back-and-forth. Just send your document and receive slides ready to present.</p>
+<!-- HOW IT WORKS (light) -->
+<section class="sl" id="how">
+  <h2 class="st">Ridiculously simple.</h2>
+  <p class="sb">No briefs. No back-and-forth. Just send your document and get back slides ready to present.</p>
   <div class="steps">
-    <div class="step"><div class="stn">01</div><div class="stt">Send your doc</div><div class="std">PDF, Word, research paper, annual report, whitepaper — email it directly. No form to fill out.</div></div>
-    <div class="step"><div class="stn">02</div><div class="stt">I read &amp; design</div><div class="std">I distill your content into clear, visual slides. Each one designed to communicate — not just display — information.</div></div>
-    <div class="step"><div class="stn">03</div><div class="stt">You receive slides</div><div class="std">Delivered as PowerPoint, Keynote, or PDF. Ready to present, share, or publish.</div></div>
+    <div class="step">
+      <div class="sn">01</div>
+      <div class="stitle">Send your doc</div>
+      <div class="sdesc">PDF, Word, research paper, annual report, whitepaper — email it directly. No form to fill out.</div>
+    </div>
+    <div class="step">
+      <div class="sn">02</div>
+      <div class="stitle">I read & design</div>
+      <div class="sdesc">I distill your content into clear, visual slides. Each one designed to communicate — not just display — information.</div>
+    </div>
+    <div class="step">
+      <div class="sn">03</div>
+      <div class="stitle">You receive slides</div>
+      <div class="sdesc">Delivered as PowerPoint, Keynote, or PDF. Ready to present, share, or publish.</div>
+    </div>
   </div>
 </section>
 
-<section class="secd" id="works">
-  <h2 class="sh2 w">What I've made.</h2>
-  <p class="sp w">From Tesla earnings to academic research — every document type, turned into slides worth sharing.</p>
+<!-- WORKS (dark) -->
+<section class="sd" id="works">
+  <h2 class="st w">What I've made.</h2>
+  <p class="sb w">Real documents, turned into slides worth sharing. Click any card to open the full deck.</p>
   <div class="gallery">
-    <a class="gc" href="#contact">
-      <div class="gs">
-        <svg width="100%" height="100%" viewBox="0 0 560 315" xmlns="http://www.w3.org/2000/svg">
-          <rect width="560" height="315" fill="#0a0f1a"/>
-          <text x="32" y="56" font-family="Helvetica Neue,Arial,sans-serif" font-size="9" fill="#2997ff" letter-spacing="2.5" font-weight="600">NATURE · RESEARCH PAPER 2024</text>
-          <text x="30" y="100" font-family="Helvetica Neue,Arial,sans-serif" font-size="23" fill="#fff" font-weight="600">Climate Change Impact</text>
-          <text x="30" y="130" font-family="Helvetica Neue,Arial,sans-serif" font-size="23" fill="#2997ff" font-weight="600">on Global Food Security</text>
-          <text x="30" y="158" font-family="Helvetica Neue,Arial,sans-serif" font-size="10" fill="rgba(255,255,255,0.32)">Chen et al. · DOI 10.1038/s41586-024</text>
-          <polyline points="50,255 100,243 150,245 200,230 250,218 300,205 340,190" fill="none" stroke="#ff453a" stroke-width="2"/>
-          <polyline points="50,253 100,248 150,249 200,243 250,241 300,236 340,230" fill="none" stroke="#2997ff" stroke-width="2" opacity="0.65"/>
-          <text x="432" y="132" font-family="Helvetica Neue,Arial,sans-serif" font-size="46" fill="#ff453a" font-weight="700" text-anchor="middle">-23%</text>
-          <text x="432" y="154" font-family="Helvetica Neue,Arial,sans-serif" font-size="8" fill="rgba(255,255,255,0.28)" text-anchor="middle" letter-spacing="1">CROP YIELD 2050</text>
-        </svg>
-      </div>
-      <div class="gi"><div class="gtp">Research Paper</div><div class="gti">Nature Climate Study</div><div class="gd">42-page paper → 12 slides · Findings, methodology, data visualization</div></div>
-    </a>
-    <a class="gc" href="#contact">
-      <div class="gs">
-        <svg width="100%" height="100%" viewBox="0 0 560 315" xmlns="http://www.w3.org/2000/svg">
-          <rect width="560" height="315" fill="#f9f6f1"/>
-          <rect x="0" y="0" width="560" height="4" fill="#0071e3"/>
-          <text x="32" y="52" font-family="Helvetica Neue,Arial,sans-serif" font-size="9" fill="#0071e3" letter-spacing="2.5" font-weight="600">SUSTAINABILITY REPORT 2024</text>
-          <text x="30" y="96" font-family="Helvetica Neue,Arial,sans-serif" font-size="30" fill="#1d1d1f" font-weight="600">Net Zero by 2030.</text>
-          <text x="30" y="128" font-family="Helvetica Neue,Arial,sans-serif" font-size="30" fill="#0071e3" font-weight="300">Our commitment.</text>
-          <text x="30" y="183" font-family="Helvetica Neue,Arial,sans-serif" font-size="32" fill="#0071e3" font-weight="600">68%</text>
-          <text x="30" y="200" font-family="Helvetica Neue,Arial,sans-serif" font-size="8" fill="rgba(0,0,0,0.36)" letter-spacing="1">EMISSIONS CUT</text>
-          <text x="148" y="183" font-family="Helvetica Neue,Arial,sans-serif" font-size="32" fill="#0071e3" font-weight="600">100%</text>
-          <text x="148" y="200" font-family="Helvetica Neue,Arial,sans-serif" font-size="8" fill="rgba(0,0,0,0.36)" letter-spacing="1">RENEWABLE</text>
-          <text x="308" y="183" font-family="Helvetica Neue,Arial,sans-serif" font-size="32" fill="#0071e3" font-weight="600">Zero</text>
-          <text x="308" y="200" font-family="Helvetica Neue,Arial,sans-serif" font-size="8" fill="rgba(0,0,0,0.36)" letter-spacing="1">NET CARBON</text>
-          <circle cx="470" cy="155" r="80" fill="none" stroke="#0071e3" stroke-width="1" opacity="0.12"/>
-          <circle cx="470" cy="155" r="55" fill="none" stroke="#0071e3" stroke-width="1" opacity="0.08"/>
-          <circle cx="470" cy="155" r="30" fill="#0071e3" opacity="0.06"/>
-        </svg>
-      </div>
-      <div class="gi"><div class="gtp">ESG Report</div><div class="gti">Corporate Sustainability</div><div class="gd">120-page report → 16 slides · ESG metrics, goals, stakeholder highlights</div></div>
-    </a>
-    <a class="gc" href="#contact">
-      <div class="gs">
-        <svg width="100%" height="100%" viewBox="0 0 560 315" xmlns="http://www.w3.org/2000/svg">
-          <rect width="560" height="315" fill="#0b1218"/>
-          <text x="32" y="56" font-family="Helvetica Neue,Arial,sans-serif" font-size="9" fill="#30d158" letter-spacing="2.5" font-weight="600">CLINICAL TRIAL · PHASE III RESULTS</text>
-          <text x="30" y="100" font-family="Helvetica Neue,Arial,sans-serif" font-size="26" fill="#fff" font-weight="600">Primary endpoint</text>
-          <text x="30" y="132" font-family="Helvetica Neue,Arial,sans-serif" font-size="26" fill="#30d158" font-weight="600">met with significance.</text>
-          <text x="30" y="162" font-family="Helvetica Neue,Arial,sans-serif" font-size="10" fill="rgba(255,255,255,0.28)">p &lt; 0.001 · n = 4,218 · 24-month follow-up</text>
-          <text x="30" y="205" font-family="Helvetica Neue" font-size="9" fill="rgba(255,255,255,0.3)" letter-spacing="1">TREATMENT</text>
-          <rect x="118" y="195" width="232" height="13" fill="#30d158" opacity="0.85" rx="2"/>
-          <text x="358" y="205" font-family="Helvetica Neue" font-size="9" fill="#30d158">84%</text>
-          <text x="30" y="234" font-family="Helvetica Neue" font-size="9" fill="rgba(255,255,255,0.3)" letter-spacing="1">PLACEBO</text>
-          <rect x="118" y="224" width="86" height="13" fill="rgba(255,255,255,0.16)" rx="2"/>
-          <text x="212" y="234" font-family="Helvetica Neue" font-size="9" fill="rgba(255,255,255,0.4)">31%</text>
-          <text x="462" y="162" font-family="Helvetica Neue,Arial,sans-serif" font-size="48" fill="#30d158" font-weight="700" text-anchor="middle">2.7×</text>
-          <text x="462" y="183" font-family="Helvetica Neue,Arial,sans-serif" font-size="8" fill="rgba(255,255,255,0.25)" text-anchor="middle" letter-spacing="1">MORE EFFECTIVE</text>
-        </svg>
-      </div>
-      <div class="gi"><div class="gtp">Clinical Study</div><div class="gti">Phase III Trial Results</div><div class="gd">Dense medical PDF → 14 slides · Overview, results, safety data</div></div>
-    </a>
-    <a class="gc" href="#contact">
-      <div class="gs">
-        <svg width="100%" height="100%" viewBox="0 0 560 315" xmlns="http://www.w3.org/2000/svg">
-          <rect width="560" height="315" fill="#0f0f0f"/>
-          <text x="32" y="56" font-family="Helvetica Neue,Arial,sans-serif" font-size="9" fill="#bf8b2e" letter-spacing="2.5" font-weight="600">STRATEGY WHITEPAPER · Q4 2024</text>
-          <text x="30" y="108" font-family="Helvetica Neue,Arial,sans-serif" font-size="36" fill="#fff" font-weight="600">Market Entry</text>
-          <text x="30" y="152" font-family="Helvetica Neue,Arial,sans-serif" font-size="36" fill="#bf8b2e" font-weight="300">Southeast Asia.</text>
-          <text x="30" y="200" font-family="Helvetica Neue,Arial,sans-serif" font-size="12" fill="rgba(255,255,255,0.35)">6 markets · $4.2B TAM · 18-month roadmap</text>
-          <circle cx="390" cy="155" r="55" fill="none" stroke="#bf8b2e" stroke-width="0.8" opacity="0.2"/>
-          <circle cx="430" cy="135" r="38" fill="none" stroke="#bf8b2e" stroke-width="0.8" opacity="0.15"/>
-          <circle cx="410" cy="175" r="28" fill="#bf8b2e" opacity="0.08"/>
-          <circle cx="470" cy="160" r="20" fill="none" stroke="#bf8b2e" stroke-width="0.5" opacity="0.2"/>
-        </svg>
-      </div>
-      <div class="gi"><div class="gtp">Strategy Whitepaper</div><div class="gti">Market Entry Analysis</div><div class="gd">80-page strategy doc → 20 slides · Market sizing, entry plan, financials</div></div>
-    </a>
-  </div>
 
-  <!-- FEATURED TESLA -->
-  <div class="fw">
-    <a class="fwc" href="tesla-spring-2026.html" target="_blank">
-      <div class="fwp">
-        <svg width="100%" height="100%" viewBox="0 0 560 315" xmlns="http://www.w3.org/2000/svg">
-          <rect width="560" height="315" fill="#080c10"/>
-          <rect x="0" y="0" width="3" height="315" fill="#e31937"/>
-          <text x="32" y="56" font-family="Helvetica Neue,Arial,sans-serif" font-size="9" fill="#e31937" letter-spacing="2.5" font-weight="600">TESLA · SPRING UPDATE 2026</text>
-          <text x="30" y="110" font-family="Helvetica Neue,Arial,sans-serif" font-size="46" fill="#fff" font-weight="600" letter-spacing="-0.5">Spring</text>
-          <text x="30" y="162" font-family="Helvetica Neue,Arial,sans-serif" font-size="46" fill="#e31937" font-weight="600" letter-spacing="-0.5">Update</text>
-          <text x="30" y="200" font-family="Helvetica Neue,Arial,sans-serif" font-size="46" fill="#fff" font-weight="300" letter-spacing="-0.5">2026.</text>
-          <text x="30" y="232" font-family="Helvetica Neue,Arial,sans-serif" font-size="11" fill="rgba(255,255,255,0.32)" letter-spacing="0.3">Software Release · April 2026 · 12+ Features</text>
-          <rect x="310" y="82" width="130" height="26" rx="4" fill="rgba(227,25,55,0.12)" stroke="rgba(227,25,55,0.25)" stroke-width="1"/>
-          <text x="375" y="99" font-family="Helvetica Neue,Arial,sans-serif" font-size="9" fill="rgba(255,255,255,0.6)" text-anchor="middle">FSD Subscribe App</text>
-          <rect x="310" y="118" width="130" height="26" rx="4" fill="rgba(227,25,55,0.12)" stroke="rgba(227,25,55,0.25)" stroke-width="1"/>
-          <text x="375" y="135" font-family="Helvetica Neue,Arial,sans-serif" font-size="9" fill="rgba(255,255,255,0.6)" text-anchor="middle">Hey Grok</text>
-          <rect x="310" y="154" width="130" height="26" rx="4" fill="rgba(227,25,55,0.12)" stroke="rgba(227,25,55,0.25)" stroke-width="1"/>
-          <text x="375" y="171" font-family="Helvetica Neue,Arial,sans-serif" font-size="9" fill="rgba(255,255,255,0.6)" text-anchor="middle">24H Dashcam</text>
-          <rect x="310" y="190" width="130" height="26" rx="4" fill="rgba(227,25,55,0.12)" stroke="rgba(227,25,55,0.25)" stroke-width="1"/>
-          <text x="375" y="207" font-family="Helvetica Neue,Arial,sans-serif" font-size="9" fill="rgba(255,255,255,0.6)" text-anchor="middle">Cyberhog + Pet Mode</text>
-          <rect x="450" y="82" width="82" height="26" rx="4" fill="rgba(227,25,55,0.12)" stroke="rgba(227,25,55,0.25)" stroke-width="1"/>
-          <text x="491" y="99" font-family="Helvetica Neue,Arial,sans-serif" font-size="9" fill="rgba(255,255,255,0.6)" text-anchor="middle">Auto OTA</text>
-          <rect x="450" y="118" width="82" height="26" rx="4" fill="rgba(227,25,55,0.12)" stroke="rgba(227,25,55,0.25)" stroke-width="1"/>
-          <text x="491" y="135" font-family="Helvetica Neue,Arial,sans-serif" font-size="9" fill="rgba(255,255,255,0.6)" text-anchor="middle">Safety Lights</text>
-        </svg>
-      </div>
-      <div class="fwi">
-        <span class="fwbdg">Live Example ↗</span>
-        <div class="fwt">Tesla Spring Update 2026</div>
-        <div class="fwd">A full 9-slide deck built from Tesla's software release notes. Interactive, scroll-snapping, with animated data visualizations.</div>
-        <div class="fwlk">View the full deck ›</div>
+    <!-- Tesla Spring 2026 -->
+    <a class="gc-real" href="tesla-spring-2026.html" target="_blank">
+      <div class="gc-real-inner">
+        <div class="gc-preview-wrap bg-tesla">
+          <div class="slide-thumb">
+            <svg width="100%" height="100%" viewBox="0 0 560 315" xmlns="http://www.w3.org/2000/svg">
+              <rect width="560" height="315" fill="#080810"/>
+              <defs>
+                <radialGradient id="rg1" cx="50%" cy="100%" r="70%">
+                  <stop offset="0%" stop-color="#e8202a" stop-opacity="0.22"/>
+                  <stop offset="100%" stop-color="#080810" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+              <rect width="560" height="315" fill="url(#rg1)"/>
+              <line x1="0" y1="157" x2="560" y2="157" stroke="rgba(232,32,42,0.05)" stroke-width="1"/>
+              <line x1="280" y1="0" x2="280" y2="315" stroke="rgba(232,32,42,0.05)" stroke-width="1"/>
+              <text x="280" y="88" font-family="Helvetica Neue,Arial,sans-serif" font-size="11" fill="#e8202a" letter-spacing="8" font-weight="600" text-anchor="middle">TESLA</text>
+              <line x1="188" y1="93" x2="244" y2="93" stroke="#e8202a" stroke-width="0.5" opacity="0.5"/>
+              <line x1="316" y1="93" x2="372" y2="93" stroke="#e8202a" stroke-width="0.5" opacity="0.5"/>
+              <text x="280" y="156" font-family="Helvetica Neue,Arial,sans-serif" font-size="50" fill="#f0f0f5" font-weight="800" text-anchor="middle" letter-spacing="-2">Spring</text>
+              <text x="280" y="210" font-family="Helvetica Neue,Arial,sans-serif" font-size="50" fill="#e8202a" font-weight="800" text-anchor="middle" letter-spacing="-2" font-style="italic">Update</text>
+              <text x="280" y="264" font-family="Helvetica Neue,Arial,sans-serif" font-size="50" fill="#f0f0f5" font-weight="800" text-anchor="middle" letter-spacing="-2">2026</text>
+              <text x="280" y="296" font-family="monospace" font-size="9" fill="rgba(240,240,245,0.28)" letter-spacing="2" text-anchor="middle">Software Release · April 2026</text>
+            </svg>
+          </div>
+        </div>
+        <div class="gc-real-info">
+          <div class="gc-real-badge">Live · Real Work</div>
+          <div class="gc-real-title">Tesla Spring Update 2026</div>
+          <div class="gc-real-desc">Turned Tesla's software release notes into a 9-slide scrollable deck. Dark editorial aesthetic, animated visualizations, fully responsive.</div>
+          <div class="gc-real-cta">View full deck <span style="font-size:16px">→</span></div>
+        </div>
       </div>
     </a>
+
+    <!-- Frontend Design Article -->
+    <a class="gc-real" href="frontend-design-article.html" target="_blank">
+      <div class="gc-real-inner">
+        <div class="gc-preview-wrap bg-editorial">
+          <div class="slide-thumb">
+            <svg width="100%" height="100%" viewBox="0 0 560 315" xmlns="http://www.w3.org/2000/svg">
+              <rect width="560" height="315" fill="#faf8f5"/>
+              <rect x="0" y="0" width="560" height="1" fill="#1a1814"/>
+              <!-- Masthead -->
+              <text x="28" y="26" font-family="Georgia,serif" font-size="9" fill="#8a8580" letter-spacing="2">Frontend Design · Anthropic Plugin</text>
+              <line x1="0" y1="36" x2="560" y2="36" stroke="#1a1814" stroke-width="0.5"/>
+              <!-- Hero text -->
+              <text x="28" y="72" font-family="Georgia,serif" font-size="22" fill="#1a1814" font-weight="400">告别"AI 审美"，</text>
+              <text x="28" y="100" font-family="Georgia,serif" font-size="22" fill="#8b5e3c" font-style="italic">真正有主张</text>
+              <text x="152" y="100" font-family="Georgia,serif" font-size="22" fill="#1a1814">的界面</text>
+              <!-- Lead bar -->
+              <rect x="28" y="116" width="2" height="48" fill="#c8a96e"/>
+              <text x="38" y="132" font-family="Georgia,serif" font-size="10" fill="#4a4540">Frontend Design Plugin 是 Anthropic 官方</text>
+              <text x="38" y="148" font-family="Georgia,serif" font-size="10" fill="#4a4540">出品的前端设计增强工具，核心使命只有</text>
+              <text x="38" y="164" font-family="Georgia,serif" font-size="10" fill="#4a4540">一件事：让 Claude 生成的界面不再千篇一律。</text>
+              <!-- Demo previews row -->
+              <rect x="28" y="188" width="155" height="90" fill="#0a0a0a" rx="3"/>
+              <text x="106" y="222" font-family="monospace" font-size="20" fill="#e8ff47" text-anchor="middle" font-weight="700">BRUTAL</text>
+              <text x="106" y="242" font-family="monospace" font-size="9" fill="#555" text-anchor="middle" letter-spacing="1">IST</text>
+              <rect x="198" y="188" width="155" height="90" fill="#2c3a2e" rx="3"/>
+              <text x="276" y="222" font-family="Georgia,serif" font-size="16" fill="#c9b882" text-anchor="middle" font-style="italic">Luxury</text>
+              <text x="276" y="242" font-family="Georgia,serif" font-size="9" fill="#8fa68e" text-anchor="middle">Warm · Refined</text>
+              <rect x="368" y="188" width="162" height="90" fill="#1a0a00" rx="3"/>
+              <text x="449" y="222" font-family="monospace" font-size="18" fill="#ffb347" text-anchor="middle" font-weight="700">RETRO</text>
+              <text x="449" y="242" font-family="monospace" font-size="9" fill="#ff6b1a" text-anchor="middle" opacity="0.6">FUTURISTIC</text>
+            </svg>
+          </div>
+        </div>
+        <div class="gc-real-info">
+          <div class="gc-real-badge">Live · Real Work</div>
+          <div class="gc-real-title">Frontend Design Article</div>
+          <div class="gc-real-desc">An editorial-style article showcasing three distinct UI aesthetics — Brutalist, Luxury, and Retro Futuristic — with live interactive demos.</div>
+          <div class="gc-real-cta">View full article <span style="font-size:16px">→</span></div>
+        </div>
+      </div>
+    </a>
+
   </div>
+  <br><br><br>
+  <a href="#contact" class="lm w">Have a document to transform? Let's talk ›</a>
 </section>
 
-<section class="secl">
-  <h2 class="sh2">Any document.<br>Any industry.</h2>
-  <p class="sp">If it has pages, I can make it into slides.</p>
+<!-- ANY DOCUMENT (light) -->
+<section class="sl">
+  <h2 class="st">Any document.<br>Any industry.</h2>
+  <p class="sb">If it has pages, I can make it into slides.</p>
   <div class="tags">
-    <span class="tag">Annual Reports</span><span class="tag">Research Papers</span>
-    <span class="tag">Whitepapers</span><span class="tag">Strategy Documents</span>
-    <span class="tag">Financial Reports</span><span class="tag">Clinical Studies</span>
-    <span class="tag">ESG Reports</span><span class="tag">Market Analysis</span>
-    <span class="tag">Policy Documents</span><span class="tag">Conference Papers</span>
-    <span class="tag">Product Roadmaps</span><span class="tag">Earnings Reports</span>
+    <span class="tag">Annual Reports</span>
+    <span class="tag">Research Papers</span>
+    <span class="tag">Whitepapers</span>
+    <span class="tag">Strategy Documents</span>
+    <span class="tag">Financial Reports</span>
+    <span class="tag">Clinical Studies</span>
+    <span class="tag">ESG Reports</span>
+    <span class="tag">Market Analysis</span>
+    <span class="tag">Policy Documents</span>
+    <span class="tag">Conference Papers</span>
+    <span class="tag">Product Roadmaps</span>
+    <span class="tag">Earnings Reports</span>
   </div>
 </section>
 
-<section class="contact" id="contact">
-  <p class="ctp">Ready to transform your document?</p>
-  <h2 class="cth">Send it over.</h2>
-  <a href="mailto:hello@aslide.xyz" class="cte">hello@aslide.xyz</a>
-  <p class="ctn">Attach your document · I'll reply within 24 hours with a quote</p>
+<!-- CONTACT (dark) -->
+<section class="ct" id="contact">
+  <p class="ct-pre">Ready to transform your document?</p>
+  <h2 class="ct-h">Send it over.</h2>
+  <a href="mailto:hello@aslide.xyz" class="ct-email">hello@aslide.xyz</a>
+  <p class="ct-note">Attach your document · I'll reply within 24 hours</p>
 </section>
 
+<!-- FOOTER -->
 <footer>
-  <a href="#" class="fll">aslide.xyz</a>
-  <span class="fco">© 2026 aslide.xyz</span>
+  <a href="#" class="fl">aslide.xyz</a>
+  <span class="fc">© 2025 aslide.xyz</span>
 </footer>
 
 <script>
-const io = new IntersectionObserver(e => {
-  e.forEach(x => { if(x.isIntersecting){ x.target.style.opacity='1'; x.target.style.transform='translateY(0)'; } });
-}, {threshold:.08});
-document.querySelectorAll('.gc,.step,.fwc').forEach(el => {
-  el.style.opacity='0'; el.style.transform='translateY(22px)';
-  el.style.transition='opacity .55s ease,transform .55s ease';
-  io.observe(el);
-});
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.style.opacity = '1'; e.target.style.transform = 'translateY(0)'; }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.gc-real, .step').forEach(el => {
+    el.style.opacity = '0'; el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    io.observe(el);
+  });
 </script>
 </body>
 </html>
