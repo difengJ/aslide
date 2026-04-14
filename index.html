@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>aslide — Turn Any Document Into Beautiful Slides</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --blue: #0071e3; --blue-b: #2997ff; --link: #0066cc;
+  --black: #000; --nb: #1d1d1f; --lg: #f5f5f7; --white: #fff;
+  --bl: rgba(0,0,0,0.8); --cap: rgba(0,0,0,0.48);
+  --surf: #272729; --surf2: #1e1e1e;
+  --shad: rgba(0,0,0,0.22) 3px 5px 30px 0px;
+  --f: "SF Pro Display","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --ft: "SF Pro Text","Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+html { scroll-behavior: smooth; }
+body { font-family: var(--ft); background: var(--black); color: #fff; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200; height: 48px;
+  background: rgba(0,0,0,0.8); backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  display: flex; align-items: center; justify-content: space-between; padding: 0 24px;
+}
+.nl { font-family: var(--f); font-size: 18px; font-weight: 600; color: #fff; text-decoration: none; letter-spacing: -0.28px; }
+.nl span { color: var(--blue-b); }
+.nls { display: flex; gap: 28px; list-style: none; }
+.nls a { font-size: 12px; color: rgba(255,255,255,0.8); text-decoration: none; transition: color .2s; }
+.nls a:hover { color: #fff; }
+.nc { color: var(--blue-b) !important; }
+
+.hero {
+  background: var(--black); min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 120px 24px 80px;
+}
+.hey { font-size: 17px; color: var(--blue-b); letter-spacing: -0.374px; margin-bottom: 14px; }
+.ht {
+  font-family: var(--f); font-size: clamp(44px,7vw,72px); font-weight: 600;
+  line-height: 1.05; letter-spacing: -0.28px; color: #fff; margin-bottom: 18px; max-width: 860px;
+}
+.hs {
+  font-family: var(--f); font-size: clamp(18px,2.5vw,24px); font-weight: 400;
+  line-height: 1.25; color: rgba(255,255,255,0.65); margin-bottom: 40px; max-width: 600px;
+}
+.hbtns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.bb { background: var(--blue); color: #fff; font-size: 17px; padding: 10px 22px; border-radius: 8px; text-decoration: none; transition: background .2s; display: inline-block; }
+.bb:hover { background: #0077ed; }
+.bg { color: var(--blue-b); background: transparent; font-size: 17px; padding: 10px 22px; border-radius: 980px; border: 1px solid rgba(255,255,255,0.25); text-decoration: none; transition: border-color .2s; display: inline-block; }
+.bg:hover { border-color: rgba(255,255,255,0.5); }
+
+.hv { margin-top: 72px; width: 100%; max-width: 920px; }
+.baw { display: grid; grid-template-columns: 1fr 80px 1fr; align-items: center; }
+
+.dm { background: var(--surf); border-radius: 14px; padding: 28px 24px; box-shadow: var(--shad); text-align: left; }
+.dlbl { font-size: 9px; font-weight: 600; letter-spacing: .5px; color: rgba(255,255,255,0.25); text-transform: uppercase; margin-bottom: 18px; }
+.dl { height: 8px; border-radius: 3px; background: rgba(255,255,255,0.12); margin-bottom: 8px; }
+.dl.h { height: 13px; background: rgba(255,255,255,0.2); margin-bottom: 12px; }
+.dl.s { width: 65%; } .dl.xs { width: 42%; }
+.dl.t { height: 6px; background: rgba(255,255,255,0.06); }
+.dl.g { height: 0; margin-bottom: 16px; }
+
+.baa { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.ar { width: 46px; height: 46px; border-radius: 50%; background: var(--blue); display: flex; align-items: center; justify-content: center; font-size: 20px; color: #fff; }
+.al { font-size: 9px; font-weight: 600; color: rgba(255,255,255,0.25); letter-spacing: .5px; text-transform: uppercase; text-align: center; }
+
+.sm { background: var(--surf); border-radius: 14px; overflow: hidden; box-shadow: var(--shad); aspect-ratio: 16/9; }
+.smi {
+  width: 100%; height: 100%; background: #090d16;
+  display: grid; grid-template-columns: 1fr 150px; grid-template-rows: auto 1fr auto;
+  padding: 24px 22px 20px; position: relative; overflow: hidden;
+}
+.smi::before {
+  content: ''; position: absolute; top: 0; right: 0; width: 40%; height: 100%;
+  background: radial-gradient(ellipse at right center, rgba(0,113,227,0.18), transparent 70%);
+  pointer-events: none;
+}
+.stag { grid-column:1; grid-row:1; font-size: 8px; letter-spacing: 2px; color: var(--blue-b); text-transform: uppercase; margin-bottom: 8px; }
+.sh { grid-column:1; grid-row:2; font-family: var(--f); font-size: clamp(15px,2.8vw,22px); font-weight: 600; line-height: 1.15; color: #fff; align-self: center; }
+.sh em { color: var(--blue-b); font-style: normal; }
+.sbod { grid-column:1; grid-row:3; font-size: 8px; color: rgba(255,255,255,0.4); line-height: 1.7; align-self: end; }
+.sst { grid-column:2; grid-row:1/4; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; position: relative; z-index: 1; }
+.sn { font-family: var(--f); font-size: clamp(22px,3.5vw,36px); font-weight: 600; color: var(--blue-b); line-height: 1; }
+.sl2 { font-size: 7px; color: rgba(255,255,255,0.3); letter-spacing: 1px; text-transform: uppercase; margin-top: 5px; }
+
+.secl { background: var(--lg); padding: 110px 24px; text-align: center; }
+.secd { background: var(--black); padding: 110px 24px; text-align: center; }
+.sh2 { font-family: var(--f); font-size: clamp(36px,5vw,56px); font-weight: 600; line-height: 1.07; letter-spacing: -0.28px; margin-bottom: 18px; color: var(--nb); }
+.sh2.w { color: #fff; }
+.sp { font-size: 17px; line-height: 1.47; letter-spacing: -0.374px; color: var(--bl); max-width: 580px; margin: 0 auto 52px; }
+.sp.w { color: rgba(255,255,255,0.65); }
+.lm { font-size: 14px; color: var(--link); text-decoration: none; }
+.lm.w { color: var(--blue-b); } .lm:hover { text-decoration: underline; }
+
+.steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: rgba(0,0,0,0.08); max-width: 960px; margin: 0 auto; border-radius: 12px; overflow: hidden; }
+.step { background: #fff; padding: 42px 32px; text-align: left; }
+.stn { font-family: var(--f); font-size: 28px; font-weight: 400; color: var(--blue); line-height: 1.14; margin-bottom: 18px; }
+.stt { font-family: var(--f); font-size: 21px; font-weight: 700; line-height: 1.19; letter-spacing: .231px; color: var(--nb); margin-bottom: 10px; }
+.std { font-size: 14px; line-height: 1.43; letter-spacing: -.224px; color: var(--bl); }
+
+.gallery { display: grid; grid-template-columns: repeat(2,1fr); gap: 24px; max-width: 980px; margin: 0 auto; }
+.gc { background: var(--surf); border-radius: 12px; overflow: hidden; box-shadow: var(--shad); transition: transform .35s cubic-bezier(.2,0,0,1); text-decoration: none; display: block; }
+.gc:hover { transform: scale(1.018); }
+.gs { aspect-ratio: 16/9; display: block; }
+.gi { padding: 18px 22px; }
+.gtp { font-size: 12px; font-weight: 600; color: var(--blue-b); margin-bottom: 5px; }
+.gti { font-family: var(--f); font-size: 19px; font-weight: 400; line-height: 1.19; color: #fff; letter-spacing: -0.28px; margin-bottom: 5px; }
+.gd { font-size: 12px; color: rgba(255,255,255,0.38); line-height: 1.5; }
+
+.fw { max-width: 980px; margin: 32px auto 0; }
+.fwc {
+  background: var(--surf2); border-radius: 12px; overflow: hidden; box-shadow: var(--shad);
+  display: grid; grid-template-columns: 1fr 1fr; text-decoration: none;
+  transition: transform .35s cubic-bezier(.2,0,0,1);
+}
+.fwc:hover { transform: scale(1.01); }
+.fwp { aspect-ratio: 16/9; }
+.fwi { padding: 40px 36px; display: flex; flex-direction: column; justify-content: center; gap: 14px; }
+.fwbdg { display: inline-block; background: rgba(227,25,55,0.15); border: 1px solid rgba(227,25,55,0.4); color: #e31937; font-size: 11px; font-weight: 600; letter-spacing: 1px; padding: 4px 12px; border-radius: 980px; text-transform: uppercase; width: fit-content; }
+.fwt { font-family: var(--f); font-size: 28px; font-weight: 600; line-height: 1.1; color: #fff; letter-spacing: -0.28px; }
+.fwd { font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.6; letter-spacing: -.224px; }
+.fwlk { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: var(--blue-b); }
+
+.tags { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; max-width: 720px; margin: 0 auto; }
+.tag { font-size: 14px; color: var(--nb); background: #fff; padding: 8px 18px; border-radius: 980px; box-shadow: var(--shad); letter-spacing: -.224px; }
+
+.contact { background: var(--black); padding: 130px 24px; text-align: center; }
+.ctp { font-size: 17px; color: rgba(255,255,255,0.45); margin-bottom: 22px; letter-spacing: -.374px; }
+.cth { font-family: var(--f); font-size: clamp(42px,7vw,72px); font-weight: 600; line-height: 1.05; letter-spacing: -0.28px; margin-bottom: 36px; }
+.cte { font-family: var(--f); font-size: clamp(22px,4vw,40px); font-weight: 600; color: var(--blue-b); text-decoration: none; letter-spacing: -0.28px; display: inline-block; margin-bottom: 14px; transition: opacity .2s; }
+.cte:hover { opacity: .75; }
+.ctn { font-size: 14px; color: rgba(255,255,255,0.35); letter-spacing: -.224px; }
+
+footer { background: #111; padding: 20px 24px; border-top: 1px solid rgba(255,255,255,0.07); display: flex; align-items: center; justify-content: space-between; }
+.fll { font-family: var(--f); font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.4); text-decoration: none; }
+.fco { font-size: 12px; color: rgba(255,255,255,0.25); }
+
+@media(max-width:768px){
+  .baw,.fwc{grid-template-columns:1fr;gap:16px}
+  .baa{flex-direction:row;justify-content:center}
+  .steps,.gallery{grid-template-columns:1fr}
+  .nls{display:none}
+}
+</style>
+</head>
+<body>
+<nav>
+  <a href="#" class="nl">a<span>slide</span>.xyz</a>
+  <ul class="nls">
+    <li><a href="#works">Works</a></li>
+    <li><a href="#how">How it works</a></li>
+    <li><a href="#contact" class="nc">Get in touch ›</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <p class="hey">Document → Slides, beautifully.</p>
+  <h1 class="ht">Your report,<br>transformed.</h1>
+  <p class="hs">Annual reports. Research papers. Whitepapers. I turn any document into slides people actually want to read.</p>
+  <div class="hbtns">
+    <a href="#contact" class="bb">Send your document</a>
+    <a href="#works" class="bg">See examples</a>
+  </div>
+  <div class="hv">
+    <div class="baw">
+      <div class="dm">
+        <div class="dlbl">Your document</div>
+        <div class="dl h"></div>
+        <div class="dl t"></div><div class="dl t s"></div><div class="dl t"></div><div class="dl t xs"></div><div class="dl t"></div>
+        <div class="dl g"></div>
+        <div class="dl h" style="width:72%"></div>
+        <div class="dl t"></div><div class="dl t s"></div><div class="dl t"></div>
+        <div class="dl g"></div>
+        <div class="dl h" style="width:85%"></div>
+        <div class="dl t"></div><div class="dl t xs"></div><div class="dl t"></div><div class="dl t s"></div>
+      </div>
+      <div class="baa">
+        <div class="ar">→</div>
+        <div class="al">aslide</div>
+      </div>
+      <div class="sm">
+        <div class="smi">
+          <div class="stag">Key Findings · 2024</div>
+          <div class="sh">Revenue grew<br><em>+147%</em> YoY</div>
+          <div class="sbod">Driven by enterprise expansion<br>and improved retention.</div>
+          <div class="sst">
+            <div class="sn">$8.2M</div>
+            <div class="sl2">Total Revenue</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="secl" id="how">
+  <h2 class="sh2">Ridiculously simple.</h2>
+  <p class="sp">No briefs. No back-and-forth. Just send your document and receive slides ready to present.</p>
+  <div class="steps">
+    <div class="step"><div class="stn">01</div><div class="stt">Send your doc</div><div class="std">PDF, Word, research paper, annual report, whitepaper — email it directly. No form to fill out.</div></div>
+    <div class="step"><div class="stn">02</div><div class="stt">I read &amp; design</div><div class="std">I distill your content into clear, visual slides. Each one designed to communicate — not just display — information.</div></div>
+    <div class="step"><div class="stn">03</div><div class="stt">You receive slides</div><div class="std">Delivered as PowerPoint, Keynote, or PDF. Ready to present, share, or publish.</div></div>
+  </div>
+</section>
+
+<section class="secd" id="works">
+  <h2 class="sh2 w">What I've made.</h2>
+  <p class="sp w">From Tesla earnings to academic research — every document type, turned into slides worth sharing.</p>
+  <div class="gallery">
+    <a class="gc" href="#contact">
+      <div class="gs">
+        <svg width="100%" height="100%" viewBox="0 0 560 315" xmlns="http://www.w3.org/2000/svg">
+          <rect width="560" height="315" fill="#0a0f1a"/>
+          <text x="32" y="56" font-family="Helvetica Neue,Arial,sans-serif" font-size="9" fill="#2997ff" letter-spacing="2.5" font-weight="600">NATURE · RESEARCH PAPER 2024</text>
+          <text x="30" y="100" font-family="Helvetica Neue,Arial,sans-serif" font-size="23" fill="#fff" font-weight="600">Climate Change Impact</text>
+          <text x="30" y="130" font-family="Helvetica Neue,Arial,sans-serif" font-size="23" fill="#2997ff" font-weight="600">on Global Food Security</text>
+          <text x="30" y="158" font-family="Helvetica Neue,Arial,sans-serif" font-size="10" fill="rgba(255,255,255,0.32)">Chen et al. · DOI 10.1038/s41586-024</text>
+          <polyline points="50,255 100,243 150,245 200,230 250,218 300,205 340,190" fill="none" stroke="#ff453a" stroke-width="2"/>
+          <polyline points="50,253 100,248 150,249 200,243 250,241 300,236 340,230" fill="none" stroke="#2997ff" stroke-width="2" opacity="0.65"/>
+          <text x="432" y="132" font-family="Helvetica Neue,Arial,sans-serif" font-size="46" fill="#ff453a" font-weight="700" text-anchor="middle">-23%</text>
+          <text x="432" y="154" font-family="Helvetica Neue,Arial,sans-serif" font-size="8" fill="rgba(255,255,255,0.28)" text-anchor="middle" letter-spacing="1">CROP YIELD 2050</text>
+        </svg>
+      </div>
+      <div class="gi"><div class="gtp">Research Paper</div><div class="gti">Nature Climate Study</div><div class="gd">42-page paper → 12 slides · Findings, methodology, data visualization</div></div>
+    </a>
+    <a class="gc" href="#contact">
+      <div class="gs">
+        <svg width="100%" height="100%" viewBox="0 0 560 315" xmlns="http://www.w3.org/2000/svg">
+          <rect width="560" height="315" fill="#f9f6f1"/>
+          <rect x="0" y="0" width="560" height="4" fill="#0071e3"/>
+          <text x="32" y="52" font-family="Helvetica Neue,Arial,sans-serif" font-size="9" fill="#0071e3" letter-spacing="2.5" font-weight="600">SUSTAINABILITY REPORT 2024</text>
+          <text x="30" y="96" font-family="Helvetica Neue,Arial,sans-serif" font-size="30" fill="#1d1d1f" font-weight="600">Net Zero by 2030.</text>
+          <text x="30" y="128" font-family="Helvetica Neue,Arial,sans-serif" font-size="30" fill="#0071e3" font-weight="300">Our commitment.</text>
+          <text x="30" y="183" font-family="Helvetica Neue,Arial,sans-serif" font-size="32" fill="#0071e3" font-weight="600">68%</text>
+          <text x="30" y="200" font-family="Helvetica Neue,Arial,sans-serif" font-size="8" fill="rgba(0,0,0,0.36)" letter-spacing="1">EMISSIONS CUT</text>
+          <text x="148" y="183" font-family="Helvetica Neue,Arial,sans-serif" font-size="32" fill="#0071e3" font-weight="600">100%</text>
+          <text x="148" y="200" font-family="Helvetica Neue,Arial,sans-serif" font-size="8" fill="rgba(0,0,0,0.36)" letter-spacing="1">RENEWABLE</text>
+          <text x="308" y="183" font-family="Helvetica Neue,Arial,sans-serif" font-size="32" fill="#0071e3" font-weight="600">Zero</text>
+          <text x="308" y="200" font-family="Helvetica Neue,Arial,sans-serif" font-size="8" fill="rgba(0,0,0,0.36)" letter-spacing="1">NET CARBON</text>
+          <circle cx="470" cy="155" r="80" fill="none" stroke="#0071e3" stroke-width="1" opacity="0.12"/>
+          <circle cx="470" cy="155" r="55" fill="none" stroke="#0071e3" stroke-width="1" opacity="0.08"/>
+          <circle cx="470" cy="155" r="30" fill="#0071e3" opacity="0.06"/>
+        </svg>
+      </div>
+      <div class="gi"><div class="gtp">ESG Report</div><div class="gti">Corporate Sustainability</div><div class="gd">120-page report → 16 slides · ESG metrics, goals, stakeholder highlights</div></div>
+    </a>
+    <a class="gc" href="#contact">
+      <div class="gs">
+        <svg width="100%" height="100%" viewBox="0 0 560 315" xmlns="http://www.w3.org/2000/svg">
+          <rect width="560" height="315" fill="#0b1218"/>
+          <text x="32" y="56" font-family="Helvetica Neue,Arial,sans-serif" font-size="9" fill="#30d158" letter-spacing="2.5" font-weight="600">CLINICAL TRIAL · PHASE III RESULTS</text>
+          <text x="30" y="100" font-family="Helvetica Neue,Arial,sans-serif" font-size="26" fill="#fff" font-weight="600">Primary endpoint</text>
+          <text x="30" y="132" font-family="Helvetica Neue,Arial,sans-serif" font-size="26" fill="#30d158" font-weight="600">met with significance.</text>
+          <text x="30" y="162" font-family="Helvetica Neue,Arial,sans-serif" font-size="10" fill="rgba(255,255,255,0.28)">p &lt; 0.001 · n = 4,218 · 24-month follow-up</text>
+          <text x="30" y="205" font-family="Helvetica Neue" font-size="9" fill="rgba(255,255,255,0.3)" letter-spacing="1">TREATMENT</text>
+          <rect x="118" y="195" width="232" height="13" fill="#30d158" opacity="0.85" rx="2"/>
+          <text x="358" y="205" font-family="Helvetica Neue" font-size="9" fill="#30d158">84%</text>
+          <text x="30" y="234" font-family="Helvetica Neue" font-size="9" fill="rgba(255,255,255,0.3)" letter-spacing="1">PLACEBO</text>
+          <rect x="118" y="224" width="86" height="13" fill="rgba(255,255,255,0.16)" rx="2"/>
+          <text x="212" y="234" font-family="Helvetica Neue" font-size="9" fill="rgba(255,255,255,0.4)">31%</text>
+          <text x="462" y="162" font-family="Helvetica Neue,Arial,sans-serif" font-size="48" fill="#30d158" font-weight="700" text-anchor="middle">2.7×</text>
+          <text x="462" y="183" font-family="Helvetica Neue,Arial,sans-serif" font-size="8" fill="rgba(255,255,255,0.25)" text-anchor="middle" letter-spacing="1">MORE EFFECTIVE</text>
+        </svg>
+      </div>
+      <div class="gi"><div class="gtp">Clinical Study</div><div class="gti">Phase III Trial Results</div><div class="gd">Dense medical PDF → 14 slides · Overview, results, safety data</div></div>
+    </a>
+    <a class="gc" href="#contact">
+      <div class="gs">
+        <svg width="100%" height="100%" viewBox="0 0 560 315" xmlns="http://www.w3.org/2000/svg">
+          <rect width="560" height="315" fill="#0f0f0f"/>
+          <text x="32" y="56" font-family="Helvetica Neue,Arial,sans-serif" font-size="9" fill="#bf8b2e" letter-spacing="2.5" font-weight="600">STRATEGY WHITEPAPER · Q4 2024</text>
+          <text x="30" y="108" font-family="Helvetica Neue,Arial,sans-serif" font-size="36" fill="#fff" font-weight="600">Market Entry</text>
+          <text x="30" y="152" font-family="Helvetica Neue,Arial,sans-serif" font-size="36" fill="#bf8b2e" font-weight="300">Southeast Asia.</text>
+          <text x="30" y="200" font-family="Helvetica Neue,Arial,sans-serif" font-size="12" fill="rgba(255,255,255,0.35)">6 markets · $4.2B TAM · 18-month roadmap</text>
+          <circle cx="390" cy="155" r="55" fill="none" stroke="#bf8b2e" stroke-width="0.8" opacity="0.2"/>
+          <circle cx="430" cy="135" r="38" fill="none" stroke="#bf8b2e" stroke-width="0.8" opacity="0.15"/>
+          <circle cx="410" cy="175" r="28" fill="#bf8b2e" opacity="0.08"/>
+          <circle cx="470" cy="160" r="20" fill="none" stroke="#bf8b2e" stroke-width="0.5" opacity="0.2"/>
+        </svg>
+      </div>
+      <div class="gi"><div class="gtp">Strategy Whitepaper</div><div class="gti">Market Entry Analysis</div><div class="gd">80-page strategy doc → 20 slides · Market sizing, entry plan, financials</div></div>
+    </a>
+  </div>
+
+  <!-- FEATURED TESLA -->
+  <div class="fw">
+    <a class="fwc" href="tesla-spring-2026.html" target="_blank">
+      <div class="fwp">
+        <svg width="100%" height="100%" viewBox="0 0 560 315" xmlns="http://www.w3.org/2000/svg">
+          <rect width="560" height="315" fill="#080c10"/>
+          <rect x="0" y="0" width="3" height="315" fill="#e31937"/>
+          <text x="32" y="56" font-family="Helvetica Neue,Arial,sans-serif" font-size="9" fill="#e31937" letter-spacing="2.5" font-weight="600">TESLA · SPRING UPDATE 2026</text>
+          <text x="30" y="110" font-family="Helvetica Neue,Arial,sans-serif" font-size="46" fill="#fff" font-weight="600" letter-spacing="-0.5">Spring</text>
+          <text x="30" y="162" font-family="Helvetica Neue,Arial,sans-serif" font-size="46" fill="#e31937" font-weight="600" letter-spacing="-0.5">Update</text>
+          <text x="30" y="200" font-family="Helvetica Neue,Arial,sans-serif" font-size="46" fill="#fff" font-weight="300" letter-spacing="-0.5">2026.</text>
+          <text x="30" y="232" font-family="Helvetica Neue,Arial,sans-serif" font-size="11" fill="rgba(255,255,255,0.32)" letter-spacing="0.3">Software Release · April 2026 · 12+ Features</text>
+          <rect x="310" y="82" width="130" height="26" rx="4" fill="rgba(227,25,55,0.12)" stroke="rgba(227,25,55,0.25)" stroke-width="1"/>
+          <text x="375" y="99" font-family="Helvetica Neue,Arial,sans-serif" font-size="9" fill="rgba(255,255,255,0.6)" text-anchor="middle">FSD Subscribe App</text>
+          <rect x="310" y="118" width="130" height="26" rx="4" fill="rgba(227,25,55,0.12)" stroke="rgba(227,25,55,0.25)" stroke-width="1"/>
+          <text x="375" y="135" font-family="Helvetica Neue,Arial,sans-serif" font-size="9" fill="rgba(255,255,255,0.6)" text-anchor="middle">Hey Grok</text>
+          <rect x="310" y="154" width="130" height="26" rx="4" fill="rgba(227,25,55,0.12)" stroke="rgba(227,25,55,0.25)" stroke-width="1"/>
+          <text x="375" y="171" font-family="Helvetica Neue,Arial,sans-serif" font-size="9" fill="rgba(255,255,255,0.6)" text-anchor="middle">24H Dashcam</text>
+          <rect x="310" y="190" width="130" height="26" rx="4" fill="rgba(227,25,55,0.12)" stroke="rgba(227,25,55,0.25)" stroke-width="1"/>
+          <text x="375" y="207" font-family="Helvetica Neue,Arial,sans-serif" font-size="9" fill="rgba(255,255,255,0.6)" text-anchor="middle">Cyberhog + Pet Mode</text>
+          <rect x="450" y="82" width="82" height="26" rx="4" fill="rgba(227,25,55,0.12)" stroke="rgba(227,25,55,0.25)" stroke-width="1"/>
+          <text x="491" y="99" font-family="Helvetica Neue,Arial,sans-serif" font-size="9" fill="rgba(255,255,255,0.6)" text-anchor="middle">Auto OTA</text>
+          <rect x="450" y="118" width="82" height="26" rx="4" fill="rgba(227,25,55,0.12)" stroke="rgba(227,25,55,0.25)" stroke-width="1"/>
+          <text x="491" y="135" font-family="Helvetica Neue,Arial,sans-serif" font-size="9" fill="rgba(255,255,255,0.6)" text-anchor="middle">Safety Lights</text>
+        </svg>
+      </div>
+      <div class="fwi">
+        <span class="fwbdg">Live Example ↗</span>
+        <div class="fwt">Tesla Spring Update 2026</div>
+        <div class="fwd">A full 9-slide deck built from Tesla's software release notes. Interactive, scroll-snapping, with animated data visualizations.</div>
+        <div class="fwlk">View the full deck ›</div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<section class="secl">
+  <h2 class="sh2">Any document.<br>Any industry.</h2>
+  <p class="sp">If it has pages, I can make it into slides.</p>
+  <div class="tags">
+    <span class="tag">Annual Reports</span><span class="tag">Research Papers</span>
+    <span class="tag">Whitepapers</span><span class="tag">Strategy Documents</span>
+    <span class="tag">Financial Reports</span><span class="tag">Clinical Studies</span>
+    <span class="tag">ESG Reports</span><span class="tag">Market Analysis</span>
+    <span class="tag">Policy Documents</span><span class="tag">Conference Papers</span>
+    <span class="tag">Product Roadmaps</span><span class="tag">Earnings Reports</span>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <p class="ctp">Ready to transform your document?</p>
+  <h2 class="cth">Send it over.</h2>
+  <a href="mailto:hello@aslide.xyz" class="cte">hello@aslide.xyz</a>
+  <p class="ctn">Attach your document · I'll reply within 24 hours with a quote</p>
+</section>
+
+<footer>
+  <a href="#" class="fll">aslide.xyz</a>
+  <span class="fco">© 2026 aslide.xyz</span>
+</footer>
+
+<script>
+const io = new IntersectionObserver(e => {
+  e.forEach(x => { if(x.isIntersecting){ x.target.style.opacity='1'; x.target.style.transform='translateY(0)'; } });
+}, {threshold:.08});
+document.querySelectorAll('.gc,.step,.fwc').forEach(el => {
+  el.style.opacity='0'; el.style.transform='translateY(22px)';
+  el.style.transition='opacity .55s ease,transform .55s ease';
+  io.observe(el);
+});
+</script>
+</body>
+</html>

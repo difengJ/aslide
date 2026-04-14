@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tesla Spring Update 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ===== VIEWPORT BASE ===== */
+html, body {
+  height: 100%; margin: 0; padding: 0;
+  overflow-x: hidden;
+  background: #0a0a0f;
+}
+html {
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+*, *::before, *::after { box-sizing: border-box; }
+
+:root {
+  --title-size: clamp(1.8rem, 5.5vw, 5rem);
+  --h2-size: clamp(1.2rem, 3vw, 2.4rem);
+  --h3-size: clamp(0.9rem, 2vw, 1.5rem);
+  --body-size: clamp(0.72rem, 1.4vw, 1.05rem);
+  --small-size: clamp(0.6rem, 1vw, 0.8rem);
+  --slide-padding: clamp(1.5rem, 5vw, 5rem);
+  --content-gap: clamp(0.6rem, 2vw, 2rem);
+
+  --bg: #080810;
+  --bg2: #0e0e1a;
+  --red: #e8202a;
+  --red2: #ff3340;
+  --dim: rgba(255,255,255,0.06);
+  --dimmer: rgba(255,255,255,0.03);
+  --text: #f0f0f5;
+  --muted: rgba(240,240,245,0.45);
+  --line: rgba(232,32,42,0.25);
+}
+
+.slide {
+  width: 100vw;
+  height: 100vh; height: 100dvh;
+  overflow: hidden;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background: var(--bg);
+  font-family: 'Syne', sans-serif;
+  color: var(--text);
+}
+
+/* ===== NAV DOTS ===== */
+.nav-dots {
+  position: fixed;
+  right: clamp(10px, 2vw, 24px);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 100;
+}
+.nav-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.nav-dot.active { background: var(--red); transform: scale(1.5); }
+
+/* ===== SLIDE NUMBER ===== */
+.slide-num {
+  position: absolute;
+  top: clamp(16px, 3vh, 32px);
+  left: var(--slide-padding);
+  font-family: 'Space Mono', monospace;
+  font-size: var(--small-size);
+  color: var(--muted);
+  letter-spacing: 0.1em;
+}
+.slide-tag {
+  position: absolute;
+  top: clamp(16px, 3vh, 32px);
+  right: var(--slide-padding);
+  font-family: 'Space Mono', monospace;
+  font-size: var(--small-size);
+  color: var(--red);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+/* ===== GRID BACKGROUND ===== */
+.grid-bg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(232,32,42,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(232,32,42,0.04) 1px, transparent 1px);
+  background-size: clamp(30px, 5vw, 60px) clamp(30px, 5vw, 60px);
+  pointer-events: none;
+}
+
+/* ===== SLIDE 1: TITLE ===== */
+#slide1 {
+  background: radial-gradient(ellipse 80% 60% at 50% 110%, rgba(232,32,42,0.18) 0%, transparent 70%), var(--bg);
+  justify-content: center;
+  align-items: center;
+}
+#slide1 .grid-bg { opacity: 0.7; }
+.title-block {
+  text-align: center;
+  z-index: 2;
+  padding: var(--slide-padding);
+  animation: fadeUp 0.9s ease both;
+}
+.tesla-logo {
+  font-family: 'Space Mono', monospace;
+  font-size: var(--small-size);
+  letter-spacing: 0.3em;
+  color: var(--red);
+  text-transform: uppercase;
+  margin-bottom: clamp(0.5rem, 2vh, 1.5rem);
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+}
+.tesla-logo::before, .tesla-logo::after {
+  content: '';
+  display: block;
+  width: clamp(20px, 5vw, 60px);
+  height: 1px;
+  background: var(--red);
+  opacity: 0.5;
+}
+.main-title {
+  font-size: var(--title-size);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+  margin: 0 0 clamp(0.5rem, 2vh, 1.5rem);
+}
+.main-title em { font-style: normal; color: var(--red); }
+.title-sub {
+  font-family: 'Space Mono', monospace;
+  font-size: var(--body-size);
+  color: var(--muted);
+  letter-spacing: 0.05em;
+}
+.title-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: clamp(1rem, 3vh, 2rem);
+  background: var(--dim);
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  padding: clamp(4px, 1vh, 8px) clamp(12px, 2vw, 20px);
+  font-family: 'Space Mono', monospace;
+  font-size: var(--small-size);
+  color: var(--muted);
+}
+.title-badge span { color: var(--red); }
+
+/* ===== SLIDE 2: OVERVIEW ===== */
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: clamp(6px, 1.2vw, 16px);
+  flex: 1;
+  padding: clamp(0.5rem, 2vh, 1.5rem) var(--slide-padding) var(--slide-padding);
+}
+.ov-card {
+  background: var(--dim);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: clamp(12px, 2vw, 22px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(4px, 0.8vh, 10px);
+  transition: border-color 0.3s;
+  cursor: default;
+}
+.ov-card:hover { border-color: rgba(232,32,42,0.5); }
+.ov-icon {
+  font-size: clamp(1.2rem, 2.5vw, 2rem);
+  opacity: 0.85;
+}
+.ov-label {
+  font-family: 'Space Mono', monospace;
+  font-size: var(--small-size);
+  color: var(--red);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.ov-title {
+  font-size: clamp(0.78rem, 1.5vw, 1.1rem);
+  font-weight: 700;
+  line-height: 1.2;
+}
+.ov-desc {
+  font-size: clamp(0.62rem, 1.1vw, 0.85rem);
+  color: var(--muted);
+  line-height: 1.4;
+}
+.slide-header {
+  padding: var(--slide-padding) var(--slide-padding) 0;
+  z-index: 2;
+}
+.slide-header h2 {
+  font-size: var(--h2-size);
+  font-weight: 800;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+.slide-header h2 em { font-style: normal; color: var(--red); }
+.slide-header p {
+  font-size: var(--body-size);
+  color: var(--muted);
+  margin: clamp(4px, 0.8vh, 8px) 0 0;
+}
+
+/* ===== SLIDE 3: FSD APP ===== */
+.fsd-layout {
+  display: flex;
+  flex: 1;
+  padding: 0 var(--slide-padding) var(--slide-padding);
+  gap: clamp(1rem, 3vw, 3rem);
+  align-items: center;
+}
+.fsd-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 1.5vh, 20px);
+}
+.fsd-right {
+  flex: 0 0 min(38%, 340px);
+  background: var(--dim);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: clamp(16px, 2.5vw, 32px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(10px, 1.5vh, 16px);
+}
+.big-label {
+  font-family: 'Space Mono', monospace;
+  font-size: var(--small-size);
+  color: var(--red);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+.fsd-title {
+  font-size: clamp(1.2rem, 3.5vw, 3rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.fsd-title em { font-style: normal; color: var(--red); }
+.fsd-body {
+  font-size: var(--body-size);
+  color: var(--muted);
+  line-height: 1.6;
+  max-width: 420px;
+}
+.price-tag {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  background: rgba(232,32,42,0.12);
+  border: 1px solid var(--red);
+  border-radius: 8px;
+  padding: clamp(6px, 1vh, 10px) clamp(12px, 1.5vw, 18px);
+}
+.price-big {
+  font-size: clamp(1.4rem, 3.5vw, 2.8rem);
+  font-weight: 800;
+  color: var(--red2);
+}
+.price-per {
+  font-family: 'Space Mono', monospace;
+  font-size: var(--small-size);
+  color: var(--muted);
+}
+.stat-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: clamp(8px, 1.2vh, 14px) 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.stat-row:last-child { border-bottom: none; }
+.stat-title-sm {
+  font-size: clamp(0.65rem, 1.1vw, 0.85rem);
+  font-weight: 700;
+  color: var(--text);
+}
+.stat-desc-sm {
+  font-size: clamp(0.58rem, 0.95vw, 0.75rem);
+  color: var(--muted);
+}
+.hw-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(232,32,42,0.1);
+  border: 1px solid rgba(232,32,42,0.3);
+  border-radius: 100px;
+  padding: 4px 12px;
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(0.55rem, 0.9vw, 0.72rem);
+  color: var(--red);
+  margin-top: 4px;
+}
+
+/* ===== SLIDE 4: GROK ===== */
+.grok-layout {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 0 var(--slide-padding) var(--slide-padding);
+  gap: clamp(8px, 1.5vh, 20px);
+}
+.grok-hero {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 2vw, 24px);
+}
+.grok-wake {
+  background: var(--dim);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--red);
+  border-radius: 8px;
+  padding: clamp(12px, 2vh, 20px) clamp(16px, 2.5vw, 28px);
+  flex: 1;
+}
+.wake-label {
+  font-family: 'Space Mono', monospace;
+  font-size: var(--small-size);
+  color: var(--red);
+  letter-spacing: 0.1em;
+  margin-bottom: 6px;
+}
+.wake-word {
+  font-size: clamp(1.5rem, 4vw, 3.5rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.wave-viz {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: clamp(30px, 5vh, 50px);
+}
+.wave-bar {
+  width: 4px;
+  border-radius: 2px;
+  background: var(--red);
+  animation: wave 1.2s ease-in-out infinite;
+}
+.wave-bar:nth-child(1) { height: 30%; animation-delay: 0s; }
+.wave-bar:nth-child(2) { height: 60%; animation-delay: 0.1s; }
+.wave-bar:nth-child(3) { height: 100%; animation-delay: 0.2s; }
+.wave-bar:nth-child(4) { height: 70%; animation-delay: 0.3s; }
+.wave-bar:nth-child(5) { height: 40%; animation-delay: 0.4s; }
+.wave-bar:nth-child(6) { height: 80%; animation-delay: 0.5s; }
+.wave-bar:nth-child(7) { height: 50%; animation-delay: 0.6s; }
+
+@keyframes wave {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(0.4); }
+}
+
+.grok-features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(6px, 1vw, 14px);
+  flex: 1;
+}
+.gf-card {
+  background: var(--dim);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: clamp(10px, 1.5vw, 18px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(4px, 0.8vh, 8px);
+}
+.gf-icon { font-size: clamp(1rem, 2vw, 1.5rem); }
+.gf-title {
+  font-size: clamp(0.75rem, 1.3vw, 1rem);
+  font-weight: 700;
+}
+.gf-desc {
+  font-size: clamp(0.6rem, 1vw, 0.8rem);
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+/* ===== SLIDE 5: DASHCAM ===== */
+.dashcam-layout {
+  display: flex;
+  flex: 1;
+  padding: 0 var(--slide-padding) var(--slide-padding);
+  gap: clamp(1rem, 3vw, 3rem);
+  align-items: center;
+}
+.dashcam-visual {
+  flex: 0 0 min(40%, 360px);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.clock-ring {
+  width: min(220px, 28vw);
+  height: min(220px, 28vw);
+  border-radius: 50%;
+  border: 2px solid rgba(232,32,42,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.clock-ring::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 1px solid rgba(232,32,42,0.12);
+}
+.clock-inner {
+  text-align: center;
+}
+.clock-num {
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 800;
+  color: var(--red2);
+  line-height: 1;
+}
+.clock-unit {
+  font-family: 'Space Mono', monospace;
+  font-size: var(--small-size);
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+/* Rotating arc */
+.arc-sweep {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(from -90deg, rgba(232,32,42,0.4) 0deg, rgba(232,32,42,0.4) 240deg, transparent 240deg);
+  animation: rotateSlow 8s linear infinite;
+  mask: radial-gradient(farthest-side, transparent calc(100% - 3px), white calc(100% - 3px));
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), white calc(100% - 3px));
+}
+@keyframes rotateSlow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.dashcam-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 1.5vh, 18px);
+}
+.dashcam-title {
+  font-size: clamp(1.2rem, 3.5vw, 2.8rem);
+  font-weight: 800;
+  line-height: 1.1;
+}
+.dashcam-title em { font-style: normal; color: var(--red); }
+.info-row {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(8px, 1.5vw, 16px);
+  background: var(--dim);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: clamp(8px, 1.5vh, 14px) clamp(12px, 2vw, 18px);
+}
+.info-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--red);
+  margin-top: 5px;
+  flex-shrink: 0;
+}
+.info-text {
+  font-size: var(--body-size);
+  color: var(--muted);
+  line-height: 1.5;
+}
+.info-text strong { color: var(--text); }
+
+/* ===== SLIDE 6: SAFETY & LIGHTING ===== */
+.safety-layout {
+  display: flex;
+  flex: 1;
+  padding: 0 var(--slide-padding) var(--slide-padding);
+  gap: clamp(1rem, 2.5vw, 2.5rem);
+  align-items: center;
+}
+.safety-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(10px, 1.8vh, 22px);
+}
+.safety-right {
+  flex: 0 0 min(38%, 320px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 1.5vh, 14px);
+}
+.light-demo {
+  background: var(--dimmer);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: clamp(16px, 2.5vw, 28px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(10px, 1.5vh, 16px);
+  flex: 1;
+}
+.car-strip {
+  width: 100%;
+  height: clamp(6px, 1vh, 10px);
+  border-radius: 100px;
+  background: rgba(255,255,255,0.08);
+  position: relative;
+  overflow: hidden;
+}
+.car-strip.active::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--red);
+  border-radius: 100px;
+  animation: pulse-strip 1.5s ease-in-out infinite;
+}
+@keyframes pulse-strip {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+.light-label {
+  font-family: 'Space Mono', monospace;
+  font-size: var(--small-size);
+  color: var(--muted);
+  text-align: center;
+}
+.safety-items {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(6px, 1vh, 12px);
+}
+.si-item {
+  display: flex;
+  align-items: center;
+  gap: clamp(8px, 1.5vw, 14px);
+  background: var(--dim);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: clamp(10px, 1.5vh, 16px) clamp(12px, 2vw, 18px);
+}
+.si-icon { font-size: clamp(1.2rem, 2vw, 1.6rem); flex-shrink: 0; }
+.si-content { display: flex; flex-direction: column; gap: 2px; }
+.si-title { font-size: clamp(0.72rem, 1.3vw, 0.95rem); font-weight: 700; }
+.si-desc { font-size: clamp(0.6rem, 1vw, 0.78rem); color: var(--muted); }
+
+/* ===== SLIDE 7: PET MODE / QOL ===== */
+.qol-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: clamp(8px, 1.5vw, 16px);
+  flex: 1;
+  padding: 0 var(--slide-padding) var(--slide-padding);
+}
+.qol-card {
+  background: var(--dim);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: clamp(12px, 2vw, 22px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(6px, 1vh, 12px);
+}
+.qol-card.featured {
+  grid-column: 1 / -1;
+  flex-direction: row;
+  align-items: center;
+  border-color: rgba(232,32,42,0.4);
+  background: rgba(232,32,42,0.06);
+}
+.qol-icon { font-size: clamp(1.5rem, 3vw, 2.5rem); flex-shrink: 0; }
+.qol-title { font-size: clamp(0.8rem, 1.5vw, 1.1rem); font-weight: 700; }
+.qol-desc { font-size: clamp(0.62rem, 1.1vw, 0.82rem); color: var(--muted); line-height: 1.45; }
+.qol-featured-content { display: flex; flex-direction: column; gap: 4px; }
+.pet-badges {
+  display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px;
+}
+.pet-badge {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 100px;
+  padding: 2px 10px;
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(0.55rem, 0.85vw, 0.7rem);
+  color: var(--muted);
+}
+
+/* ===== SLIDE 8: AUTO-INSTALL & MODEL UPDATES ===== */
+.updates-layout {
+  display: flex;
+  flex: 1;
+  padding: 0 var(--slide-padding) var(--slide-padding);
+  gap: clamp(1rem, 2.5vw, 3rem);
+}
+.updates-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 1.5vh, 16px);
+}
+.updates-col-title {
+  font-family: 'Space Mono', monospace;
+  font-size: var(--small-size);
+  color: var(--red);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding-bottom: clamp(6px, 1vh, 10px);
+  border-bottom: 1px solid var(--line);
+}
+.update-item {
+  background: var(--dim);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: clamp(10px, 1.5vw, 16px);
+  display: flex;
+  gap: clamp(8px, 1.5vw, 14px);
+  align-items: flex-start;
+}
+.u-icon { font-size: clamp(1rem, 1.8vw, 1.4rem); flex-shrink: 0; margin-top: 1px; }
+.u-text { display: flex; flex-direction: column; gap: 3px; }
+.u-title { font-size: clamp(0.72rem, 1.3vw, 0.95rem); font-weight: 700; }
+.u-desc { font-size: clamp(0.6rem, 1vw, 0.78rem); color: var(--muted); line-height: 1.4; }
+.u-badge {
+  display: inline-block;
+  background: rgba(232,32,42,0.12);
+  border: 1px solid rgba(232,32,42,0.25);
+  border-radius: 100px;
+  padding: 1px 8px;
+  font-family: 'Space Mono', monospace;
+  font-size: clamp(0.5rem, 0.8vw, 0.65rem);
+  color: var(--red);
+  margin-top: 3px;
+}
+.divider-v {
+  width: 1px;
+  background: var(--line);
+}
+
+/* ===== SLIDE 9: FINAL ===== */
+#slide9 {
+  background: radial-gradient(ellipse 60% 70% at 50% 50%, rgba(232,32,42,0.15) 0%, transparent 70%), var(--bg);
+  justify-content: center;
+  align-items: center;
+}
+.final-block {
+  text-align: center;
+  z-index: 2;
+  padding: var(--slide-padding);
+}
+.final-title {
+  font-size: clamp(1.5rem, 4.5vw, 4rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin-bottom: clamp(0.5rem, 2vh, 1.5rem);
+}
+.final-title em { font-style: normal; color: var(--red); }
+.final-sub {
+  font-size: var(--body-size);
+  color: var(--muted);
+  margin-bottom: clamp(1rem, 3vh, 2.5rem);
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.final-features {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: clamp(6px, 1vw, 12px);
+}
+.ff-pill {
+  background: var(--dim);
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  padding: clamp(4px, 0.8vh, 8px) clamp(12px, 2vw, 20px);
+  font-size: clamp(0.62rem, 1.1vw, 0.85rem);
+  color: var(--muted);
+  font-family: 'Space Mono', monospace;
+}
+.missing-notice {
+  margin-top: clamp(1rem, 2vh, 2rem);
+  background: rgba(255,200,0,0.06);
+  border: 1px solid rgba(255,200,0,0.2);
+  border-radius: 8px;
+  padding: clamp(8px, 1.5vh, 14px) clamp(14px, 2vw, 22px);
+  font-size: clamp(0.62rem, 1.1vw, 0.82rem);
+  color: rgba(255,200,0,0.6);
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.slide-header, .fsd-layout, .grok-layout, .dashcam-layout,
+.safety-layout, .qol-grid, .updates-layout, .overview-grid {
+  animation: fadeUp 0.7s ease both;
+  animation-delay: 0.1s;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-height: 700px) {
+  :root {
+    --slide-padding: clamp(0.8rem, 3vw, 2rem);
+    --content-gap: clamp(0.3rem, 1vh, 0.8rem);
+    --title-size: clamp(1.4rem, 4.5vw, 3rem);
+    --h2-size: clamp(1rem, 2.5vw, 1.8rem);
+  }
+}
+@media (max-height: 600px) {
+  .nav-dots { display: none; }
+  :root { --slide-padding: clamp(0.5rem, 2.5vw, 1.5rem); }
+}
+@media (max-width: 700px) {
+  .fsd-right, .dashcam-visual, .safety-right, .divider-v { display: none; }
+  .overview-grid { grid-template-columns: repeat(2, 1fr); }
+  .grok-features { grid-template-columns: 1fr 1fr; }
+  .updates-layout { flex-direction: column; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.2s !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV DOTS -->
+<nav class="nav-dots" id="navDots">
+  <div class="nav-dot active" onclick="goTo(0)"></div>
+  <div class="nav-dot" onclick="goTo(1)"></div>
+  <div class="nav-dot" onclick="goTo(2)"></div>
+  <div class="nav-dot" onclick="goTo(3)"></div>
+  <div class="nav-dot" onclick="goTo(4)"></div>
+  <div class="nav-dot" onclick="goTo(5)"></div>
+  <div class="nav-dot" onclick="goTo(6)"></div>
+  <div class="nav-dot" onclick="goTo(7)"></div>
+  <div class="nav-dot" onclick="goTo(8)"></div>
+</nav>
+
+<!-- SLIDE 1: TITLE -->
+<section class="slide" id="slide1">
+  <div class="grid-bg"></div>
+  <div class="title-block">
+    <div class="tesla-logo">TESLA</div>
+    <h1 class="main-title">Spring<br><em>Update</em><br>2026</h1>
+    <p class="title-sub">Software Release · April 2026</p>
+    <div class="title-badge"><span>●</span> 12+ New Features · OTA Rollout</div>
+  </div>
+</section>
+
+<!-- SLIDE 2: OVERVIEW -->
+<section class="slide" id="slide2">
+  <div class="grid-bg"></div>
+  <div class="slide-header">
+    <span class="slide-num">02</span>
+    <h2>功能<em>概览</em></h2>
+    <p>本次更新横跨自动驾驶、AI语音、安全照明、行车记录仪与舒适性</p>
+  </div>
+  <div class="overview-grid">
+    <div class="ov-card">
+      <div class="ov-icon">🚗</div>
+      <div class="ov-label">自动驾驶</div>
+      <div class="ov-title">FSD 订阅 App</div>
+      <div class="ov-desc">一键订阅，AI4 硬件专属，含使用统计仪表盘</div>
+    </div>
+    <div class="ov-card">
+      <div class="ov-icon">🎙️</div>
+      <div class="ov-label">AI 语音</div>
+      <div class="ov-title">"Hey Grok" 唤醒</div>
+      <div class="ov-desc">免触屏启动 Grok，支持位置提醒与语音关闭</div>
+    </div>
+    <div class="ov-card">
+      <div class="ov-icon">💡</div>
+      <div class="ov-label">安全</div>
+      <div class="ov-title">盲区环境灯警告</div>
+      <div class="ov-desc">打转向灯时检测到盲区障碍，氛围灯闪红提醒</div>
+    </div>
+    <div class="ov-card">
+      <div class="ov-icon">📹</div>
+      <div class="ov-label">行车记录仪</div>
+      <div class="ov-title">24 小时录像</div>
+      <div class="ov-desc">保留时长从滚动循环延长至 24 小时，可永久保存片段</div>
+    </div>
+    <div class="ov-card">
+      <div class="ov-icon">🐾</div>
+      <div class="ov-label">宠物模式</div>
+      <div class="ov-title">Cyberhog 新登场</div>
+      <div class="ov-desc">新增狗、猫、刺猬三种图标及自定义宠物名称</div>
+    </div>
+    <div class="ov-card">
+      <div class="ov-icon">⚡</div>
+      <div class="ov-label">系统</div>
+      <div class="ov-title">自动安装更新</div>
+      <div class="ov-desc">告别手动确认，OTA 更新在车辆空闲时自动完成</div>
+    </div>
+  </div>
+  <span class="slide-tag">Overview</span>
+</section>
+
+<!-- SLIDE 3: FSD APP -->
+<section class="slide" id="slide3">
+  <div class="grid-bg"></div>
+  <span class="slide-num">03</span>
+  <span class="slide-tag">FSD</span>
+  <div class="slide-header">
+    <h2><em>Self-Driving</em> App</h2>
+    <p>全新自动驾驶订阅界面，专为 AI4 硬件设计</p>
+  </div>
+  <div class="fsd-layout">
+    <div class="fsd-left">
+      <div class="big-label">核心功能</div>
+      <div class="fsd-title">一键<em>订阅</em><br>FSD</div>
+      <p class="fsd-body">全新 Self-Driving App 让车主直接在车内以单次点击订阅全自动驾驶，同时提供专属使用统计仪表盘，追踪每日连续使用天数及总里程。</p>
+      <div>
+        <div class="price-tag">
+          <span class="price-big">$99.99</span>
+          <span class="price-per">/ 月</span>
+        </div>
+        <div class="hw-badge">⚙️ 仅限 AI4 (HW4) 硬件</div>
+      </div>
+    </div>
+    <div class="fsd-right">
+      <div class="big-label">App 内统计</div>
+      <div class="stat-row">
+        <div class="stat-title-sm">🔥 每日使用连续天数</div>
+        <div class="stat-desc-sm">游戏化机制鼓励用户持续保持订阅</div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-title-sm">📊 FSD / 手动里程分布</div>
+        <div class="stat-desc-sm">清晰展示自动驾驶与手动驾驶的比例</div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-title-sm">⚡ 使用趋势图表</div>
+        <div class="stat-desc-sm">告别第三方追踪工具，原生数据一目了然</div>
+      </div>
+      <div class="stat-row" style="border-bottom:none">
+        <div class="stat-title-sm">🔒 HW3 车主注意</div>
+        <div class="stat-desc-sm">旧版硬件不支持此 App，需升级硬件后方可使用</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 4: HEY GROK -->
+<section class="slide" id="slide4">
+  <div class="grid-bg"></div>
+  <span class="slide-num">04</span>
+  <span class="slide-tag">AI Voice</span>
+  <div class="slide-header">
+    <h2>Hey <em>Grok</em></h2>
+    <p>免触屏全语音 AI 体验，驾驶更专注</p>
+  </div>
+  <div class="grok-layout">
+    <div class="grok-hero">
+      <div class="grok-wake" style="flex:1">
+        <div class="wake-label">WAKE WORD</div>
+        <div class="wake-word">"Hey Grok"</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:0 clamp(8px,1.5vw,16px)">
+        <div class="wave-viz">
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+        </div>
+        <span style="font-family:'Space Mono',monospace;font-size:var(--small-size);color:var(--red);opacity:0.7">LISTENING</span>
+      </div>
+    </div>
+    <div class="grok-features">
+      <div class="gf-card">
+        <div class="gf-icon">📍</div>
+        <div class="gf-title">位置提醒</div>
+        <div class="gf-desc">「回家时提醒我检查轮胎气压」，真正实用的车内 AI 功能</div>
+      </div>
+      <div class="gf-card">
+        <div class="gf-icon">👋</div>
+        <div class="gf-title">语音关闭</div>
+        <div class="gf-desc">说「say goodbye」即可语音关闭 Grok，完全免触屏操作</div>
+      </div>
+      <div class="gf-card">
+        <div class="gf-icon">🔄</div>
+        <div class="gf-title">延续 2025.26</div>
+        <div class="gf-desc">在原 Grok 车载集成基础上大幅扩展，免触屏能力全面升级</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 5: DASHCAM -->
+<section class="slide" id="slide5">
+  <div class="grid-bg"></div>
+  <span class="slide-num">05</span>
+  <span class="slide-tag">Dashcam</span>
+  <div class="slide-header">
+    <h2>行车记录仪<em>升级</em></h2>
+    <p>保留时长大幅延长，重要片段永不丢失</p>
+  </div>
+  <div class="dashcam-layout">
+    <div class="dashcam-visual">
+      <div class="clock-ring">
+        <div class="arc-sweep"></div>
+        <div class="clock-inner">
+          <div class="clock-num">24</div>
+          <div class="clock-unit">小时</div>
+        </div>
+      </div>
+    </div>
+    <div class="dashcam-info">
+      <div class="dashcam-title">从<em>滚动循环</em><br>到 24 小时留存</div>
+      <div class="info-row">
+        <div class="info-dot"></div>
+        <div class="info-text"><strong>保留时长延长：</strong>原本的短暂循环升级为完整 24 小时窗口，停车过夜后仍可查看事故录像</div>
+      </div>
+      <div class="info-row">
+        <div class="info-dot"></div>
+        <div class="info-text"><strong>永久保存片段：</strong>支持将任意片段标记为永久存储，无需担心循环覆盖</div>
+      </div>
+      <div class="info-row">
+        <div class="info-dot"></div>
+        <div class="info-text"><strong>中国先行测试：</strong>此功能已在中国市场早期版本中验证，现正式推向全球</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 6: SAFETY LIGHTING -->
+<section class="slide" id="slide6">
+  <div class="grid-bg"></div>
+  <span class="slide-num">06</span>
+  <span class="slide-tag">Safety</span>
+  <div class="slide-header">
+    <h2>安全<em>氛围灯</em></h2>
+    <p>车内环境灯升级为主动安全提示系统</p>
+  </div>
+  <div class="safety-layout">
+    <div class="safety-left">
+      <div class="safety-items">
+        <div class="si-item">
+          <div class="si-icon">🚨</div>
+          <div class="si-content">
+            <div class="si-title">盲区警告 · 红色闪烁</div>
+            <div class="si-desc">打转向灯时检测到盲区有障碍物，门板氛围灯带整体变红闪烁，比传统小镜灯更显眼</div>
+          </div>
+        </div>
+        <div class="si-item">
+          <div class="si-icon">🅿️</div>
+          <div class="si-content">
+            <div class="si-title">停车障碍警告</div>
+            <div class="si-desc">停车时检测到障碍物，氛围灯同步提示，增强泊车安全感知</div>
+          </div>
+        </div>
+        <div class="si-item">
+          <div class="si-icon">🎨</div>
+          <div class="si-content">
+            <div class="si-title">超越传统盲点灯</div>
+            <div class="si-desc">与小型 A 柱指示灯相比，整条门板灯带形成更大的外围视觉提示，强光下也清晰可见</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="safety-right">
+      <div class="light-demo" style="justify-content:center">
+        <div style="font-size:clamp(0.65rem,1.1vw,0.85rem);color:var(--muted);font-family:'Space Mono',monospace;text-align:center;text-transform:uppercase;letter-spacing:0.08em">正常行驶</div>
+        <div class="car-strip"></div>
+        <div style="height:1px;background:var(--line);width:100%;margin:4px 0"></div>
+        <div style="font-size:clamp(0.65rem,1.1vw,0.85rem);color:var(--red);font-family:'Space Mono',monospace;text-align:center;text-transform:uppercase;letter-spacing:0.08em">检测到盲区</div>
+        <div class="car-strip active"></div>
+        <div style="font-size:clamp(0.6rem,0.95vw,0.75rem);color:var(--muted);text-align:center;margin-top:4px">氛围灯带红色脉冲</div>
+      </div>
+      <div style="background:var(--dim);border:1px solid var(--line);border-radius:8px;padding:clamp(10px,1.5vw,16px)">
+        <div style="font-family:'Space Mono',monospace;font-size:var(--small-size);color:var(--red);margin-bottom:6px">NOTE</div>
+        <div style="font-size:clamp(0.6rem,1vw,0.78rem);color:var(--muted);line-height:1.5">实际减少变道事故的效果尚待大规模真实路测数据验证，但方向正确</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 7: PET MODE + QOL -->
+<section class="slide" id="slide7">
+  <div class="grid-bg"></div>
+  <span class="slide-num">07</span>
+  <span class="slide-tag">QOL Updates</span>
+  <div class="slide-header">
+    <h2>宠物模式 &amp; <em>生活品质</em>提升</h2>
+    <p>贴心细节，来自真实车主反馈</p>
+  </div>
+  <div class="qol-grid">
+    <div class="qol-card featured">
+      <div class="qol-icon">🦔</div>
+      <div class="qol-featured-content">
+        <div class="qol-title">Pet Mode 全面升级 · Cyberhog 登场</div>
+        <div class="qol-desc">新增三种动物图标选择，并支持自定义宠物名称。Tesla 未对刺猬（🦔）的加入作任何解释。</div>
+        <div class="pet-badges">
+          <span class="pet-badge">🐶 Dog</span>
+          <span class="pet-badge">🐱 Cat</span>
+          <span class="pet-badge">🦔 Cyberhog</span>
+          <span class="pet-badge">✏️ 自定义名称</span>
+        </div>
+      </div>
+    </div>
+    <div class="qol-card">
+      <div class="qol-icon">📊</div>
+      <div class="qol-title">多行程追踪</div>
+      <div class="qol-desc">创建多段行程记录，独立追踪每段驾驶的能耗数据，向左滑动媒体播放器即可访问</div>
+    </div>
+    <div class="qol-card">
+      <div class="qol-icon">🌧️</div>
+      <div class="qol-title">天气地图升级</div>
+      <div class="qol-desc">雪和雨的颜色区分更清晰，并新增路线沿途过去一小时的降水历史数据</div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 8: AUTO-INSTALL + MODEL UPDATES -->
+<section class="slide" id="slide8">
+  <div class="grid-bg"></div>
+  <span class="slide-num">08</span>
+  <span class="slide-tag">System & Models</span>
+  <div class="slide-header">
+    <h2>系统更新 &amp; <em>车型专属</em>功能</h2>
+    <p>自动安装终于来了，旗舰车型定制化再升级</p>
+  </div>
+  <div class="updates-layout">
+    <div class="updates-col">
+      <div class="updates-col-title">系统功能</div>
+      <div class="update-item">
+        <div class="u-icon">⚙️</div>
+        <div class="u-text">
+          <div class="u-title">OTA 自动安装</div>
+          <div class="u-desc">车辆空闲时自动完成软件更新，告别手动确认弹窗——这是期待已久的功能</div>
+          <div class="u-badge">长期呼声功能</div>
+        </div>
+      </div>
+      <div class="update-item">
+        <div class="u-icon">🗺️</div>
+        <div class="u-text">
+          <div class="u-title">增强版停车视觉</div>
+          <div class="u-desc">Model 3 / Y 专属，更精细的车辆视觉渲染与停车环境界面，质感更精致</div>
+          <div class="u-badge">Model 3 · Model Y 专属</div>
+        </div>
+      </div>
+    </div>
+    <div class="divider-v"></div>
+    <div class="updates-col">
+      <div class="updates-col-title">车型专属</div>
+      <div class="update-item">
+        <div class="u-icon">🎨</div>
+        <div class="u-text">
+          <div class="u-title">Model S/X 虚拟改装</div>
+          <div class="u-desc">在 UI 中为车辆图标添加自定义贴膜、车牌和车窗膜——Model 3/Y 去年 Holiday Update 已获此功能</div>
+          <div class="u-badge">Model S · Model X</div>
+        </div>
+      </div>
+      <div class="update-item">
+        <div class="u-icon">🔇</div>
+        <div class="u-text">
+          <div class="u-title">音频质量提升</div>
+          <div class="u-desc">本次更新包含多项音频系统改善，提升整体扬声器表现</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 9: CLOSING -->
+<section class="slide" id="slide9">
+  <div class="grid-bg"></div>
+  <div class="final-block">
+    <div class="tesla-logo">TESLA SPRING 2026</div>
+    <h2 class="final-title">更新<em>到来</em><br>无感升级</h2>
+    <p class="final-sub">本次 Spring Update 是 Tesla 近年来功能最多的单季更新，OTA 自动推送，隔夜即可体验全部新功能</p>
+    <div class="final-features">
+      <span class="ff-pill">FSD 一键订阅</span>
+      <span class="ff-pill">Hey Grok</span>
+      <span class="ff-pill">24H 行车记录仪</span>
+      <span class="ff-pill">盲区氛围灯警告</span>
+      <span class="ff-pill">Cyberhog 宠物模式</span>
+      <span class="ff-pill">OTA 自动安装</span>
+      <span class="ff-pill">多行程追踪</span>
+      <span class="ff-pill">天气地图升级</span>
+    </div>
+    <div class="missing-notice">
+      ⚠️ 本次更新缺席：IFTTT 自动化（已在中国版本推出）、Apple CarPlay（仍待 iOS 26 兼容性问题解决）
+    </div>
+  </div>
+</section>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const dots = document.querySelectorAll('.nav-dot');
+let current = 0;
+
+function updateDots(idx) {
+  dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+}
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      current = [...slides].indexOf(e.target);
+      updateDots(current);
+    }
+  });
+}, { threshold: 0.5 });
+
+slides.forEach(s => observer.observe(s));
+
+function goTo(idx) {
+  slides[idx].scrollIntoView({ behavior: 'smooth' });
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowDown' || e.key === ' ' || e.key === 'PageDown') {
+    e.preventDefault();
+    goTo(Math.min(current + 1, slides.length - 1));
+  } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+    e.preventDefault();
+    goTo(Math.max(current - 1, 0));
+  }
+});
+</script>
+</body>
+</html>
