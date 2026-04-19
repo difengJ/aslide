@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- ═══ SEO: Primary ═══ -->
+<title>aslide — Turn Any Document Into Beautiful Slides</title>
+<meta name="description" content="Custom presentation design service. I turn annual reports, research papers, whitepapers, and any document into beautiful, professional slides. Email your document, receive a stunning deck.">
+<meta name="keywords" content="presentation design, slide design, document to slides, annual report design, research paper slides, whitepaper presentation, custom slide deck, PowerPoint design, Keynote design">
+<meta name="author" content="aslide.xyz">
+<link rel="canonical" href="https://aslide.xyz/">
+<meta name="robots" content="index, follow">
+
+<!-- ═══ SEO: Open Graph (Facebook, LinkedIn, WeChat) ═══ -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://aslide.xyz/">
+<meta property="og:title" content="aslide — Turn Any Document Into Beautiful Slides">
+<meta property="og:description" content="Annual reports. Research papers. Whitepapers. I turn any document into slides people actually want to read. Email your document, receive a stunning deck.">
+<meta property="og:image" content="https://aslide.xyz/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="aslide — Document to Slides Design Service">
+<meta property="og:site_name" content="aslide">
+<meta property="og:locale" content="en_US">
+
+<!-- ═══ SEO: Twitter / X Card ═══ -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="https://aslide.xyz/">
+<meta name="twitter:title" content="aslide — Turn Any Document Into Beautiful Slides">
+<meta name="twitter:description" content="Annual reports. Research papers. Whitepapers. I turn any document into slides people actually want to read.">
+<meta name="twitter:image" content="https://aslide.xyz/og-image.png">
+<meta name="twitter:image:alt" content="aslide — Document to Slides Design Service">
+
+<!-- ═══ SEO: JSON-LD Structured Data ═══ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "aslide",
+  "url": "https://aslide.xyz",
+  "description": "Custom presentation design service that transforms documents, annual reports, and research papers into beautiful, professional slide decks.",
+  "email": "hello@aslide.xyz",
+  "serviceType": "Presentation Design",
+  "areaServed": "Worldwide",
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Slide Design Services",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Document to Slides",
+          "description": "Transform any document — annual reports, research papers, whitepapers — into professional, beautiful slide decks delivered as PowerPoint, Keynote, or PDF."
+        }
+      }
+    ]
+  }
+}
+</script>
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --blue: #0071e3;
+  --blue-bright: #2997ff;
+  --link: #0066cc;
+  --black: #000000;
+  --near-black: #1d1d1f;
+  --gray: #f5f5f7;
+  --white: #ffffff;
+  --muted-light: rgba(0,0,0,0.8);
+  --caption: rgba(0,0,0,0.48);
+  --surface: #272729;
+  --shadow: rgba(0,0,0,0.22) 3px 5px 30px 0px;
+  --font: "SF Pro Display","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --font-text: "SF Pro Text","Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+body { font-family: var(--font-text); background: var(--black); color: var(--white); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200; height: 48px;
+  background: rgba(0,0,0,0.8);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  display: flex; align-items: center; justify-content: space-between; padding: 0 24px;
+}
+.nav-logo { font-family: var(--font); font-size: 18px; font-weight: 600; color: var(--white); text-decoration: none; letter-spacing: -0.28px; }
+.nav-logo span { color: var(--blue-bright); }
+.nav-links { display: flex; gap: 28px; list-style: none; }
+.nav-links a { font-size: 12px; color: rgba(255,255,255,0.8); text-decoration: none; letter-spacing: -0.12px; transition: color 0.2s; }
+.nav-links a:hover { color: var(--white); }
+.nav-cta { color: var(--blue-bright) !important; }
+
+/* HERO */
+.hero {
+  background: var(--black); min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 120px 24px 80px;
+}
+.hero-eyebrow { font-family: var(--font-text); font-size: 17px; color: var(--blue-bright); letter-spacing: -0.374px; margin-bottom: 14px; }
+.hero-title {
+  font-family: var(--font); font-size: 72px; font-weight: 600;
+  line-height: 1.05; letter-spacing: -0.5px;
+  color: var(--white); margin-bottom: 20px; max-width: 900px;
+}
+.hero-sub {
+  font-family: var(--font); font-size: 21px; font-weight: 400;
+  line-height: 1.19; letter-spacing: 0.231px;
+  color: rgba(255,255,255,0.65); margin-bottom: 40px; max-width: 560px;
+}
+.hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.btn-blue {
+  background: var(--blue); color: var(--white);
+  font-family: var(--font-text); font-size: 17px; padding: 8px 20px;
+  border-radius: 8px; border: none; text-decoration: none; transition: background 0.2s; display: inline-block;
+}
+.btn-blue:hover { background: #0077ed; }
+.btn-ghost {
+  color: var(--blue-bright); background: transparent;
+  font-family: var(--font-text); font-size: 17px; padding: 8px 20px;
+  border-radius: 980px; border: 1px solid rgba(255,255,255,0.25);
+  text-decoration: none; transition: border-color 0.2s; display: inline-block;
+}
+.btn-ghost:hover { border-color: rgba(255,255,255,0.5); }
+
+/* HERO VISUAL */
+.hero-visual { margin-top: 72px; width: 100%; max-width: 900px; }
+.before-after { display: grid; grid-template-columns: 1fr 80px 1fr; align-items: center; }
+.doc-card { background: var(--surface); border-radius: 12px; padding: 26px; box-shadow: var(--shadow); text-align: left; }
+.doc-label { font-size: 10px; font-weight: 600; letter-spacing: 0.5px; color: rgba(255,255,255,0.28); text-transform: uppercase; margin-bottom: 16px; }
+.dl { height: 8px; border-radius: 3px; background: rgba(255,255,255,0.12); margin-bottom: 7px; }
+.dl.h { height: 13px; background: rgba(255,255,255,0.2); margin-bottom: 11px; }
+.dl.s { width: 65%; }
+.dl.xs { width: 42%; }
+.dl.t { height: 6px; background: rgba(255,255,255,0.06); }
+.arrow-col { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.arrow-ring { width: 46px; height: 46px; border-radius: 50%; background: var(--blue); display: flex; align-items: center; justify-content: center; font-size: 22px; }
+.arrow-lbl { font-size: 9px; font-weight: 600; color: rgba(255,255,255,0.28); letter-spacing: 0.5px; text-transform: uppercase; }
+.slide-card { background: var(--surface); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); aspect-ratio: 16/9; }
+.slide-inner { width: 100%; height: 100%; background: #090d15; display: grid; grid-template-columns: 1fr 1fr; padding: 28px; position: relative; }
+.slide-left { display: flex; flex-direction: column; justify-content: center; gap: 8px; }
+.slide-right { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; position: relative; }
+.slide-right::before { content: ''; position: absolute; inset: -28px; background: radial-gradient(ellipse at center, rgba(0,113,227,0.15), transparent 70%); pointer-events: none; }
+.sdivider { width: 1px; height: 60%; background: rgba(255,255,255,0.07); position: absolute; left: 0; top: 50%; transform: translateY(-50%); }
+.stag { font-size: 9px; letter-spacing: 2px; color: var(--blue-bright); text-transform: uppercase; }
+.sh1 { font-size: 22px; font-weight: 600; line-height: 1.1; color: #fff; }
+.sh1 em { color: var(--blue-bright); font-style: normal; }
+.sbody { font-size: 8.5px; color: rgba(255,255,255,0.4); line-height: 1.7; }
+.snum { font-size: 42px; font-weight: 600; color: var(--blue-bright); line-height: 1; z-index: 1; }
+.slbl { font-size: 8px; color: rgba(255,255,255,0.35); letter-spacing: 1px; text-transform: uppercase; z-index: 1; }
+
+/* SECTIONS */
+.sl { background: var(--gray); padding: 100px 24px; text-align: center; }
+.sd { background: var(--black); padding: 100px 24px; text-align: center; }
+.st { font-family: var(--font); font-size: 48px; font-weight: 600; line-height: 1.08; letter-spacing: -0.28px; margin-bottom: 16px; color: var(--near-black); }
+.st.w { color: var(--white); }
+.sb { font-family: var(--font-text); font-size: 17px; line-height: 1.47; letter-spacing: -0.374px; color: var(--muted-light); max-width: 560px; margin: 0 auto 52px; }
+.sb.w { color: rgba(255,255,255,0.65); }
+.lm { font-family: var(--font-text); font-size: 14px; color: var(--link); text-decoration: none; letter-spacing: -0.224px; }
+.lm.w { color: var(--blue-bright); }
+.lm:hover { text-decoration: underline; }
+
+/* HOW IT WORKS */
+.steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: rgba(0,0,0,0.08); max-width: 960px; margin: 0 auto; border-radius: 12px; overflow: hidden; }
+.step { background: var(--white); padding: 40px 30px; text-align: left; }
+.sn { font-family: var(--font); font-size: 28px; font-weight: 400; color: var(--blue); line-height: 1.14; margin-bottom: 16px; }
+.stitle { font-family: var(--font); font-size: 21px; font-weight: 700; line-height: 1.19; letter-spacing: 0.231px; color: var(--near-black); margin-bottom: 8px; }
+.sdesc { font-family: var(--font-text); font-size: 14px; line-height: 1.43; letter-spacing: -0.224px; color: var(--muted-light); }
+
+/* GALLERY */
+.gallery { display: grid; grid-template-columns: repeat(2,1fr); gap: 24px; max-width: 980px; margin: 0 auto; }
+.gc-real { grid-column: 1 / -1; background: var(--surface); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); cursor: pointer; text-decoration: none; display: block; transition: transform 0.3s cubic-bezier(0.2,0,0,1); border: 1px solid rgba(255,255,255,0.06); }
+.gc-real:hover { transform: translateY(-4px); border-color: rgba(41,151,255,0.3); }
+.gc-real:hover .gc-preview-wrap { opacity: 0.88; }
+.gc-real-inner { display: grid; grid-template-columns: 1fr 1fr; min-height: 220px; }
+.gc-preview-wrap { display: flex; align-items: center; justify-content: center; padding: 24px; transition: opacity 0.3s; position: relative; overflow: hidden; }
+.slide-thumb { width: 100%; aspect-ratio: 16/9; border-radius: 8px; overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.6); position: relative; z-index: 1; }
+.gc-real-info { padding: 36px; display: flex; flex-direction: column; justify-content: center; gap: 12px; border-left: 1px solid rgba(255,255,255,0.06); }
+.gc-real-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(41,151,255,0.1); border: 1px solid rgba(41,151,255,0.25); border-radius: 980px; padding: 3px 12px; font-size: 11px; font-weight: 600; color: var(--blue-bright); }
+.gc-real-badge::before { content: '●'; font-size: 7px; }
+.gc-real-title { font-family: var(--font); font-size: 28px; font-weight: 600; line-height: 1.1; letter-spacing: -0.28px; color: var(--white); }
+.gc-real-desc { font-family: var(--font-text); font-size: 14px; line-height: 1.5; letter-spacing: -0.224px; color: rgba(255,255,255,0.5); }
+.gc-real-cta { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: var(--blue-bright); letter-spacing: -0.224px; margin-top: 4px; }
+.bg-tesla { background: #0a0a0f; background-image: linear-gradient(rgba(232,32,42,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(232,32,42,0.04) 1px, transparent 1px); background-size: 40px 40px; }
+.bg-editorial { background: #faf8f5; }
+
+/* TAGS */
+.tags { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; max-width: 720px; margin: 0 auto; }
+.tag { font-size: 14px; color: var(--near-black); background: var(--white); padding: 8px 18px; border-radius: 980px; box-shadow: var(--shadow); letter-spacing: -0.224px; }
+
+/* CONTACT */
+.ct { background: var(--black); padding: 120px 24px; text-align: center; }
+.ct-pre { font-size: 17px; color: rgba(255,255,255,0.45); margin-bottom: 24px; letter-spacing: -0.374px; }
+.ct-h { font-family: var(--font); font-size: 72px; font-weight: 600; line-height: 1.05; letter-spacing: -0.5px; margin-bottom: 32px; }
+.ct-email { font-family: var(--font); font-size: 28px; font-weight: 400; color: var(--blue-bright); text-decoration: none; letter-spacing: -0.28px; display: inline-block; margin-bottom: 14px; transition: opacity 0.2s; border-bottom: 1px solid rgba(41,151,255,0.3); padding-bottom: 4px; }
+.ct-email:hover { opacity: 0.75; }
+.ct-note { font-size: 14px; color: rgba(255,255,255,0.35); letter-spacing: -0.224px; }
+
+/* FOOTER */
+footer { background: #111; padding: 20px 24px; border-top: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: space-between; }
+.fl { font-family: var(--font); font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.45); text-decoration: none; }
+.fc { font-size: 12px; color: rgba(255,255,255,0.28); letter-spacing: -0.12px; }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .hero-title, .ct-h { font-size: 40px; }
+  .hero-sub { font-size: 17px; }
+  .before-after { grid-template-columns: 1fr; gap: 14px; }
+  .arrow-col { flex-direction: row; justify-content: center; }
+  .steps { grid-template-columns: 1fr; }
+  .gallery { grid-template-columns: 1fr; }
+  .gc-real-inner { grid-template-columns: 1fr; }
+  .gc-real-info { border-left: none; border-top: 1px solid rgba(255,255,255,0.06); padding: 28px; }
+  .st { font-size: 32px; }
+  .nav-links { display: none; }
+}
+</style>
+</head>
+<body>
+
+<nav aria-label="Main navigation">
+  <a href="/" class="nav-logo">a<span>slide</span>.xyz</a>
+  <ul class="nav-links">
+    <li><a href="#works">Works</a></li>
+    <li><a href="#how">How it works</a></li>
+    <li><a href="#contact" class="nav-cta">Get in touch ›</a></li>
+  </ul>
+</nav>
+
+<main>
+
+<!-- HERO -->
+<section class="hero" aria-label="Hero">
+  <p class="hero-eyebrow">Document → Slides, beautifully.</p>
+  <h1 class="hero-title">Your report,<br>transformed.</h1>
+  <p class="hero-sub">Annual reports. Research papers. Whitepapers. I turn any document into slides people actually want to read.</p>
+  <div class="hero-actions">
+    <a href="#contact" class="btn-blue">Send your document</a>
+    <a href="#works" class="btn-ghost">See examples</a>
+  </div>
+
+  <div class="hero-visual" aria-hidden="true">
+    <div class="before-after">
+      <div class="doc-card">
+        <div class="doc-label">Your document</div>
+        <div class="dl h"></div>
+        <div class="dl t"></div><div class="dl t s"></div><div class="dl t"></div><div class="dl t xs"></div><div class="dl t"></div>
+        <div style="height:10px"></div>
+        <div class="dl h" style="width:72%"></div>
+        <div class="dl t"></div><div class="dl t s"></div><div class="dl t"></div>
+        <div style="height:10px"></div>
+        <div class="dl h" style="width:80%"></div>
+        <div class="dl t"></div><div class="dl t xs"></div><div class="dl t"></div><div class="dl t s"></div>
+      </div>
+      <div class="arrow-col">
+        <div class="arrow-ring">→</div>
+        <div class="arrow-lbl">aslide</div>
+      </div>
+      <div class="slide-card">
+        <div class="slide-inner">
+          <div class="slide-left">
+            <div class="stag">Key Findings · 2024</div>
+            <div class="sh1">Revenue<br>grew <em>+147%</em><br>YoY</div>
+            <div class="sbody">Driven by enterprise expansion<br>and improved retention.</div>
+          </div>
+          <div class="slide-right">
+            <div class="sdivider"></div>
+            <div class="snum">$8.2M</div>
+            <div class="slbl">Total Revenue</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="sl" id="how" aria-labelledby="how-title">
+  <h2 class="st" id="how-title">Ridiculously simple.</h2>
+  <p class="sb">No briefs. No back-and-forth. Just send your document and get back slides ready to present.</p>
+  <div class="steps">
+    <div class="step">
+      <div class="sn">01</div>
+      <h3 class="stitle">Send your doc</h3>
+      <p class="sdesc">PDF, Word, research paper, annual report, whitepaper — email it directly. No form to fill out.</p>
+    </div>
+    <div class="step">
+      <div class="sn">02</div>
+      <h3 class="stitle">I read & design</h3>
+      <p class="sdesc">I distill your content into clear, visual slides. Each one designed to communicate — not just display — information.</p>
+    </div>
+    <div class="step">
+      <div class="sn">03</div>
+      <h3 class="stitle">You receive slides</h3>
+      <p class="sdesc">Delivered as PowerPoint, Keynote, or PDF. Ready to present, share, or publish.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WORKS -->
+<section class="sd" id="works" aria-labelledby="works-title">
+  <h2 class="st w" id="works-title">What I've made.</h2>
+  <p class="sb w">Real documents, turned into slides worth sharing. Click any card to open the full deck.</p>
+  <div class="gallery">
+
+    <a class="gc-real" href="tesla-spring-2026.html" target="_blank" rel="noopener" aria-label="View Tesla Spring Update 2026 slide deck">
+      <div class="gc-real-inner">
+        <div class="gc-preview-wrap bg-tesla">
+          <div class="slide-thumb">
+            <svg width="100%" height="100%" viewBox="0 0 560 315" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Tesla Spring Update 2026 slide preview">
+              <rect width="560" height="315" fill="#080810"/>
+              <defs>
+                <radialGradient id="rg1" cx="50%" cy="100%" r="70%">
+                  <stop offset="0%" stop-color="#e8202a" stop-opacity="0.22"/>
+                  <stop offset="100%" stop-color="#080810" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+              <rect width="560" height="315" fill="url(#rg1)"/>
+              <line x1="0" y1="157" x2="560" y2="157" stroke="rgba(232,32,42,0.05)" stroke-width="1"/>
+              <line x1="280" y1="0" x2="280" y2="315" stroke="rgba(232,32,42,0.05)" stroke-width="1"/>
+              <text x="280" y="88" font-family="Helvetica Neue,Arial,sans-serif" font-size="11" fill="#e8202a" letter-spacing="8" font-weight="600" text-anchor="middle">TESLA</text>
+              <line x1="188" y1="93" x2="244" y2="93" stroke="#e8202a" stroke-width="0.5" opacity="0.5"/>
+              <line x1="316" y1="93" x2="372" y2="93" stroke="#e8202a" stroke-width="0.5" opacity="0.5"/>
+              <text x="280" y="156" font-family="Helvetica Neue,Arial,sans-serif" font-size="50" fill="#f0f0f5" font-weight="800" text-anchor="middle" letter-spacing="-2">Spring</text>
+              <text x="280" y="210" font-family="Helvetica Neue,Arial,sans-serif" font-size="50" fill="#e8202a" font-weight="800" text-anchor="middle" letter-spacing="-2" font-style="italic">Update</text>
+              <text x="280" y="264" font-family="Helvetica Neue,Arial,sans-serif" font-size="50" fill="#f0f0f5" font-weight="800" text-anchor="middle" letter-spacing="-2">2026</text>
+              <text x="280" y="296" font-family="monospace" font-size="9" fill="rgba(240,240,245,0.28)" letter-spacing="2" text-anchor="middle">Software Release · April 2026</text>
+            </svg>
+          </div>
+        </div>
+        <div class="gc-real-info">
+          <div class="gc-real-badge">Live · Real Work</div>
+          <div class="gc-real-title">Tesla Spring Update 2026</div>
+          <div class="gc-real-desc">Turned Tesla's software release notes into a 9-slide scrollable deck. Dark editorial aesthetic, animated visualizations, fully responsive.</div>
+          <div class="gc-real-cta">View full deck <span style="font-size:16px">→</span></div>
+        </div>
+      </div>
+    </a>
+
+    <a class="gc-real" href="frontend-design-article.html" target="_blank" rel="noopener" aria-label="View Frontend Design article">
+      <div class="gc-real-inner">
+        <div class="gc-preview-wrap bg-editorial">
+          <div class="slide-thumb">
+            <svg width="100%" height="100%" viewBox="0 0 560 315" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Frontend Design article preview">
+              <rect width="560" height="315" fill="#faf8f5"/>
+              <rect x="0" y="0" width="560" height="1" fill="#1a1814"/>
+              <text x="28" y="26" font-family="Georgia,serif" font-size="9" fill="#8a8580" letter-spacing="2">Frontend Design · Anthropic Plugin</text>
+              <line x1="0" y1="36" x2="560" y2="36" stroke="#1a1814" stroke-width="0.5"/>
+              <text x="28" y="72" font-family="Georgia,serif" font-size="22" fill="#1a1814" font-weight="400">告别"AI 审美"，</text>
+              <text x="28" y="100" font-family="Georgia,serif" font-size="22" fill="#8b5e3c" font-style="italic">真正有主张</text>
+              <text x="152" y="100" font-family="Georgia,serif" font-size="22" fill="#1a1814">的界面</text>
+              <rect x="28" y="116" width="2" height="48" fill="#c8a96e"/>
+              <text x="38" y="132" font-family="Georgia,serif" font-size="10" fill="#4a4540">Frontend Design Plugin 是 Anthropic 官方</text>
+              <text x="38" y="148" font-family="Georgia,serif" font-size="10" fill="#4a4540">出品的前端设计增强工具，核心使命只有</text>
+              <text x="38" y="164" font-family="Georgia,serif" font-size="10" fill="#4a4540">一件事：让 Claude 生成的界面不再千篇一律。</text>
+              <rect x="28" y="188" width="155" height="90" fill="#0a0a0a" rx="3"/>
+              <text x="106" y="222" font-family="monospace" font-size="20" fill="#e8ff47" text-anchor="middle" font-weight="700">BRUTAL</text>
+              <text x="106" y="242" font-family="monospace" font-size="9" fill="#555" text-anchor="middle" letter-spacing="1">IST</text>
+              <rect x="198" y="188" width="155" height="90" fill="#2c3a2e" rx="3"/>
+              <text x="276" y="222" font-family="Georgia,serif" font-size="16" fill="#c9b882" text-anchor="middle" font-style="italic">Luxury</text>
+              <text x="276" y="242" font-family="Georgia,serif" font-size="9" fill="#8fa68e" text-anchor="middle">Warm · Refined</text>
+              <rect x="368" y="188" width="162" height="90" fill="#1a0a00" rx="3"/>
+              <text x="449" y="222" font-family="monospace" font-size="18" fill="#ffb347" text-anchor="middle" font-weight="700">RETRO</text>
+              <text x="449" y="242" font-family="monospace" font-size="9" fill="#ff6b1a" text-anchor="middle" opacity="0.6">FUTURISTIC</text>
+            </svg>
+          </div>
+        </div>
+        <div class="gc-real-info">
+          <div class="gc-real-badge">Live · Real Work</div>
+          <div class="gc-real-title">Frontend Design Article</div>
+          <div class="gc-real-desc">An editorial-style article showcasing three distinct UI aesthetics — Brutalist, Luxury, and Retro Futuristic — with live interactive demos.</div>
+          <div class="gc-real-cta">View full article <span style="font-size:16px">→</span></div>
+        </div>
+      </div>
+    </a>
+
+  </div>
+  <br><br><br>
+  <a href="#contact" class="lm w">Have a document to transform? Let's talk ›</a>
+</section>
+
+<!-- ANY DOCUMENT -->
+<section class="sl" aria-labelledby="docs-title">
+  <h2 class="st" id="docs-title">Any document.<br>Any industry.</h2>
+  <p class="sb">If it has pages, I can make it into slides.</p>
+  <div class="tags" role="list">
+    <span class="tag" role="listitem">Annual Reports</span>
+    <span class="tag" role="listitem">Research Papers</span>
+    <span class="tag" role="listitem">Whitepapers</span>
+    <span class="tag" role="listitem">Strategy Documents</span>
+    <span class="tag" role="listitem">Financial Reports</span>
+    <span class="tag" role="listitem">Clinical Studies</span>
+    <span class="tag" role="listitem">ESG Reports</span>
+    <span class="tag" role="listitem">Market Analysis</span>
+    <span class="tag" role="listitem">Policy Documents</span>
+    <span class="tag" role="listitem">Conference Papers</span>
+    <span class="tag" role="listitem">Product Roadmaps</span>
+    <span class="tag" role="listitem">Earnings Reports</span>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="ct" id="contact" aria-labelledby="contact-title">
+  <p class="ct-pre">Ready to transform your document?</p>
+  <h2 class="ct-h" id="contact-title">Send it over.</h2>
+  <a href="mailto:hello@aslide.xyz" class="ct-email">hello@aslide.xyz</a>
+  <p class="ct-note">Attach your document · I'll reply within 24 hours</p>
+</section>
+
+</main>
+
+<footer>
+  <a href="/" class="fl">aslide.xyz</a>
+  <span class="fc">© 2025 aslide.xyz</span>
+</footer>
+
+<script>
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.style.opacity = '1'; e.target.style.transform = 'translateY(0)'; }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.gc-real, .step').forEach(el => {
+    el.style.opacity = '0'; el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    io.observe(el);
+  });
+</script>
+</body>
+</html>
