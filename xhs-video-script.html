@@ -1,0 +1,1408 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>小红书脚本 · 全程AI参与的一天</title>
+<link rel="stylesheet" href="colors_and_type.css" />
+<style>
+  /* ========== Page shell ========== */
+  :root{
+    --xhs-red:#ff2741;          /* 小红书参考色，仅用于"小红书化"的字幕高亮 */
+    --xhs-yellow:#ffe14a;
+    --xhs-cream:#fff8ed;
+    --paper:#fafafa;
+    --hairline:rgba(0,0,0,.08);
+    --hairline-strong:rgba(0,0,0,.14);
+  }
+  html,body{background:var(--bg-section-light);}
+  body{
+    padding: 56px 24px 120px;
+    font-feature-settings: "ss01","cv01";
+  }
+  .page{
+    max-width: 1120px;
+    margin: 0 auto;
+  }
+
+  /* ========== Hero / doc header ========== */
+  .doc-eyebrow{
+    font-family: var(--font-text);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: var(--fg-subtle);
+    margin-bottom: 18px;
+  }
+  .doc-eyebrow .dot{
+    display:inline-block;width:6px;height:6px;border-radius:50%;
+    background: var(--accent); margin-right:8px;vertical-align:1px;
+  }
+  .doc-title{
+    font-family: var(--font-display);
+    font-size: 56px;
+    font-weight: 600;
+    line-height: 1.07;
+    letter-spacing: -0.5px;
+    color: var(--fg-primary);
+    margin-bottom: 14px;
+    text-wrap: balance;
+  }
+  .doc-sub{
+    font-family: var(--font-display);
+    font-size: 21px;
+    font-weight: 400;
+    color: var(--color-text-secondary);
+    max-width: 720px;
+    line-height: 1.4;
+  }
+  .doc-meta{
+    display:flex; flex-wrap:wrap; gap: 8px;
+    margin-top: 28px;
+  }
+  .chip{
+    font-family: var(--font-text);
+    font-size: 12px; font-weight: 500;
+    padding: 6px 12px;
+    background: #fff;
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-pill);
+    color: var(--fg-primary);
+    letter-spacing: -.1px;
+  }
+  .chip strong{font-weight:600;color:var(--accent);}
+
+  /* ========== Section blocks ========== */
+  section{ margin-top: 88px; }
+  .section-head{
+    display:flex; align-items:baseline; gap: 16px;
+    margin-bottom: 28px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .section-num{
+    font-family: var(--font-display);
+    font-size: 13px; font-weight: 600;
+    color: var(--fg-subtle);
+    letter-spacing: 1px;
+  }
+  .section-title{
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 600;
+    letter-spacing: -.4px;
+    color: var(--fg-primary);
+  }
+  .section-desc{
+    margin-left:auto;
+    font-size: 13px;
+    color: var(--fg-muted);
+    font-weight: 400;
+  }
+
+  /* ========== 1. Phone preview row (cover) ========== */
+  .phone-row{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+  }
+  .phone{
+    background: #000;
+    border-radius: 36px;
+    padding: 10px;
+    box-shadow: var(--shadow-card);
+    aspect-ratio: 3/4;
+    position: relative;
+    overflow: hidden;
+  }
+  .phone-screen{
+    background:#fff;
+    border-radius: 28px;
+    width:100%; height:100%;
+    overflow:hidden;
+    position:relative;
+    display:flex;
+    flex-direction:column;
+  }
+  .phone-tag{
+    font-size: 11px;
+    font-family: var(--font-text);
+    font-weight: 600;
+    color: var(--fg-subtle);
+    text-align:center;
+    margin-top: 12px;
+    letter-spacing: .5px;
+  }
+
+  /* Cover A — 桌面 + 大字标题 */
+  .cover-a{
+    background: linear-gradient(180deg,#fdf6ec 0%, #f5e9d4 100%);
+    padding: 22px 18px;
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    position:relative;
+  }
+  .cover-a::before{
+    content:""; position:absolute; inset:14px;
+    border:1.5px dashed rgba(0,0,0,.18);
+    border-radius: 22px;
+    pointer-events:none;
+  }
+  .cover-a-photo{
+    margin-top: 10px;
+    height: 38%;
+    border-radius: 14px;
+    background:
+      radial-gradient(120% 100% at 30% 20%, #ffe5b8 0%, transparent 60%),
+      linear-gradient(135deg,#3a3128 0%, #1a1410 100%);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,.18);
+  }
+  .cover-a-photo::after{
+    content:"";
+    position:absolute; left:18%; top:30%; width:64%; height:46%;
+    background: #f6f2ea;
+    border-radius: 4px;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,.06);
+  }
+  .cover-a-photo .me{
+    position:absolute; right:8%; bottom:6%; width:38%; height:62%;
+    border-radius: 50% 50% 40% 40% / 55% 55% 45% 45%;
+    background: linear-gradient(160deg,#d9a578 0%, #8c5a3a 90%);
+    box-shadow: 0 4px 10px rgba(0,0,0,.2);
+  }
+  .cover-a-title{
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 30px;
+    line-height: 1.05;
+    color:#1a1410;
+    letter-spacing: -1px;
+    transform: rotate(-1.5deg);
+    position:relative;
+  }
+  .handwrite{
+    font-family: "Caveat","Comic Sans MS","Bradley Hand",cursive;
+    font-style: italic;
+  }
+  .cover-a-title em{
+    font-style: normal;
+    background: var(--xhs-yellow);
+    padding: 0 6px;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+  .cover-a-sub{
+    font-family: "Caveat","Bradley Hand",cursive;
+    font-size: 22px;
+    color:#6b3a1a;
+    transform: rotate(-2deg);
+    margin-top: 6px;
+  }
+  .cover-a-stamp{
+    position:absolute; right: 16px; top: 22px;
+    background: var(--xhs-red);
+    color:#fff; font-weight:800; font-size:11px;
+    padding: 6px 10px;
+    border-radius: 4px;
+    transform: rotate(8deg);
+    letter-spacing: .5px;
+    box-shadow: 0 4px 10px rgba(255,39,65,.3);
+  }
+
+  /* Cover B — 真人脸 + 手写问号 */
+  .cover-b{
+    flex:1;
+    background:
+      radial-gradient(70% 50% at 50% 30%, #fff 0%, #efe9df 60%, #d9d2c4 100%);
+    position:relative;
+    overflow:hidden;
+  }
+  .cover-b .face{
+    position:absolute; left:50%; top:42%;
+    transform: translate(-50%,-50%);
+    width: 58%; aspect-ratio: 4/5;
+    border-radius: 50% 50% 44% 44% / 55% 55% 45% 45%;
+    background: linear-gradient(160deg,#e9c8a6 0%, #b78a60 100%);
+    box-shadow: 0 16px 40px rgba(0,0,0,.18);
+  }
+  .cover-b .face::before{
+    /* glasses */
+    content:""; position:absolute; left:18%; top:38%;
+    width:64%; height: 16%;
+    background:
+      linear-gradient(90deg, transparent 22%, rgba(0,0,0,.85) 22% 26%, transparent 26% 74%, rgba(0,0,0,.85) 74% 78%, transparent 78%),
+      linear-gradient(90deg, rgba(0,0,0,.18) 0 100%);
+    background-size: 100% 100%, 100% 4px;
+    background-position: center, center;
+    background-repeat: no-repeat;
+    border-radius: 16px;
+  }
+  .cover-b .face::after{
+    /* mouth */
+    content:""; position:absolute; left:42%; bottom:22%;
+    width:16%; height:3%; background:#5a2a18; border-radius:4px;
+  }
+  .cover-b-bottom{
+    position:absolute; left:0; right:0; bottom:0;
+    padding: 14px 16px 18px;
+    background: rgba(0,0,0,.78);
+    color:#fff;
+  }
+  .cover-b-line1{
+    font-family:"Caveat","Bradley Hand",cursive;
+    font-size: 20px;
+    color: var(--xhs-yellow);
+    margin-bottom: 4px;
+    transform: rotate(-1deg);
+  }
+  .cover-b-line2{
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 22px;
+    line-height: 1.1;
+    letter-spacing: -.5px;
+  }
+  .cover-b-line2 u{
+    text-decoration: none;
+    border-bottom: 4px solid var(--xhs-red);
+  }
+  .cover-b-tag{
+    position:absolute; left: 14px; top: 14px;
+    background:#fff; color:#1d1d1f;
+    font-size:10px; font-weight:700;
+    padding: 5px 9px; border-radius: 4px;
+    letter-spacing: .4px;
+  }
+
+  /* Cover C — 时间线 */
+  .cover-c{
+    flex:1;
+    background:#fff8ed;
+    padding: 22px 20px;
+    display:flex; flex-direction:column;
+    position:relative;
+  }
+  .cover-c-eyebrow{
+    font-family:"Caveat",cursive;
+    font-size: 18px;
+    color: var(--xhs-red);
+    transform: rotate(-2deg);
+  }
+  .cover-c-title{
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 26px;
+    line-height: 1.08;
+    letter-spacing: -.6px;
+    color:#1a1410;
+    margin-top: 4px;
+    margin-bottom: 18px;
+  }
+  .cover-c-title mark{
+    background: var(--xhs-yellow);
+    padding: 0 4px;
+    color:#1a1410;
+  }
+  .timeline{
+    flex:1;
+    display:flex; flex-direction:column;
+    justify-content: space-around;
+    border-left: 2px dashed rgba(0,0,0,.25);
+    padding-left: 14px;
+    margin-left: 6px;
+  }
+  .tl-row{ position:relative; }
+  .tl-row::before{
+    content:""; position:absolute; left:-21px; top:6px;
+    width:10px; height:10px; border-radius:50%;
+    background: var(--xhs-red);
+    box-shadow: 0 0 0 3px #fff8ed, 0 0 0 4px var(--xhs-red);
+  }
+  .tl-time{ font-family:var(--font-text); font-size:11px; font-weight:700; color:#a05a20; letter-spacing:.5px;}
+  .tl-task{ font-family:var(--font-display); font-size:14px; font-weight:700; color:#1a1410; line-height:1.2; margin-top:2px;}
+  .tl-task small{ font-weight:400; color:#6b6258; }
+  .cover-c-foot{
+    margin-top: 14px;
+    font-family:"Caveat",cursive;
+    font-size: 18px;
+    color:#1a1410;
+    text-align:right;
+    transform: rotate(-1deg);
+  }
+  .cover-c-foot b{ background: var(--xhs-yellow); padding: 0 4px; }
+
+  /* ========== 2. Storyboard table ========== */
+  .scene{
+    background:#fff;
+    border-radius: var(--radius-large);
+    margin-bottom: 24px;
+    overflow:hidden;
+    border: 1px solid var(--hairline);
+  }
+  .scene-head{
+    display:flex; align-items:center; gap:14px;
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--hairline);
+    background: #fcfcfd;
+  }
+  .scene-no{
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 13px;
+    color: #fff;
+    background: #1d1d1f;
+    padding: 4px 10px;
+    border-radius: var(--radius-micro);
+    letter-spacing: .5px;
+  }
+  .scene-time{
+    font-family: var(--font-text);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: -.1px;
+  }
+  .scene-title{
+    font-family: var(--font-display);
+    font-size: 21px;
+    font-weight: 600;
+    letter-spacing: -.2px;
+  }
+  .scene-tag{
+    margin-left:auto;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--fg-subtle);
+    letter-spacing: .8px;
+    text-transform: uppercase;
+  }
+
+  .scene-grid{
+    display:grid;
+    grid-template-columns: 280px 1fr 320px;
+  }
+  .scene-cell{
+    padding: 22px 24px;
+    border-right: 1px solid var(--hairline);
+  }
+  .scene-cell:last-child{ border-right:none;}
+  .cell-label{
+    font-family: var(--font-text);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--fg-subtle);
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  /* visual cell */
+  .visual-frame{
+    position: relative;
+    aspect-ratio: 3/4;
+    background:#000;
+    border-radius: 14px;
+    overflow:hidden;
+    box-shadow: 0 6px 18px rgba(0,0,0,.12);
+  }
+  .vf-bg{ position:absolute; inset:0; }
+  .vf-overlay{
+    position:absolute; inset:0;
+    padding: 14px;
+    display:flex; flex-direction:column;
+    justify-content: flex-end;
+  }
+  .vf-topcorner{
+    position:absolute; top:10px; left:10px;
+    background: rgba(0,0,0,.55);
+    color:#fff;
+    font-size: 9px; font-weight: 700;
+    padding: 3px 7px; border-radius: 4px;
+    letter-spacing: .5px;
+    backdrop-filter: blur(6px);
+  }
+  .vf-bigtext{
+    font-family: var(--font-display);
+    font-weight: 800;
+    color:#fff;
+    font-size: 22px;
+    line-height: 1.1;
+    letter-spacing: -.4px;
+    text-shadow: 0 2px 8px rgba(0,0,0,.4);
+  }
+  .vf-bigtext mark{
+    background: var(--xhs-yellow);
+    color:#1a1410;
+    padding: 0 4px;
+  }
+  .vf-bigtext em{
+    font-style: normal;
+    color: var(--xhs-yellow);
+  }
+  .vf-handwrite{
+    font-family:"Caveat",cursive;
+    font-size: 16px;
+    color:#fff;
+    margin-top: 6px;
+    transform: rotate(-1.5deg);
+    text-shadow: 0 2px 6px rgba(0,0,0,.5);
+  }
+  .vf-handwrite::before{ content:"// "; opacity:.7;}
+
+  /* visual scene backgrounds (CSS-painted placeholders) */
+  .bg-morning{
+    background:
+      radial-gradient(80% 60% at 40% 40%, #fff5d6 0%, #f3d5a0 50%, #6b4a2a 100%);
+  }
+  .bg-morning::after{
+    content:""; position:absolute; left:14%; right:14%; top:30%; bottom:18%;
+    background: linear-gradient(180deg,#1d1d1f 0%, #2a2a2d 100%);
+    border-radius: 8px;
+    box-shadow: 0 10px 24px rgba(0,0,0,.4);
+  }
+  .bg-morning::before{
+    content:""; position:absolute; left:24%; right:24%; top:38%; bottom:32%;
+    background:
+      linear-gradient(180deg, #f5f5f7 0 12px, transparent 12px),
+      repeating-linear-gradient(180deg, #ddd 0 1px, transparent 1px 14px),
+      #fff;
+    border-radius: 4px;
+    z-index:1;
+  }
+
+  .bg-afternoon{
+    background: #f5f5f7;
+  }
+  .bg-afternoon::before{
+    content:""; position:absolute; inset:18% 12%;
+    background:#fff;
+    border-radius: 6px;
+    box-shadow: 0 8px 24px rgba(0,0,0,.12);
+    background-image:
+      linear-gradient(180deg, #1d1d1f 0 8%, transparent 8%),
+      repeating-linear-gradient(180deg, transparent 0 14%, #e6e6e9 14% 15%, transparent 15% 22%);
+    background-size: 100% 100%, 100% 100%;
+  }
+  .bg-afternoon::after{
+    content:"PRD"; position:absolute; left:22%; top:24%;
+    color:#fff; font-family: var(--font-display); font-weight:800; font-size:10px; letter-spacing:1px;
+  }
+
+  .bg-evening{
+    background:
+      linear-gradient(180deg, #ffd7a8 0%, #ff9a6b 40%, #5a2c5e 100%);
+  }
+  .bg-evening::before{
+    content:""; position:absolute; left:10%; right:10%; top:14%; bottom:12%;
+    background: rgba(0,0,0,.7);
+    border-radius: 8px;
+    backdrop-filter: blur(2px);
+  }
+  .bg-evening::after{
+    content:""; position:absolute; left:18%; right:18%; top:24%; bottom:28%;
+    background:
+      repeating-linear-gradient(90deg, #2a2a2d 0 32%, transparent 32% 34%) top/100% 30% no-repeat,
+      repeating-linear-gradient(90deg, #3a3a3d 0 24%, transparent 24% 26%) bottom/100% 50% no-repeat,
+      #1d1d1f;
+    border-radius: 4px;
+  }
+
+  .bg-night{
+    background: #0a0a0c;
+  }
+  .bg-night::before{
+    content:""; position:absolute; left:12%; right:12%; top:18%; bottom:24%;
+    background:
+      linear-gradient(180deg, #1a1a1d 0 12%, #fff 12%);
+    border-radius: 6px;
+    box-shadow: 0 8px 24px rgba(0,0,0,.5);
+    background-image:
+      linear-gradient(180deg, #1a1a1d 0 8%, transparent 8%),
+      repeating-linear-gradient(180deg, transparent 0 14%, #e6e6e9 14% 15%, transparent 15% 22%);
+  }
+  .bg-night::after{
+    content:""; position:absolute; left:18%; bottom:30%; width:14%; height:3%;
+    background: var(--xhs-yellow);
+  }
+
+  /* narration cell */
+  .vo-block{
+    background: #fafafa;
+    border-left: 3px solid var(--accent);
+    padding: 12px 14px;
+    border-radius: 0 8px 8px 0;
+    margin-bottom: 14px;
+  }
+  .vo-block .vo-tag{
+    font-size: 10px; font-weight:700; color: var(--accent);
+    letter-spacing: 1px; text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .vo-block p{
+    font-family: var(--font-text);
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--fg-primary);
+    margin: 0;
+  }
+
+  .ai-exchange{
+    background:#fbfbfd;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--hairline);
+    margin-bottom: 12px;
+  }
+  .ai-row{
+    display:flex; gap: 10px;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--hairline);
+    align-items: flex-start;
+  }
+  .ai-row:last-child{border-bottom:none;}
+  .ai-avatar{
+    flex-shrink:0;
+    width: 22px; height:22px;
+    border-radius: 6px;
+    background: #1d1d1f;
+    color:#fff;
+    font-size: 9px; font-weight:700;
+    display:flex; align-items:center; justify-content:center;
+    letter-spacing: .3px;
+  }
+  .ai-row.you .ai-avatar{ background: var(--accent);}
+  .ai-row.claude .ai-avatar{ background:#cc785c;}
+  .ai-content{ flex:1; min-width:0;}
+  .ai-name{
+    font-size: 11px; font-weight:700; color:var(--fg-primary);
+    margin-bottom: 3px; letter-spacing: -.1px;
+  }
+  .ai-text{
+    font-family: var(--font-text);
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+  }
+  .ai-text code{
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 11.5px;
+    background: #f0f0f3;
+    padding: 1px 4px; border-radius: 3px;
+  }
+  .ai-text .truncate{ color: var(--fg-subtle); font-style: italic;}
+
+  /* takeaway cell */
+  .takeaway-list{ list-style:none; margin:0; padding:0;}
+  .takeaway-list li{
+    display: grid;
+    grid-template-columns: 22px 1fr;
+    gap: 8px;
+    align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .takeaway-list li:last-child{border-bottom:none;}
+  .tk-icon{
+    font-family: var(--font-display);
+    font-weight:700; font-size: 11px;
+    width: 22px; height:22px;
+    border-radius: var(--radius-micro);
+    display:flex; align-items:center; justify-content:center;
+    color:#fff;
+  }
+  .tk-icon.win{ background: #1d8a4a;}
+  .tk-icon.hold{ background: #b8860b;}
+  .tk-icon.me{ background: var(--accent);}
+  .tk-text{
+    font-family: var(--font-text);
+    font-size: 13px;
+    line-height: 1.45;
+    color: var(--fg-primary);
+  }
+  .tk-text b{ font-weight: 600;}
+  .tk-text small{
+    display:block; font-size: 11px;
+    color: var(--fg-subtle);
+    margin-top: 2px;
+  }
+
+  /* overlay text preview pill */
+  .overlay-tag{
+    display:inline-block;
+    background: var(--xhs-yellow);
+    color: #1a1410;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 12px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    margin-right: 6px; margin-bottom: 4px;
+    letter-spacing: -.1px;
+  }
+  .overlay-tag.dark{ background:#1d1d1f; color:#fff;}
+  .overlay-tag.red{ background: var(--xhs-red); color:#fff;}
+
+  /* ========== 3. Keyword overlays ========== */
+  .overlay-grid{
+    display:grid; grid-template-columns: repeat(4,1fr);
+    gap: 16px;
+  }
+  .overlay-card{
+    aspect-ratio: 3/4;
+    background:#0a0a0c;
+    border-radius: var(--radius-large);
+    padding: 24px 20px;
+    display:flex; flex-direction:column;
+    justify-content: center;
+    color:#fff;
+    position:relative;
+    overflow:hidden;
+    box-shadow: var(--shadow-card);
+  }
+  .overlay-card .timestamp{
+    position:absolute; top:14px; left:16px;
+    font-size: 10px; font-weight:600;
+    color: rgba(255,255,255,.5);
+    letter-spacing: .8px;
+  }
+  .overlay-card .scene-label{
+    position:absolute; top:14px; right:16px;
+    font-size: 10px; font-weight:700;
+    color: var(--xhs-yellow);
+    letter-spacing: .5px;
+  }
+  .overlay-card .big{
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 32px;
+    line-height: 1.08;
+    letter-spacing: -.6px;
+    text-wrap: balance;
+  }
+  .overlay-card .big mark{
+    background: var(--xhs-yellow);
+    color:#1a1410;
+    padding: 0 5px;
+  }
+  .overlay-card .big em{
+    font-style: normal;
+    background: var(--xhs-red);
+    color:#fff;
+    padding: 0 5px;
+  }
+  .overlay-card .small{
+    font-family: "Caveat",cursive;
+    font-size: 22px;
+    color: rgba(255,255,255,.85);
+    margin-top: 12px;
+    transform: rotate(-1deg);
+  }
+  .overlay-card.cream{
+    background: var(--xhs-cream);
+    color: #1a1410;
+  }
+  .overlay-card.cream .small{ color:#6b3a1a;}
+  .overlay-card.cream .timestamp{ color: rgba(0,0,0,.5);}
+  .overlay-card.cream .scene-label{color: var(--xhs-red);}
+
+  /* ========== 4. Production notes ========== */
+  .prod-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .prod-card{
+    background:#fff;
+    border-radius: var(--radius-large);
+    padding: 28px;
+    border: 1px solid var(--hairline);
+  }
+  .prod-card h4{
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    letter-spacing: -.2px;
+  }
+  .prod-card h4 .num{
+    display:inline-flex; align-items:center; justify-content:center;
+    width: 22px; height:22px; border-radius:50%;
+    background: var(--accent); color:#fff;
+    font-size: 12px; margin-right:8px;
+    font-weight: 700;
+  }
+  .prod-card ul{ margin:0; padding:0; list-style:none;}
+  .prod-card li{
+    font-family: var(--font-text);
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--color-text-secondary);
+    padding: 8px 0;
+    border-bottom: 1px solid var(--hairline);
+    display:flex; gap: 10px;
+  }
+  .prod-card li:last-child{border-bottom:none;}
+  .prod-card li::before{
+    content:"·";
+    color: var(--accent);
+    font-weight:700; font-size: 18px;
+    line-height: 1; margin-top: 2px;
+  }
+  .prod-card li b{
+    color: var(--fg-primary);
+    font-weight: 600;
+  }
+  .prod-card li code{
+    font-family: ui-monospace,"SF Mono",monospace;
+    font-size: 12px;
+    background: #f0f0f3;
+    padding: 1px 5px; border-radius: 3px;
+  }
+
+  /* ========== 5. Cover & title ========== */
+  .titles-card{
+    background:#fff;
+    border-radius: var(--radius-large);
+    padding: 28px;
+    border: 1px solid var(--hairline);
+    margin-top: 24px;
+  }
+  .title-option{
+    padding: 16px 0;
+    border-bottom: 1px dashed var(--hairline);
+    display:grid; grid-template-columns: 32px 1fr 100px; gap: 14px;
+    align-items: baseline;
+  }
+  .title-option:last-child{border-bottom:none;}
+  .title-tag{
+    font-family: var(--font-display);
+    font-weight:700;
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: .5px;
+  }
+  .title-text{
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 1.3;
+    letter-spacing: -.2px;
+    color: var(--fg-primary);
+  }
+  .title-text mark{
+    background: var(--xhs-yellow);
+    padding: 0 3px;
+  }
+  .title-note{
+    font-size: 11px;
+    color: var(--fg-subtle);
+    text-align:right;
+    line-height: 1.4;
+  }
+
+  .closing{
+    margin-top: 96px;
+    padding: 48px 0 24px;
+    border-top: 1px solid var(--hairline);
+    text-align:center;
+    color: var(--fg-subtle);
+    font-size: 13px;
+  }
+  .closing strong{ color: var(--fg-primary);}
+
+  @media (max-width: 880px){
+    .scene-grid{grid-template-columns: 1fr;}
+    .scene-cell{border-right:none; border-bottom: 1px solid var(--hairline);}
+    .phone-row{grid-template-columns: 1fr;}
+    .overlay-grid{grid-template-columns: repeat(2,1fr);}
+    .prod-grid{grid-template-columns: 1fr;}
+    .doc-title{font-size: 38px;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ===================== HEADER ===================== -->
+  <header>
+    <div class="doc-eyebrow"><span class="dot"></span>小红书短视频脚本 · vlog 风</div>
+    <h1 class="doc-title">记录一个真实的工作日：<br/>全程 AI 参与，我只负责最后把关。</h1>
+    <p class="doc-sub">一个 PM 的 40 秒 vlog。Claude 帮我打字，我替它思考——AI 帮了大忙，但没替代我。</p>
+    <div class="doc-meta">
+      <span class="chip">⏱ 总时长 <strong>40s</strong></span>
+      <span class="chip">📱 <strong>3:4 竖版</strong></span>
+      <span class="chip">🎬 4 个环节</span>
+      <span class="chip">🎵 Lo-fi 慢节奏</span>
+      <span class="chip">🤖 AI 工具：<strong>Claude</strong></span>
+      <span class="chip">👤 PM 视角</span>
+    </div>
+  </header>
+
+  <!-- ===================== 1. COVER PREVIEW ===================== -->
+  <section>
+    <div class="section-head">
+      <span class="section-num">01 / COVER</span>
+      <h2 class="section-title">封面 3 版预览</h2>
+      <span class="section-desc">本人出镜 + 手写感字幕 · 拖到桌面就是完成稿</span>
+    </div>
+
+    <div class="phone-row">
+      <div>
+        <div class="phone"><div class="phone-screen">
+          <div class="cover-a">
+            <div class="cover-a-stamp">真实记录</div>
+            <div class="cover-a-photo"><div class="me"></div></div>
+            <div>
+              <div class="cover-a-title">AI 帮我干完<br/>一整天的活，<br/><em>我只做了一件事。</em></div>
+              <div class="cover-a-sub handwrite">— 把关。</div>
+            </div>
+          </div>
+        </div></div>
+        <div class="phone-tag">A · 桌面感 + 印章</div>
+      </div>
+
+      <div>
+        <div class="phone"><div class="phone-screen">
+          <div class="cover-b">
+            <div class="cover-b-tag">PM日常</div>
+            <div class="face"></div>
+            <div class="cover-b-bottom">
+              <div class="cover-b-line1">PM 的一天，AI 干了 80%</div>
+              <div class="cover-b-line2">那剩下的 <u>20%</u>，<br/>才是我领工资的原因。</div>
+            </div>
+          </div>
+        </div></div>
+        <div class="phone-tag">B · 真人特写 + 黑底字</div>
+      </div>
+
+      <div>
+        <div class="phone"><div class="phone-screen">
+          <div class="cover-c">
+            <div class="cover-c-eyebrow">真实工作日记录</div>
+            <div class="cover-c-title">我的一天，<br/><mark>4 个任务全交给 AI</mark></div>
+            <div class="timeline">
+              <div class="tl-row"><div class="tl-time">09:30 AM</div><div class="tl-task">晨会纪要 <small>· 5 分钟搞定</small></div></div>
+              <div class="tl-row"><div class="tl-time">02:00 PM</div><div class="tl-task">PRD 初稿 <small>· 框架它写</small></div></div>
+              <div class="tl-row"><div class="tl-time">06:00 PM</div><div class="tl-task">竞品分析 <small>· 信息聚合</small></div></div>
+              <div class="tl-row"><div class="tl-time">09:00 PM</div><div class="tl-task">写周报 <small>· 它起草我润</small></div></div>
+            </div>
+            <div class="cover-c-foot">最后那一关，<br/><b>是我的事。</b></div>
+          </div>
+        </div></div>
+        <div class="phone-tag">C · 时间线信息流</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 2. STORYBOARD ===================== -->
+  <section>
+    <div class="section-head">
+      <span class="section-num">02 / STORYBOARD</span>
+      <h2 class="section-title">分镜脚本</h2>
+      <span class="section-desc">画面 · 旁白 · AI 对话 · 把关点</span>
+    </div>
+
+    <!-- ====== Scene 0: Hook (0–2s) ====== -->
+    <div class="scene">
+      <div class="scene-head">
+        <span class="scene-no">HOOK</span>
+        <span class="scene-time">00:00 – 00:02</span>
+        <span class="scene-title">开场钩子 · 2 秒</span>
+        <span class="scene-tag">悬念</span>
+      </div>
+      <div class="scene-grid">
+        <div class="scene-cell">
+          <div class="cell-label">画面</div>
+          <div class="visual-frame">
+            <div class="vf-bg bg-night"></div>
+            <span class="vf-topcorner">00:01</span>
+            <div class="vf-overlay">
+              <div class="vf-bigtext">今天<em>没动几下键盘</em>，<br/>活全干完了。</div>
+              <div class="vf-handwrite">真的不是标题党</div>
+            </div>
+          </div>
+        </div>
+        <div class="scene-cell">
+          <div class="cell-label">旁白 / 口播</div>
+          <div class="vo-block">
+            <div class="vo-tag">VO · 略带疲惫的真诚</div>
+            <p>"今天我基本没怎么打字……活，全干完了。"</p>
+          </div>
+          <div class="cell-label">动作提示</div>
+          <p style="font-size:13px;color:var(--fg-muted);line-height:1.5;margin:0;">本人特写 · 半侧脸看屏幕 · 揉一下肩 · 自然光 · 直接切下一帧</p>
+        </div>
+        <div class="scene-cell">
+          <div class="cell-label">字幕叠加</div>
+          <span class="overlay-tag">今天没动几下键盘</span>
+          <span class="overlay-tag red">活全干完了</span>
+          <span class="overlay-tag dark">真实记录 ↓</span>
+          <div style="margin-top:14px;font-size:12px;color:var(--fg-subtle);line-height:1.5;">
+            字号：标题 70pt，手写副标题 32pt。<br/>
+            小红书风格"黄底黑字 + 手写补刀"。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== Scene 1: Morning ====== -->
+    <div class="scene">
+      <div class="scene-head">
+        <span class="scene-no">01</span>
+        <span class="scene-time">00:02 – 00:11 · 9s</span>
+        <span class="scene-title">早上 · 晨会纪要</span>
+        <span class="scene-tag">省时省力</span>
+      </div>
+      <div class="scene-grid">
+        <div class="scene-cell">
+          <div class="cell-label">画面</div>
+          <div class="visual-frame">
+            <div class="vf-bg bg-morning"></div>
+            <span class="vf-topcorner">09:30 AM</span>
+            <div class="vf-overlay">
+              <div class="vf-bigtext"><mark>45 分钟</mark>会议<br/>→ <em>5 分钟</em>纪要</div>
+              <div class="vf-handwrite">录音一丢，结构出来了</div>
+            </div>
+          </div>
+          <p style="font-size:11px;color:var(--fg-subtle);margin-top:10px;line-height:1.5;">
+            桌面俯拍 · 咖啡 + 笔记本 + 手机录音键。<br/>
+            穿插：屏幕录屏（Claude 输出 markdown）。
+          </p>
+        </div>
+        <div class="scene-cell">
+          <div class="cell-label">旁白</div>
+          <div class="vo-block">
+            <div class="vo-tag">VO</div>
+            <p>"早上开了 45 分钟的需求会，以前我得花 20 分钟整理。<br/>今天我把录音转文字直接喂给 Claude——"</p>
+          </div>
+
+          <div class="cell-label">AI 对话示例</div>
+          <div class="ai-exchange">
+            <div class="ai-row you">
+              <div class="ai-avatar">我</div>
+              <div class="ai-content">
+                <div class="ai-name">Prompt</div>
+                <div class="ai-text">"这是今早需求会的录音转写。帮我整理成会议纪要：<code>① 决策项</code> <code>② 待办（带 owner）</code> <code>③ 悬而未决</code>。<span class="truncate">[贴入 3000 字逐字稿]</span>"</div>
+              </div>
+            </div>
+            <div class="ai-row claude">
+              <div class="ai-avatar">C</div>
+              <div class="ai-content">
+                <div class="ai-name">Claude</div>
+                <div class="ai-text">📌 <b>决策项 (3)</b><br/>· v2.3 上线时间锁定 5/15<br/>· 推送频次降到 2 次/日<br/>· 灰度从 5% 起<br/>📋 <b>待办 (5)</b> @张三：埋点方案 周五前…<span class="truncate">[完整结构化输出]</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="scene-cell">
+          <div class="cell-label">AI 真的香</div>
+          <ul class="takeaway-list">
+            <li><span class="tk-icon win">✓</span>
+              <span class="tk-text"><b>结构化能力起飞</b><small>3000 字逐字稿 → 三段式纪要，30 秒。</small></span>
+            </li>
+            <li><span class="tk-icon win">✓</span>
+              <span class="tk-text"><b>不漏待办</b><small>谁说的话、谁负责、什么时候——它比我专心。</small></span>
+            </li>
+          </ul>
+          <div class="cell-label" style="margin-top:14px;">还得我自己来</div>
+          <ul class="takeaway-list">
+            <li><span class="tk-icon me">!</span>
+              <span class="tk-text"><b>判断"哪句是气话"</b><small>设计撂的那句"那不做了"——它当成决策，我得删掉。</small></span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== Scene 2: Afternoon ====== -->
+    <div class="scene">
+      <div class="scene-head">
+        <span class="scene-no">02</span>
+        <span class="scene-time">00:11 – 00:20 · 9s</span>
+        <span class="scene-title">下午 · 需求文档（PRD）</span>
+        <span class="scene-tag">框架它写 / 思考我来</span>
+      </div>
+      <div class="scene-grid">
+        <div class="scene-cell">
+          <div class="cell-label">画面</div>
+          <div class="visual-frame">
+            <div class="vf-bg bg-afternoon"></div>
+            <span class="vf-topcorner">02:14 PM</span>
+            <div class="vf-overlay">
+              <div class="vf-bigtext"><em>PRD 框架</em>它写，<br/><mark>"为什么"我来。</mark></div>
+              <div class="vf-handwrite">这个不能省</div>
+            </div>
+          </div>
+          <p style="font-size:11px;color:var(--fg-subtle);margin-top:10px;line-height:1.5;">
+            屏幕录屏为主 · Notion / 飞书文档界面。<br/>
+            我手指点屏幕 + 在草稿纸上画原型的特写。
+          </p>
+        </div>
+        <div class="scene-cell">
+          <div class="cell-label">旁白</div>
+          <div class="vo-block">
+            <div class="vo-tag">VO</div>
+            <p>"下午写 PRD。我把功能要点列了 5 条，让 Claude 扩成完整文档——背景、目标、用户故事、边界 case，5 分钟出框架。"</p>
+            <p style="margin-top:8px;">"但'为什么做这个'——AI 写不来。<br/>那是我跟用户聊出来的。"</p>
+          </div>
+
+          <div class="cell-label">AI 对话示例</div>
+          <div class="ai-exchange">
+            <div class="ai-row you">
+              <div class="ai-avatar">我</div>
+              <div class="ai-content">
+                <div class="ai-name">Prompt</div>
+                <div class="ai-text">"基于这 5 个要点，扩成 PRD 初稿：背景、目标、用户故事、功能详情、异常流。语气专业克制。<span class="truncate">[5 条要点]</span>"</div>
+              </div>
+            </div>
+            <div class="ai-row claude">
+              <div class="ai-avatar">C</div>
+              <div class="ai-content">
+                <div class="ai-name">Claude</div>
+                <div class="ai-text"># 个性化推送 v2.3<br/>## 1. 背景 <span class="truncate">[占位说明，需补充]</span><br/>## 2. 用户故事<br/>· 作为高频用户，我希望…<br/>## 3. 异常流（12 条）<span class="truncate">[结构非常完整]</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="scene-cell">
+          <div class="cell-label">AI 真的香</div>
+          <ul class="takeaway-list">
+            <li><span class="tk-icon win">✓</span><span class="tk-text"><b>异常流穷举</b><small>它能想到 12 种 case，我自己只能想到 5 种。</small></span></li>
+            <li><span class="tk-icon win">✓</span><span class="tk-text"><b>格式工整不用调</b><small>层级标题、字段表格全都到位。</small></span></li>
+          </ul>
+          <div class="cell-label" style="margin-top:14px;">还得我自己来</div>
+          <ul class="takeaway-list">
+            <li><span class="tk-icon me">!</span><span class="tk-text"><b>"背景"部分必须我写</b><small>用户痛点、商业判断——AI 给的是模板，没有现场感。</small></span></li>
+            <li><span class="tk-icon hold">⚠</span><span class="tk-text"><b>边界 case 要复核</b><small>它列得很全，但有几条在我们场景里其实不存在。</small></span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== Scene 3: Evening ====== -->
+    <div class="scene">
+      <div class="scene-head">
+        <span class="scene-no">03</span>
+        <span class="scene-time">00:20 – 00:29 · 9s</span>
+        <span class="scene-title">傍晚 · 竞品分析</span>
+        <span class="scene-tag">信息聚合 / 观点要自带</span>
+      </div>
+      <div class="scene-grid">
+        <div class="scene-cell">
+          <div class="cell-label">画面</div>
+          <div class="visual-frame">
+            <div class="vf-bg bg-evening"></div>
+            <span class="vf-topcorner">06:12 PM</span>
+            <div class="vf-overlay">
+              <div class="vf-bigtext">3 个竞品 ×<br/>10 个维度 →<br/><mark>1 张表</mark></div>
+              <div class="vf-handwrite">观点那栏空着</div>
+            </div>
+          </div>
+          <p style="font-size:11px;color:var(--fg-subtle);margin-top:10px;line-height:1.5;">
+            画面：3 个 App 截图并排 + Claude 输出对比表 + 我手画箭头标注。<br/>
+            转场：手画的"❓"叠在 AI 给的"中性结论"上。
+          </p>
+        </div>
+        <div class="scene-cell">
+          <div class="cell-label">旁白</div>
+          <div class="vo-block">
+            <div class="vo-tag">VO</div>
+            <p>"傍晚做竞品。三个 App 我各用了 30 分钟，把感受丢给 Claude，让它列对比表。"</p>
+            <p style="margin-top:8px;">"它列得特别整齐——但'我们到底学谁'，它不会说。"</p>
+          </div>
+
+          <div class="cell-label">AI 对话示例</div>
+          <div class="ai-exchange">
+            <div class="ai-row you">
+              <div class="ai-avatar">我</div>
+              <div class="ai-content">
+                <div class="ai-name">Prompt</div>
+                <div class="ai-text">"对比 A / B / C 三个产品在以下 10 个维度的差异，输出 markdown 表格：信息架构、首屏密度、推送策略、付费墙位置…<span class="truncate">[10 维度]</span>"</div>
+              </div>
+            </div>
+            <div class="ai-row claude">
+              <div class="ai-avatar">C</div>
+              <div class="ai-content">
+                <div class="ai-name">Claude</div>
+                <div class="ai-text">| 维度 | A | B | C |<br/>|---|---|---|---|<br/>| 首屏密度 | 高 | 中 | 极低 |<br/>| 推送频次 | 3次/日 | 1次/日 | 0 |<span class="truncate">[10 行整齐]</span></div>
+              </div>
+            </div>
+            <div class="ai-row you">
+              <div class="ai-avatar">我</div>
+              <div class="ai-content">
+                <div class="ai-name">手动补一栏</div>
+                <div class="ai-text">"我们的判断" → <b>学 C 的克制，不学 A 的密度。理由：我们用户是周更而非日更。</b></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="scene-cell">
+          <div class="cell-label">AI 真的香</div>
+          <ul class="takeaway-list">
+            <li><span class="tk-icon win">✓</span><span class="tk-text"><b>信息聚合无敌</b><small>三个产品 × 十个维度，30 秒一张表。</small></span></li>
+            <li><span class="tk-icon win">✓</span><span class="tk-text"><b>客观描述准</b><small>不偏袒任何一边，比我自己写更中立。</small></span></li>
+          </ul>
+          <div class="cell-label" style="margin-top:14px;">还得我自己来</div>
+          <ul class="takeaway-list">
+            <li><span class="tk-icon me">!</span><span class="tk-text"><b>"我们学谁"必须自己下判断</b><small>AI 说的全是"各有千秋"——这种话给老板看会被毙。</small></span></li>
+            <li><span class="tk-icon me">!</span><span class="tk-text"><b>用户场景要带进去</b><small>它不知道我们用户是周更不是日更。</small></span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== Scene 4: Night ====== -->
+    <div class="scene">
+      <div class="scene-head">
+        <span class="scene-no">04</span>
+        <span class="scene-time">00:29 – 00:36 · 7s</span>
+        <span class="scene-title">晚上 · 写周报</span>
+        <span class="scene-tag">起草它来 / 语气我调</span>
+      </div>
+      <div class="scene-grid">
+        <div class="scene-cell">
+          <div class="cell-label">画面</div>
+          <div class="visual-frame">
+            <div class="vf-bg bg-night"></div>
+            <span class="vf-topcorner">09:14 PM</span>
+            <div class="vf-overlay">
+              <div class="vf-bigtext">AI 写得太"<em>正确</em>"，<br/><mark>不像我说话。</mark></div>
+              <div class="vf-handwrite">最后这一遍，逃不掉</div>
+            </div>
+          </div>
+          <p style="font-size:11px;color:var(--fg-subtle);margin-top:10px;line-height:1.5;">
+            画面：手机屏幕 · 微信对话框 · 我在改最后两段。<br/>
+            台灯打光 · 半张脸 · 屏幕反光在镜片上。
+          </p>
+        </div>
+        <div class="scene-cell">
+          <div class="cell-label">旁白</div>
+          <div class="vo-block">
+            <div class="vo-tag">VO</div>
+            <p>"晚上写周报。我把今天 4 件事丢给 Claude，它三秒钟出了一版'非常正确'的周报——"</p>
+            <p style="margin-top:8px;">"读完我笑了，<b>这不是我说话的样子</b>。"</p>
+          </div>
+
+          <div class="cell-label">AI 对话示例</div>
+          <div class="ai-exchange">
+            <div class="ai-row claude">
+              <div class="ai-avatar">C</div>
+              <div class="ai-content">
+                <div class="ai-name">Claude 起草</div>
+                <div class="ai-text">"本周高效推进 v2.3 项目，<b>赋能</b>核心用户群体，<b>沉淀</b>了完整的需求文档与竞品分析，<b>夯实</b>了下一阶段的基础……"</div>
+              </div>
+            </div>
+            <div class="ai-row you">
+              <div class="ai-avatar">我</div>
+              <div class="ai-content">
+                <div class="ai-name">我改完</div>
+                <div class="ai-text">"v2.3 框架定了，5/15 上线没问题。竞品扫了三个，结论：学 C 不学 A。<br/>风险：埋点方案还在等数据组，可能压一周。"</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="scene-cell">
+          <div class="cell-label">AI 真的香</div>
+          <ul class="takeaway-list">
+            <li><span class="tk-icon win">✓</span><span class="tk-text"><b>不会漏事</b><small>4 件事它一件不少地写进去了。</small></span></li>
+          </ul>
+          <div class="cell-label" style="margin-top:14px;">还得我自己来</div>
+          <ul class="takeaway-list">
+            <li><span class="tk-icon me">!</span><span class="tk-text"><b>语气全部重写</b><small>"赋能/沉淀/夯实"——我从不说这些词，老板也不爱看。</small></span></li>
+            <li><span class="tk-icon me">!</span><span class="tk-text"><b>风险项必须自己加</b><small>AI 默认报喜不报忧，但 PM 周报的价值就在那一句"有什么挡路了"。</small></span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== Scene 5: Closing ====== -->
+    <div class="scene">
+      <div class="scene-head">
+        <span class="scene-no">END</span>
+        <span class="scene-time">00:36 – 00:40 · 4s</span>
+        <span class="scene-title">收尾 · 金句</span>
+        <span class="scene-tag">留余韵 · 不带 CTA</span>
+      </div>
+      <div class="scene-grid">
+        <div class="scene-cell">
+          <div class="cell-label">画面</div>
+          <div class="visual-frame">
+            <div class="vf-bg" style="background:#fff;"></div>
+            <div class="vf-overlay" style="justify-content:center;align-items:center;text-align:center;">
+              <div class="vf-bigtext" style="color:#1a1410;text-shadow:none;font-size:26px;">
+                AI 帮我打完字，<br/>
+                <mark>我替它思考。</mark>
+              </div>
+              <div class="vf-handwrite" style="color:#a05a20;text-shadow:none;text-align:center;">— 这就够了。</div>
+            </div>
+          </div>
+        </div>
+        <div class="scene-cell">
+          <div class="cell-label">旁白</div>
+          <div class="vo-block">
+            <div class="vo-tag">VO · 放慢 · 轻叹</div>
+            <p>"AI 帮我打完了字……我替它思考。<br/>把关的活，从来不是打字最快的人能干的。"</p>
+          </div>
+          <div class="cell-label">动作提示</div>
+          <p style="font-size:13px;color:var(--fg-muted);line-height:1.5;margin:0;">
+            屏幕缓慢淡出至白底 · 文字打字机式逐字出现 · BGM 渐弱 · 不出 logo · 不出"关注我"。
+          </p>
+        </div>
+        <div class="scene-cell">
+          <div class="cell-label">字幕叠加</div>
+          <span class="overlay-tag dark">AI 帮我打完字</span>
+          <span class="overlay-tag">我替它思考</span>
+          <div style="margin-top:14px;font-size:12px;color:var(--fg-subtle);line-height:1.6;">
+            字号：主句 60pt，副句 28pt 手写。<br/>
+            停留 2.5 秒后整体淡出。结尾静默 0.5 秒。
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 3. KEY OVERLAYS ===================== -->
+  <section>
+    <div class="section-head">
+      <span class="section-num">03 / OVERLAYS</span>
+      <h2 class="section-title">关键文字叠加 · 金句板</h2>
+      <span class="section-desc">每段一句高亮 · 直接做成贴纸贴到画面上</span>
+    </div>
+
+    <div class="overlay-grid">
+      <div class="overlay-card">
+        <span class="timestamp">00:02–00:11</span>
+        <span class="scene-label">SCENE 01</span>
+        <div class="big">45 分钟会，<br/><mark>5 分钟纪要。</mark></div>
+        <div class="small">— 它比我专心</div>
+      </div>
+      <div class="overlay-card cream">
+        <span class="timestamp">00:11–00:20</span>
+        <span class="scene-label">SCENE 02</span>
+        <div class="big">框架它写，<br/><em style="background:#1a1410;color:#fff;">"为什么"我来。</em></div>
+        <div class="small">— PRD 不是格式问题</div>
+      </div>
+      <div class="overlay-card">
+        <span class="timestamp">00:20–00:29</span>
+        <span class="scene-label">SCENE 03</span>
+        <div class="big">它说"各有千秋"，<br/><mark>我说"学 C 不学 A"。</mark></div>
+        <div class="small">— 观点是 PM 的工资条</div>
+      </div>
+      <div class="overlay-card cream">
+        <span class="timestamp">00:29–00:36</span>
+        <span class="scene-label">SCENE 04</span>
+        <div class="big">它写得太"正确"，<br/><em style="background:var(--xhs-red);color:#fff;">不像我。</em></div>
+        <div class="small">— 风险项 AI 永远漏</div>
+      </div>
+    </div>
+
+    <div class="overlay-card" style="margin-top:24px;aspect-ratio:auto;padding:48px 40px;text-align:center;align-items:center;">
+      <span class="scene-label" style="position:static;margin-bottom:18px;">FINAL · 00:36–00:40</span>
+      <div class="big" style="font-size:44px;">
+        AI 帮我打完字，<mark>我替它思考。</mark>
+      </div>
+      <div class="small" style="font-size:24px;margin-top:18px;">把关的能力，比执行更重要。</div>
+    </div>
+  </section>
+
+  <!-- ===================== 4. PRODUCTION NOTES ===================== -->
+  <section>
+    <div class="section-head">
+      <span class="section-num">04 / PRODUCTION</span>
+      <h2 class="section-title">拍摄 &amp; 剪辑建议</h2>
+      <span class="section-desc">手机就能拍 · 当晚就能发</span>
+    </div>
+
+    <div class="prod-grid">
+      <div class="prod-card">
+        <h4><span class="num">1</span>怎么拍</h4>
+        <ul>
+          <li><b>手机机位三种就够</b>：① 桌面俯拍（手机架/支架打 45°）② 屏幕正面录屏（系统自带录屏，1080p、60fps）③ 本人半侧脸特写（前置摄像头/朋友帮拍）。</li>
+          <li><b>光：自然光优先</b>。窗户在侧前方 45°。下午/傍晚段补一盏 <code>3000K</code> 暖光台灯，保持那种"加班但不阴沉"的氛围。</li>
+          <li><b>构图：留白</b>。人物或屏幕在画面下半部，<b>顶部 1/3 留给字幕</b>——别等剪辑再发现没地方放字。</li>
+          <li><b>录屏先打码</b>：项目名、用户名、客户数据，提前马赛克或贴假数据。</li>
+          <li><b>口播分段录</b>：每个环节单独录一遍，留 1 秒静音收尾，方便剪辑对齐。</li>
+        </ul>
+      </div>
+
+      <div class="prod-card">
+        <h4><span class="num">2</span>怎么剪</h4>
+        <ul>
+          <li><b>节奏</b>：开头 hook 2 秒紧，4 个环节每段 7–9 秒，结尾 4 秒缓。<b>剪映"踩点"功能开</b>，跟 BGM 鼓点切。</li>
+          <li><b>转场</b>：只用两种——<b>硬切</b>（90% 场合）和 <b>白闪 1 帧</b>（环节切换时）。不用旋转、缩放、酷炫转场。</li>
+          <li><b>字幕</b>：剪映内置"综艺花字"风格，<b>黄底黑字主字幕 + 手写体补刀</b>。主字幕用思源黑体 Heavy，手写用"得意黑"或"演示佛系体"。</li>
+          <li><b>语速</b>：原速 1.0×，关键金句处停 0.3 秒（"我替它思考"前留半拍）。</li>
+          <li><b>调色</b>：剪映"清新"或"日系"滤镜 60% 强度，统一色温，别让 4 个时段画面色差太大。</li>
+        </ul>
+      </div>
+
+      <div class="prod-card">
+        <h4><span class="num">3</span>BGM 推荐</h4>
+        <ul>
+          <li><b>主基调：Lo-fi 慢节奏</b>（咖啡馆感，60–80 BPM，有钢琴/电钢/温暖电流声）。</li>
+          <li><b>剪映/CapCut 曲库直接搜</b>：<code>lofi study</code> / <code>chill cafe</code> / <code>focus beat</code>。</li>
+          <li><b>具体方向</b>：日系 city-lofi（Idealism、HM Surf 风格）/ 中文 vlog 常用的"咖啡馆雨声 lo-fi" / 慢钢琴 + 浅鼓点。</li>
+          <li><b>音量曲线</b>：开头 −18dB（让人声清楚），中段 −22dB，结尾"我替它思考"那句 BGM 渐弱到 −30dB，留 0.5 秒静默。</li>
+          <li><b>避雷</b>：别用带歌词的、别用电子鼓打得太重的、别用最近爆款 BGM（容易显得"模板化"）。</li>
+        </ul>
+      </div>
+
+      <div class="prod-card">
+        <h4><span class="num">4</span>发布小贴士</h4>
+        <ul>
+          <li><b>发布时间</b>：工作日 <code>21:00–22:30</code>。打工人下班刷小红书的黄金时段，主题共鸣最强。</li>
+          <li><b>话题标签</b>：<code>#AI工具</code> <code>#产品经理日常</code> <code>#打工人</code> <code>#claude</code> <code>#效率工具</code> <code>#真实vlog</code>，5–7 个为宜。</li>
+          <li><b>正文文案</b>：把"4 个环节 + 我用的 prompt"列出来当干货沉淀，引导评论区"求 prompt"。</li>
+          <li><b>互动钩子</b>：标题或封面留一个未解之谜（如"那 20%"），评论区会自然有人问。</li>
+          <li><b>不要做的事</b>：不要在视频里念话题标签、不要加片尾"关注我"、不要超过 45 秒。</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 5. TITLES ===================== -->
+  <section>
+    <div class="section-head">
+      <span class="section-num">05 / TITLES</span>
+      <h2 class="section-title">标题 &amp; 封面文案</h2>
+      <span class="section-desc">3 个方向 · 任选其一或 A/B 测</span>
+    </div>
+
+    <div class="titles-card">
+      <div class="title-option">
+        <div class="title-tag">A</div>
+        <div>
+          <div class="title-text">PM 的一天，AI 干了 80%——<mark>那剩下的 20%，才是我领工资的原因</mark>。</div>
+        </div>
+        <div class="title-note">悬念派 · 共鸣最强 · 适合搭<br/>封面 B（真人特写）</div>
+      </div>
+      <div class="title-option">
+        <div class="title-tag">B</div>
+        <div>
+          <div class="title-text">真实记录｜<mark>全程 AI 参与的工作日</mark>，我只做了一件事：把关。</div>
+        </div>
+        <div class="title-note">干货派 · 标签清晰 · 适合搭<br/>封面 A（桌面感印章）</div>
+      </div>
+      <div class="title-option">
+        <div class="title-tag">C</div>
+        <div>
+          <div class="title-text">从晨会到周报，<mark>4 件事全交给 Claude</mark>——最后那一关，是我的事。</div>
+        </div>
+        <div class="title-note">流程派 · 信息密度高 · 适合搭<br/>封面 C（时间线）</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CLOSING ===================== -->
+  <div class="closing">
+    <p><strong>视频总时长：</strong>约 40 秒　·　<strong>结构：</strong>2s 钩子 + 9s × 4 + 4s 收尾　·　<strong>BGM：</strong>Lo-fi 慢节奏</p>
+    <p style="margin-top:6px;">脚本完。可以拿去拍了。</p>
+  </div>
+
+</div>
+</body>
+</html>
