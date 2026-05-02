@@ -15,14 +15,18 @@
     --hairline:rgba(0,0,0,.08);
     --hairline-strong:rgba(0,0,0,.14);
   }
+  html{ box-sizing:border-box; }
+  *, *::before, *::after{ box-sizing:inherit; }
   html,body{background:var(--bg-section-light);}
   body{
-    padding: 56px 24px 120px;
+    margin: 0;
+    padding: 56px 0 120px;
     font-feature-settings: "ss01","cv01";
   }
   .page{
     max-width: 1120px;
     margin: 0 auto;
+    padding: 0 24px;
   }
 
   /* ========== Hero / doc header ========== */
@@ -721,6 +725,7 @@
     border-radius: var(--radius-large);
     padding: 28px;
     border: 1px solid var(--hairline);
+    min-width: 0;
   }
   .prod-card h4{
     font-family: var(--font-display);
@@ -771,6 +776,7 @@
     padding: 28px;
     border: 1px solid var(--hairline);
     margin-top: 24px;
+    min-width: 0;
   }
   .title-option{
     padding: 16px 0;
@@ -822,6 +828,60 @@
     .overlay-grid{grid-template-columns: repeat(2,1fr);}
     .prod-grid{grid-template-columns: 1fr;}
     .doc-title{font-size: 38px;}
+  }
+
+  @media (max-width: 640px){
+    html, body{ overflow-x: clip; }
+    body{ padding: 32px 0 88px; }
+    .page{ padding: 0 14px; }
+    section{ margin-top: 64px; }
+    .doc-title{ font-size: 30px; line-height: 1.12; }
+    .doc-sub{ font-size: 18px; }
+    .section-head,
+    .scene-head{
+      display:block;
+    }
+    .section-head{
+      margin-bottom: 22px;
+      padding-bottom: 12px;
+    }
+    .section-title{
+      font-size: 26px;
+      margin-top: 6px;
+    }
+    .section-desc,
+    .scene-tag{
+      display:block;
+      margin-left: 0;
+      margin-top: 8px;
+    }
+    .scene-head{
+      padding: 16px 18px;
+    }
+    .scene-time{
+      display:block;
+      margin-top: 10px;
+    }
+    .scene-title{
+      font-size: 18px;
+      margin-top: 6px;
+      overflow-wrap: anywhere;
+    }
+    .scene-cell,
+    .titles-card,
+    .prod-card{
+      padding: 18px;
+    }
+    .overlay-grid{
+      grid-template-columns: 1fr;
+    }
+    .title-option{
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+    .title-note{
+      text-align: left;
+    }
   }
 </style>
 </head>
